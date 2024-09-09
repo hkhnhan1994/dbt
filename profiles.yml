@@ -1,0 +1,13 @@
+project_dbt:
+  outputs:
+    dev:
+      dataset: dev
+      job_execution_timeout_seconds: 3600
+      job_retries: 1
+      location: europe-west1
+      method: oauth
+      priority: interactive
+      project: pj-bu-dw-data-sbx
+      threads: 5
+      type: bigquery
+  target: dev

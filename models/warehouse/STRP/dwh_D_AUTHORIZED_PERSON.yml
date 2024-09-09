@@ -1,0 +1,24 @@
+
+models:
+  - name: dwh_D_AUTHORIZED_PERSON
+    description: dwh incremental dwh_D_AUTHORIZED_PERSON
+    columns:
+      - name: T_DIM_KEY
+      - name: T_BATCH_ID
+      - name: T_LOAD_TIMESTAMP
+      - name: T_SOURCE_PK_ID
+      - name: T_INGESTION_TIMESTAMP
+      - name: T_DML_TYPE
+      - name: AUTHORIZED_PERSON_CREATED_AT
+      - name: AUTHORIZED_PERSON_UPDATED_AT
+      - name: BRAND
+      - name: AUTHORIZED_PERSON_NAME
+      - name: AUTHORIZED_PERSON_FIRST_NAME
+      - name: AUTHORIZED_PERSON_LAST_NAME
+      - name: AUTHORIZED_PERSON_LAST_NAME_PREFIX
+      - name: AUTHORIZED_PERSON_EMAIL
+      - name: AUTHORIZED_PERSON_PLACE_OF_BIRTH
+      - name: AUTHORIZED_PERSON_GENDER
+      - name: AUTHORIZED_PERSON_MOBILE_PHONE
+      - name: AUTHORIZED_PERSON_CSN
+      - name: T_ROW_HASH

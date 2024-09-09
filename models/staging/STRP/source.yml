@@ -1,0 +1,7 @@
+sources:
+  - name: strp
+    project: pj-bu-dw-data-sbx  
+    schema: lake_view_cmd
+    tables:
+      - name: public_person
+      - name: public_personattribute
