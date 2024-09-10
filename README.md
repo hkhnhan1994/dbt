@@ -24,3 +24,9 @@ This command will reassign the location of your profiles.yml to the folder menti
 
 Once it is done, run: 
 `dbt debug --config-dir`
+
+
+### generate graph
+
+dbt docs generate
+dbt docs serve
