@@ -4,6 +4,7 @@ models:
     description: staging area of an authorized table.
     columns:
       - name: T_BATCH_ID
+      - name: T_BUS_KEY
       - name: T_SOURCE_PK_ID
       - name: T_LOAD_TIMESTAMP
       - name: T_INGESTION_TIMESTAMP

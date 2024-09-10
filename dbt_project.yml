@@ -37,13 +37,14 @@ models:
       STRP:
         +materialized: table
         +dataset: staging_view_cmd
-    # warehouse:
-    #   STRP:
-    #     +materialized: table
-    #     +dataset: dwh_view_cmd
-    # datamart:
-    #   STRP:
-    #     +materialized: view
-    #     +dataset: dm_view_cmd
+    warehouse:
+      STRP:
+        +materialized: incremental
+        +dataset: dwh_view_cmd
+        +unique_key: T_UNIQUE_KEY
+    datamart:
+      STRP:
+        +materialized: view
+        +dataset: dm_view_cmd
 
 query-comment: null

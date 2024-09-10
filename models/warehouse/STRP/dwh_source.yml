@@ -1,0 +1,5 @@
+sources:
+  - name: dwh_strp
+    schema: "{{ 'prod_dwh_view_cmd' if target.name == 'prod' else 'dev_dwh_view_cmd' }}"
+    tables:
+      - name: dwh_D_AUTHORIZED_PERSON

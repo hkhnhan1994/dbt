@@ -1,6 +1,5 @@
 sources:
-  - name: strp
-    project: pj-bu-dw-data-sbx  
+  - name: stg_strp
     schema: lake_view_cmd
     tables:
       - name: public_person
