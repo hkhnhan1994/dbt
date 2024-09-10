@@ -1,5 +1,10 @@
 sources:
   - name: dwh_strp
-    schema: "{{ 'prod_dwh_view_cmd' if target.name == 'prod' else 'dev_dwh_view_cmd' }}"
+    schema: |
+      {%- if  target.name == "dev" -%} dev_dwh_view_cmd
+      {%- elif target.name == "uat"  -%} uat_dwh_view_cmd
+      {%- elif target.name == "prod"  -%} prod_dwh_view_cmd
+      {%- else -%} invalid_database
+      {%- endif -%}
     tables:
       - name: dwh_D_AUTHORIZED_PERSON
