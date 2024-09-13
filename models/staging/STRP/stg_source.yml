@@ -1,6 +1,0 @@
-sources:
-  - name: stg_strp
-    schema: lake_view_cmd
-    tables:
-      - name: public_person
-      - name: public_personattribute

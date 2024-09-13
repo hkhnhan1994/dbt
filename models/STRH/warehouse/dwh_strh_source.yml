@@ -1,5 +1,5 @@
 sources:
-  - name: dwh_strp
+  - name: dwh_strh
     schema: |
       {%- if  target.name == "dev" -%} dev_dwh_view_cmd
       {%- elif target.name == "uat"  -%} uat_dwh_view_cmd
@@ -7,4 +7,6 @@ sources:
       {%- else -%} invalid_database
       {%- endif -%}
     tables:
-      - name: dwh_D_AUTHORIZED_PERSON
+      - name: D_AUTHORIZED_PERSON
+      - name: D_ENTERPRISE
+      - name: D_LEGAL_ENTITY

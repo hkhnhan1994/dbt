@@ -2,7 +2,7 @@ with public_personattribute as (
     WITH current_table AS (
     SELECT *,
     ROW_NUMBER() OVER(PARTITION BY row_hash) AS rn
-    FROM  {{ source('stg_strp', 'public_personattribute') }}
+    FROM  {{ source('stg_strh_hehe', 'public_personattribute') }}
     )
     SELECT * EXCEPT(rn)
     FROM current_table
@@ -12,7 +12,7 @@ public_person as (
     WITH current_table AS (
     SELECT *,
     ROW_NUMBER() OVER(PARTITION BY row_hash) AS rn
-    FROM  {{ source('stg_strp', 'public_person') }}
+    FROM  {{ source('stg_strh_hehe', 'public_person') }}
     )
     SELECT * EXCEPT(rn)
     FROM current_table
@@ -45,7 +45,8 @@ persion_atribute_table AS(
 source_table as(
     SELECT
         CAST (he_per.ingestion_meta_data_uuid AS STRING) AS T_BATCH_ID,
-        TO_BASE64((SHA256(CONCAT("SOURCE", "$", CAST (he_per.PersonId AS STRING))))) AS T_BUS_KEY,
+        TO_BASE64((SHA256(CONCAT("HEHE", "$", CAST (he_per.PersonId AS STRING))))) AS T_BUS_KEY,
+        "HEHE" AS T_SOURCE,
         CAST (he_per.PersonId AS STRING) AS T_SOURCE_PK_ID,
         CAST (he_per.ingestion_meta_data_source_timestamp AS TIMESTAMP) AS T_LOAD_TIMESTAMP,
         CAST (he_per.LastUpdatedDate AS TIMESTAMP) AS T_INGESTION_TIMESTAMP,

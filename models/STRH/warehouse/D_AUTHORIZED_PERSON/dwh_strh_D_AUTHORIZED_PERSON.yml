@@ -1,12 +1,19 @@
 
 models:
-  - name: stg_D_AUTHORIZED_PERSON
-    description: staging area of an authorized table.
+  - name: dwh_strh_D_AUTHORIZED_PERSON
+    description: dwh incremental dwh_strh_D_AUTHORIZED_PERSON
+    config:
+      alias: D_AUTHORIZED_PERSON
+      meta:
+        surrogate_key: true
     columns:
+      - name: T_DIM_KEY
+      - name: T_UNIQUE_KEY
       - name: T_BATCH_ID
       - name: T_BUS_KEY
-      - name: T_SOURCE_PK_ID
+      - name: T_SOURCE
       - name: T_LOAD_TIMESTAMP
+      - name: T_SOURCE_PK_ID
       - name: T_INGESTION_TIMESTAMP
       - name: T_DML_TYPE
       - name: AUTHORIZED_PERSON_CREATED_AT

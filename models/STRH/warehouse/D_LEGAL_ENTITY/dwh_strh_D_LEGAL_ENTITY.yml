@@ -1,0 +1,25 @@
+models:
+  - name: dwh_strh_D_LEGAL_ENTITY
+    description: dwh_strh_D_LEGAL_ENTITY.
+    config:
+      alias: D_LEGAL_ENTITY
+    columns:
+      - name: T_DIM_KEY
+      - name: T_BATCH_ID
+      - name: T_BUS_KEY
+      - name: T_SOURCE
+      - name: T_SOURCE_PK_ID
+      - name: T_LOAD_TIMESTAMP
+      - name: T_INGESTION_TIMESTAMP
+      - name: T_DML_TYPE
+      - name: LEGAL_ENTITY_NAME
+      - name: LEGAL_ENTITY_IDENTIFIER
+      - name: LEGAL_ENTITY_IDENTIFIER_TYPE
+      - name: LEGAL_ENTITY_UPDATED_AT
+      - name: LEGAL_ENTITY_ENDED_AT
+      - name: LEGAL_ENTITY_INCORPORATION_DATE
+      - name: LEGAL_ENTITY_JURIDICAL_FORM
+      - name: LEGAL_ENTITY_ACTIVITY_CODE
+      - name: LEGAL_ENTITY_ACTIVITY
+      - name: LEGAL_ENTITY_NUMBER_OF_EMPLOYEES
+      - name: T_ROW_HASH

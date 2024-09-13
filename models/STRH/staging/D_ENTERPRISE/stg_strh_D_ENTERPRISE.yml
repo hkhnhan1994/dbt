@@ -1,0 +1,31 @@
+models:
+  - name: stg_strh_D_ENTERPRISE
+    description: staging area stg_strh_D_ENTERPRISE.
+    config:
+      alias: D_ENTERPRISE
+    columns:
+      - name: T_BATCH_ID
+      - name: T_BUS_KEY
+      - name: T_SOURCE
+      - name: T_SOURCE_PK_ID
+      - name: T_LOAD_TIMESTAMP
+      - name: T_INGESTION_TIMESTAMP
+      - name: T_DML_TYPE
+      - name: ENTERPRISE_CREATED_AT
+      - name: ENTERPRISE_UPDATED_AT
+      - name: BRAND
+      - name: T_D_LEGAL_ENTITY_DIM_KEY
+      - name: ENTERPRISE_NAME
+      - name: ENTERPRISE_CONTACT
+      - name: ENTERPRISE_PHONE_NUMBER
+      - name: ENTERPRISE_MOBILE_NUMBER
+      - name: ENTERPRISE_STREET
+      - name: ENTERPRISE_HOUSE_NBR
+      - name: ENTERPRISE_ZIP_CODE
+      - name: ENTERPRISE_CITY
+      - name: ENTERPRISE_COUNTRY
+      - name: ENTERPRISE_EMAIL
+      - name: ENTERPRISE_JURIDICAL_FORM
+      - name: ENTERPRISE_VAT_NUMBER
+      - name: ENTERPRISE_AGRO_SWITH_ID
+      - name: T_ROW_HASH

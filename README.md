@@ -27,3 +27,6 @@ Once it is done, run:
 
 - dbt docs generate
 - dbt docs serve
+
+### workflow converter
+- pip install dbt-workflows-factory==0.0.3

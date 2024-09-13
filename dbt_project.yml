@@ -33,17 +33,15 @@ clean-targets:         # directories to be removed by `dbt clean`
 # files using the `{{ config(...) }}` macro.
 models:
   project_dbt:
-    staging:
-      STRP:
+    STRH:
+      staging:
         +materialized: table
         +dataset: staging_view_cmd
-    warehouse:
-      STRP:
+      warehouse:
         +materialized: incremental
         +dataset: dwh_view_cmd
         +unique_key: T_UNIQUE_KEY
-    datamart:
-      STRP:
+      mart:
         +materialized: view
         +dataset: dm_view_cmd
 
