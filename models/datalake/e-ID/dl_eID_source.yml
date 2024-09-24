@@ -1,0 +1,38 @@
+sources:
+  - name: h3_hehe
+    schema: lake_view_cmd
+    tables:
+      - name: public_Person
+        pk_id: 
+          - personid
+      - name: public_PersonAttribute
+        pk_id: 
+            - PersonId
+            - SourceUrnId
+            - attributeurnid
+  - name: h3_hklc
+    schema: lake_view_cmd
+    tables:
+      - name: public_tblKlantSysAttr
+        pk_id: 
+            - KlantID 
+            - SysteemID
+            - AttribuutID
+            - rowguid
+      - name: public_tblSysteemAttribuut
+        pk_id: 
+            - systeemid
+            - AttribuutID
+      - name: public_tblLand
+        pk_id: 
+            - landid
+      - name: public_tblKlant
+        pk_id: 
+            - KlantID
+  - name: h3_hkvk
+    schema: lake_view_cmd
+    tables:
+      - name: public_RequestCache
+        pk_id: 
+            - RequestCacheID
+            - CacheKey

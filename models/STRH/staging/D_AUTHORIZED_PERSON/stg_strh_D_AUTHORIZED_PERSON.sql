@@ -1,18 +1,18 @@
-with public_personattribute as (
+with public_PersonAttribute as (
     WITH current_table AS (
     SELECT *,
     ROW_NUMBER() OVER(PARTITION BY row_hash) AS rn
-    FROM  {{ source('stg_strh_hehe', 'public_personattribute') }}
+    FROM  {{ source('stg_strh_hehe', 'public_PersonAttribute') }}
     )
     SELECT * EXCEPT(rn)
     FROM current_table
     WHERE rn = 1
 ),
-public_person as (
+public_Person as (
     WITH current_table AS (
     SELECT *,
     ROW_NUMBER() OVER(PARTITION BY row_hash) AS rn
-    FROM  {{ source('stg_strh_hehe', 'public_person') }}
+    FROM  {{ source('stg_strh_hehe', 'public_Person') }}
     )
     SELECT * EXCEPT(rn)
     FROM current_table
@@ -38,7 +38,7 @@ persion_atribute_table AS(
             IF (he_per_atb.AttributeUrnId=7, he_per_atb.Value, NULL) AS AUTHORIZED_PERSON_GENDER,
             IF (he_per_atb.AttributeUrnId=12, he_per_atb.Value, NULL) AS AUTHORIZED_PERSON_MOBILE_PHONE,
             IF (he_per_atb.AttributeUrnId=5, "Y", NULL) AS AUTHORIZED_PERSON_DATE_OF_BIRTH,
-        FROM public_personattribute AS he_per_atb
+        FROM public_PersonAttribute AS he_per_atb
     )
     GROUP BY PersonId
 ),
@@ -64,7 +64,7 @@ source_table as(
         COALESCE (he_per_atb.AUTHORIZED_PERSON_MOBILE_PHONE, "NA") AS AUTHORIZED_PERSON_MOBILE_PHONE,
         COALESCE (he_per.BsnkId, "NA") AS AUTHORIZED_PERSON_CSN,
 
-      FROM public_person AS he_per
+      FROM public_Person AS he_per
       LEFT JOIN persion_atribute_table AS he_per_atb
         ON he_per.PersonId = he_per_atb.PersonId
 )

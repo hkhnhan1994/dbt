@@ -2,16 +2,16 @@ sources:
   - name: stg_strh_hehe
     schema: lake_view_cmd
     tables:
-      - name: public_person
-      - name: public_personattribute
+      - name: public_Person
+      - name: public_PersonAttribute
   - name: stg_strh_hklc
     schema: lake_view_cmd
     tables:
-      - name: public_tblklantsysattr
-      - name: public_tblsysteemattribuut
-      - name: public_tblland
-      - name: public_tblklant
+      - name: public_tblKlantSysAttr
+      - name: public_tblSysteemAttribuut
+      - name: public_tblLand
+      - name: public_tblKlant
   - name: stg_strh_hkvk
     schema: lake_view_cmd
     tables:
-      - name: public_requestcache
+      - name: public_RequestCache

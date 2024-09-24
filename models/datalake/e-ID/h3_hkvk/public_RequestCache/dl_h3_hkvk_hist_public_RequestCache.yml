@@ -1,0 +1,31 @@
+models:
+- name: dl_h3_hkvk_hist_public_RequestCache
+  description: auto render table dl_h3_hkvk_hist_public_RequestCache
+  config:
+    materialized: table
+    dataset: dl_h3_hkvk
+    alias: dl_h3_hkvk_hist_public_RequestCache
+  columns:
+  - name: INSERT_HIST_TIMESTAMP
+  - name: ingestion_meta_data_processing_timestamp
+  - name: ingestion_meta_data_uuid
+  - name: ingestion_meta_data_read_timestamp
+  - name: ingestion_meta_data_source_timestamp
+  - name: ingestion_meta_data_object
+  - name: ingestion_meta_data_read_method
+  - name: source_metadata_schema
+  - name: source_metadata_table
+  - name: source_metadata_is_deleted
+  - name: source_metadata_change_type
+  - name: source_metadata_primary_keys
+  - name: requestcacheid
+  - name: responsedata
+  - name: responsetimeutc
+  - name: datatype
+  - name: cachekey
+  - name: extra_col4
+  - name: ingestion_meta_data_gcs_path
+  - name: row_hash
+  - name: extra_col5
+  - name: extra_col6
+  - name: extra_col1

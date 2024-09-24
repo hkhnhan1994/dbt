@@ -3,6 +3,11 @@ models:
     description: dwh_strh_D_LEGAL_ENTITY.
     config:
       alias: D_LEGAL_ENTITY
+      meta:
+        surrogate_key: true
+    partition_by:
+      - field: T_LOAD_TIMESTAMP
+      - data_type: TIMESTAMP
     columns:
       - name: T_DIM_KEY
       - name: T_BATCH_ID

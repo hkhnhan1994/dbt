@@ -4,7 +4,10 @@ models:
     description: dwh incremental dwh_strh_D_AUTHORIZED_PERSON
     config:
       alias: D_AUTHORIZED_PERSON_CURRENT
-      materialized: view
+      materialized: table
+    partition_by:
+      - field: T_LOAD_TIMESTAMP
+      - data_type: TIMESTAMP
     columns:
       - name: T_DIM_KEY
       - name: T_UNIQUE_KEY

@@ -20,6 +20,12 @@ seed-paths: ["seeds"]
 macro-paths: ["macros"]
 snapshot-paths: ["snapshots"]
 
+vars:
+  data_lake_datasets_whitelist:
+    - dataset: 'pj-bu-dw-data-sbx.lake_view_cmd'
+      timestamp_column: 
+       - 'ingestion_meta_data_processing_timestamp'
+
 clean-targets:         # directories to be removed by `dbt clean`
   - "target"
   - "dbt_packages"
@@ -33,6 +39,9 @@ clean-targets:         # directories to be removed by `dbt clean`
 # files using the `{{ config(...) }}` macro.
 models:
   project_dbt:
+    datalake:
+      +materialized: table
+      +dataset: datalake
     STRH:
       staging:
         +materialized: table

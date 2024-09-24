@@ -3,6 +3,10 @@ models:
     description: dwh_strh_D_ENTERPRISE_CURRENT.
     config:
       alias: D_ENTERPRISE_CURRENT
+      materialized: table
+    partition_by:
+      - field: T_LOAD_TIMESTAMP
+      - data_type: TIMESTAMP
     columns:
       - name: T_DIM_KEY
       - name: T_BATCH_ID

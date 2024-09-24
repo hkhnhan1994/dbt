@@ -2,7 +2,7 @@ with tblKlant_current as (
     WITH current_table AS (
     SELECT *,
     ROW_NUMBER() OVER(PARTITION BY row_hash) AS rn
-    FROM  {{ source('stg_strh_hklc', 'public_tblklant') }}
+    FROM  {{ source('stg_strh_hklc', 'public_tblKlant') }}
     )
     SELECT * EXCEPT(rn)
     FROM current_table
@@ -12,7 +12,7 @@ tblSysteemAttribuut_current as (
     WITH current_table AS (
     SELECT *,
     ROW_NUMBER() OVER(PARTITION BY row_hash) AS rn
-    FROM  {{ source('stg_strh_hklc', 'public_tblsysteemattribuut') }}
+    FROM  {{ source('stg_strh_hklc', 'public_tblSysteemAttribuut') }}
     )
     SELECT * EXCEPT(rn)
     FROM current_table
@@ -22,7 +22,7 @@ tblKlantSysAttr_current as (
     WITH current_table AS (
     SELECT *,
     ROW_NUMBER() OVER(PARTITION BY row_hash) AS rn
-    FROM  {{ source('stg_strh_hklc', 'public_tblklantsysattr') }}
+    FROM  {{ source('stg_strh_hklc', 'public_tblKlantSysAttr') }}
     )
     SELECT * EXCEPT(rn)
     FROM current_table
@@ -32,7 +32,7 @@ tblLand_current as (
     WITH current_table AS (
     SELECT *,
     ROW_NUMBER() OVER(PARTITION BY row_hash) AS rn
-    FROM  {{ source('stg_strh_hklc', 'public_tblland') }}
+    FROM  {{ source('stg_strh_hklc', 'public_tblLand') }}
     )
     SELECT * EXCEPT(rn)
     FROM current_table
