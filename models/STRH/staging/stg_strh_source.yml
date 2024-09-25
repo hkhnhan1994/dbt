@@ -1,17 +1,20 @@
 sources:
-  - name: stg_strh_hehe
-    schema: lake_view_cmd
+  - name: stg_dl_h3_hehe
+    schema: |
+      {{ target.schema }}_dl_h3_hehe
     tables:
-      - name: public_Person
-      - name: public_PersonAttribute
-  - name: stg_strh_hklc
-    schema: lake_view_cmd
+      - name: public_Person_current
+      - name: public_PersonAttribute_current
+  - name: stg_dl_h3_hklc
+    schema: |
+      {{ target.schema }}_dl_h3_hklc
     tables:
-      - name: public_tblKlantSysAttr
-      - name: public_tblSysteemAttribuut
-      - name: public_tblLand
-      - name: public_tblKlant
-  - name: stg_strh_hkvk
-    schema: lake_view_cmd
+      - name: public_tblKlantSysAttr_current
+      - name: public_tblSysteemAttribuut_current
+      - name: public_tblLand_current
+      - name: public_tblKlant_current
+  - name: stg_dl_h3_hkvk
+    schema: |
+      {{ target.schema }}_dl_h3_hkvk
     tables:
-      - name: public_RequestCache
+      - name: public_RequestCache_current

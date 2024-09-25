@@ -1,10 +1,10 @@
 models:
-- name: dl_h3_hklc_hist_public_tblKlantSysAttr
-  description: auto render table dl_h3_hklc_hist_public_tblKlantSysAttr
+- name: dl_h3_hklc_public_tblKlantSysAttr_current
+  description: auto render table public_tblKlantSysAttr_current
   config:
     materialized: table
     dataset: dl_h3_hklc
-    alias: dl_h3_hklc_hist_public_tblKlantSysAttr
+    alias: public_tblKlantSysAttr_current
   columns:
   - name: INSERT_HIST_TIMESTAMP
   - name: ingestion_meta_data_processing_timestamp
@@ -23,8 +23,6 @@ models:
   - name: attribuutid
   - name: waarde
   - name: rowguid
-  - name: extra_col5
+  - name: extra_col1
   - name: ingestion_meta_data_gcs_path
   - name: row_hash
-  - name: extra_col6
-  - name: extra_col1

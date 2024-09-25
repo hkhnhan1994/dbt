@@ -1,6 +1,7 @@
 sources:
   - name: h3_hehe
-    schema: lake_view_cmd
+    schema: |
+      {{ target.schema }}_lake_view_cmd
     tables:
       - name: public_Person
         pk_id: 
@@ -11,7 +12,8 @@ sources:
             - SourceUrnId
             - attributeurnid
   - name: h3_hklc
-    schema: lake_view_cmd
+    schema: |
+     {{ target.schema }}_lake_view_cmd
     tables:
       - name: public_tblKlantSysAttr
         pk_id: 
@@ -30,7 +32,8 @@ sources:
         pk_id: 
             - KlantID
   - name: h3_hkvk
-    schema: lake_view_cmd
+    schema: |
+     {{ target.schema }}_lake_view_cmd
     tables:
       - name: public_RequestCache
         pk_id: 

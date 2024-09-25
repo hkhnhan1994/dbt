@@ -1,10 +1,10 @@
 models:
-- name: dl_h3_hklc_hist_public_tblSysteemAttribuut
-  description: auto render table dl_h3_hklc_hist_public_tblSysteemAttribuut
+- name: dl_h3_hklc_public_tblLand
+  description: auto render table public_tblLand
   config:
     materialized: table
     dataset: dl_h3_hklc
-    alias: dl_h3_hklc_hist_public_tblSysteemAttribuut
+    alias: public_tblLand
   columns:
   - name: INSERT_HIST_TIMESTAMP
   - name: ingestion_meta_data_processing_timestamp
@@ -18,35 +18,16 @@ models:
   - name: source_metadata_is_deleted
   - name: source_metadata_change_type
   - name: source_metadata_primary_keys
-  - name: systeemid
-  - name: attribuutid
-  - name: groepid
-  - name: volgnr
+  - name: landid
   - name: naam
-  - name: code
-  - name: datatypeid
-  - name: maxlengte
-  - name: invoerverplicht
-  - name: vastewaarde
-  - name: zoekcriterium
-  - name: minimum
-  - name: maximum
-  - name: waardestandaard
-  - name: waardeja
-  - name: waardenee
-  - name: scheidingsteken
-  - name: omschrijving
+  - name: pocoformat
+  - name: standaard
   - name: mwidchange
   - name: datechange
   - name: mwidlock
   - name: datelock
+  - name: exactcode
   - name: rowguid
-  - name: mmexport
-  - name: toegestanetekens
-  - name: uniquecheck
-  - name: extra_col4
+  - name: extra_col1
   - name: ingestion_meta_data_gcs_path
   - name: row_hash
-  - name: extra_col5
-  - name: extra_col6
-  - name: extra_col1

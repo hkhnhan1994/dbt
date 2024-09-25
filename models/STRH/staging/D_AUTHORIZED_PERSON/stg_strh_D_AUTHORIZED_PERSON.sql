@@ -2,7 +2,7 @@ with public_PersonAttribute as (
     WITH current_table AS (
     SELECT *,
     ROW_NUMBER() OVER(PARTITION BY row_hash) AS rn
-    FROM  {{ source('stg_strh_hehe', 'public_PersonAttribute') }}
+    FROM  {{ source('stg_dl_h3_hehe', 'public_PersonAttribute_current') }}
     )
     SELECT * EXCEPT(rn)
     FROM current_table
@@ -12,7 +12,7 @@ public_Person as (
     WITH current_table AS (
     SELECT *,
     ROW_NUMBER() OVER(PARTITION BY row_hash) AS rn
-    FROM  {{ source('stg_strh_hehe', 'public_Person') }}
+    FROM  {{ source('stg_dl_h3_hehe', 'public_Person_current') }}
     )
     SELECT * EXCEPT(rn)
     FROM current_table

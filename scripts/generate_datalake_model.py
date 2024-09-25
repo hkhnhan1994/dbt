@@ -19,11 +19,11 @@ def BQ_schema_to_yml_dict(domain,table_name,schema: List[bigquery.SchemaField],v
     return {
         'models':[
             {
-            'name':table_name,
+            'name':f'dl_{domain}_{table_name}',
             'description': f'auto render table {table_name}',
             'config':{
                 'materialized': 'table',
-                'dataset':domain,
+                'dataset':f'dl_{domain}',
                 'alias': f"{table_name}"
             },
             'columns': schema_fields
@@ -69,7 +69,7 @@ WITH current_table AS (
         SELECT
         CONCAT( {%- for col_pk in pk_columns %} `{{col_pk}}` {% if not loop.last %} , {% endif %} {%- endfor %} ,"") AS _pk_id,
         *
-        FROM {% raw %} {{ {% endraw %} ref('dl_{{ domain }}_hist_{{ table_name }}') {% raw %} }} {% endraw %}
+        FROM {% raw %} {{ {% endraw %} ref('dl_{{ domain }}_{{ table_name }}') {% raw %} }} {% endraw %}
     ) 
 )
 SELECT * EXCEPT(rn)
@@ -85,7 +85,7 @@ WHERE rn = 1
         pk_columns = pk_columns,
     )
 
-
+env ="dev"
 project_id = "pj-bu-dw-data-sbx"
 client = bigquery.Client(project=project_id)
 
@@ -94,42 +94,39 @@ with open(pathlib.Path(whitelist_path),'r') as f:
     sources = yaml.safe_load(f)
 for source in sources['sources']:
     parent_file_name = source['name']
-    dataset =  source['schema']
+    dataset =  source['schema'].replace('{{ target.schema }}',env).strip()
     for table in source['tables']:
         table_name = table['name']
         pk_id = table['pk_id']
-        save_path = f'dl/{parent_file_name}/{table_name}/dl_{parent_file_name}_current_{table_name}.sql'
+        save_path = f'dl/{parent_file_name}/{table_name}/dl_{parent_file_name}_{table_name}_current.sql'
         content= generate_template(parent_file_name,table_name,"current",pk_id)
         output_file = pathlib.Path(save_path)
         output_file.parent.mkdir(exist_ok=True, parents=True)
         with open(save_path, "w") as fw:
             fw.write(content)
         
-        save_path = f'dl/{parent_file_name}/{table_name}/dl_{parent_file_name}_hist_{table_name}.sql'
+        save_path = f'dl/{parent_file_name}/{table_name}/dl_{parent_file_name}_{table_name}.sql'
         content= generate_template(parent_file_name,table_name,"hist",pk_id)
         with open(save_path, "w") as fw:
             fw.write(content)
 
-        
         bq_table = client.get_table(f"{project_id}.{dataset}.{table_name}")
-        save_path = f'dl/{parent_file_name}/{table_name}/dl_{parent_file_name}_hist_{table_name}.yml'
+        save_path = f'dl/{parent_file_name}/{table_name}/dl_{parent_file_name}_{table_name}.yml'
         cur_schema = BQ_schema_to_yml_dict(
-            domain=f"dl_{parent_file_name}",
-            table_name=f'dl_{parent_file_name}_hist_{table_name}',
+            domain=f"{parent_file_name}",
+            table_name=table_name,
             schema = bq_table.schema,
             ver="hist"
             )
         with open(save_path, "w") as fw:
             yaml.dump(cur_schema, fw, default_flow_style=False,sort_keys=False)
 
-        save_path = f'dl/{parent_file_name}/{table_name}/dl_{parent_file_name}_current_{table_name}.yml'
+        save_path = f'dl/{parent_file_name}/{table_name}/dl_{parent_file_name}_{table_name}_current.yml'
         cur_schema = BQ_schema_to_yml_dict(
-            domain=f"dl_{parent_file_name}",
-            table_name=f'dl_{parent_file_name}_current_{table_name}',
+            domain=f"{parent_file_name}",
+            table_name=f'{table_name}_current',
             schema = bq_table.schema,
             ver="current"
             )
         with open(save_path, "w") as fw:
             yaml.dump(cur_schema, fw, default_flow_style=False,sort_keys=False)
-
-    

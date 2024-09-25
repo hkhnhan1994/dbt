@@ -1,11 +1,7 @@
 sources:
   - name: dwh_strh
     schema: |
-      {%- if  target.name == "dev" -%} dev_dwh_view_cmd
-      {%- elif target.name == "uat"  -%} uat_dwh_view_cmd
-      {%- elif target.name == "prod"  -%} prod_dwh_view_cmd
-      {%- else -%} invalid_database
-      {%- endif -%}
+      {{ target.schema }}_dwh_view_cmd
     tables:
       - name: D_AUTHORIZED_PERSON
       - name: D_ENTERPRISE

@@ -1,10 +1,10 @@
 models:
-- name: dl_h3_hklc_current_public_tblKlant
-  description: auto render table dl_h3_hklc_current_public_tblKlant
+- name: dl_h3_hklc_public_tblKlant_current
+  description: auto render table public_tblKlant_current
   config:
     materialized: table
     dataset: dl_h3_hklc
-    alias: dl_h3_hklc_current_public_tblKlant
+    alias: public_tblKlant_current
   columns:
   - name: INSERT_HIST_TIMESTAMP
   - name: ingestion_meta_data_processing_timestamp
@@ -97,9 +97,6 @@ models:
   - name: f_tav
   - name: taal
   - name: maxkortingvolgnr
-  - name: extra_col4
+  - name: extra_col1
   - name: ingestion_meta_data_gcs_path
   - name: row_hash
-  - name: extra_col5
-  - name: extra_col6
-  - name: extra_col1

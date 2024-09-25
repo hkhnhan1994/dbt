@@ -2,8 +2,8 @@ with RequestCache_current as (
   WITH current_table AS (
     SELECT *,
       ROW_NUMBER() OVER(PARTITION BY row_hash) AS rn
-    FROM  {{ source('stg_strh_hkvk', 'public_RequestCache') }}
-  )
+    FROM  {{ source('stg_dl_h3_hkvk', 'public_RequestCache_current') }}
+  )  
   SELECT * EXCEPT(rn)
   FROM current_table
   WHERE rn = 1

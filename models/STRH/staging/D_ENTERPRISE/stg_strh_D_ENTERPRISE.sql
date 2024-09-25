@@ -2,7 +2,7 @@ with tblKlant_current as (
     WITH current_table AS (
     SELECT *,
     ROW_NUMBER() OVER(PARTITION BY row_hash) AS rn
-    FROM  {{ source('stg_strh_hklc', 'public_tblKlant') }}
+    FROM  {{ source('stg_dl_h3_hklc', 'public_tblKlant_current') }}
     )
     SELECT * EXCEPT(rn)
     FROM current_table
@@ -12,8 +12,8 @@ tblSysteemAttribuut_current as (
     WITH current_table AS (
     SELECT *,
     ROW_NUMBER() OVER(PARTITION BY row_hash) AS rn
-    FROM  {{ source('stg_strh_hklc', 'public_tblSysteemAttribuut') }}
-    )
+    FROM  {{ source('stg_dl_h3_hklc', 'public_tblSysteemAttribuut_current') }}
+    ) 
     SELECT * EXCEPT(rn)
     FROM current_table
     WHERE rn = 1
@@ -22,7 +22,7 @@ tblKlantSysAttr_current as (
     WITH current_table AS (
     SELECT *,
     ROW_NUMBER() OVER(PARTITION BY row_hash) AS rn
-    FROM  {{ source('stg_strh_hklc', 'public_tblKlantSysAttr') }}
+    FROM  {{ source('stg_dl_h3_hklc', 'public_tblKlantSysAttr_current') }}
     )
     SELECT * EXCEPT(rn)
     FROM current_table
@@ -32,7 +32,7 @@ tblLand_current as (
     WITH current_table AS (
     SELECT *,
     ROW_NUMBER() OVER(PARTITION BY row_hash) AS rn
-    FROM  {{ source('stg_strh_hklc', 'public_tblLand') }}
+    FROM  {{ source('stg_dl_h3_hklc', 'public_tblLand_current') }}
     )
     SELECT * EXCEPT(rn)
     FROM current_table
