@@ -1,0 +1,30 @@
+models:
+- name: dl_h3_hehe_public_PersonOrganisationRole
+  description: auto render table public_PersonOrganisationRole
+  config:
+    materialized: table
+    dataset: dl_h3_hehe
+    alias: public_PersonOrganisationRole
+  columns:
+  - name: INSERT_HIST_TIMESTAMP
+  - name: ingestion_meta_data_processing_timestamp
+  - name: ingestion_meta_data_uuid
+  - name: ingestion_meta_data_read_timestamp
+  - name: ingestion_meta_data_source_timestamp
+  - name: ingestion_meta_data_object
+  - name: ingestion_meta_data_read_method
+  - name: source_metadata_schema
+  - name: source_metadata_table
+  - name: source_metadata_is_deleted
+  - name: source_metadata_change_type
+  - name: source_metadata_primary_keys
+  - name: personorganisationroleid
+  - name: personorganisationlinkid
+  - name: role
+  - name: insertdate
+  - name: startdate
+  - name: expiredate
+  - name: active
+  - name: extra_col1
+  - name: ingestion_meta_data_gcs_path
+  - name: row_hash

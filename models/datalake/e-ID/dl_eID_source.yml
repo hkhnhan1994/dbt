@@ -1,41 +1,234 @@
 sources:
-  - name: h3_hehe
-    schema: |
-      {{ target.schema }}_lake_view_cmd
-    tables:
-      - name: public_Person
-        pk_id: 
-          - personid
-      - name: public_PersonAttribute
-        pk_id: 
-            - PersonId
-            - SourceUrnId
-            - attributeurnid
-  - name: h3_hklc
-    schema: |
-     {{ target.schema }}_lake_view_cmd
-    tables:
-      - name: public_tblKlantSysAttr
-        pk_id: 
-            - KlantID 
-            - SysteemID
-            - AttribuutID
-            - rowguid
-      - name: public_tblSysteemAttribuut
-        pk_id: 
-            - systeemid
-            - AttribuutID
-      - name: public_tblLand
-        pk_id: 
-            - landid
-      - name: public_tblKlant
-        pk_id: 
-            - KlantID
-  - name: h3_hkvk
-    schema: |
-     {{ target.schema }}_lake_view_cmd
-    tables:
-      - name: public_RequestCache
-        pk_id: 
-            - RequestCacheID
-            - CacheKey
+- name: h1_hkvk
+  schema: |
+    {{ target.schema }}_lake_view_cmd
+  tables:
+  - name: public_RequestCache
+    pk_id:
+    - RequestCacheID
+    - CacheKey
+    update_timestamp:
+    - ResponseTimeUTC
+- name: h3_hklc
+  schema: |
+    {{ target.schema }}_lake_view_cmd
+  tables:
+  - name: public_aselect_loginhistory
+    pk_id:
+    - loginid
+    update_timestamp:
+    - logintime
+  - name: public_DA_relation
+    pk_id:
+    - relationid
+    update_timestamp:
+    - LastUpdatedDate
+  - name: public_DA_relation_audit
+    pk_id:
+    - relation_audit_id
+    update_timestamp:
+    - CreationDate
+  - name: public_DA_relationrole
+    pk_id:
+    - relationtype
+    - relationrole
+    update_timestamp:
+    - CreationDate
+  - name: public_tblAbonnement
+    pk_id:
+    - AbonnementID
+    update_timestamp:
+    - DateChange
+  - name: public_tblAbonnementType
+    pk_id:
+    - AbonnementTypeID
+    update_timestamp:
+    - DateChange
+  - name: public_tblDienst
+    pk_id:
+    - DienstID
+    update_timestamp:
+    - DateChange
+  - name: public_tblDienstType
+    pk_id:
+    - DienstTypeID
+    update_timestamp:
+    - DateChange
+  - name: public_tblFactType
+    pk_id:
+    - FactTypeID
+    update_timestamp:
+    - DateChange
+  - name: public_tblGrootboek
+    pk_id:
+    - GrootBoekID
+    update_timestamp:
+    - DateChange
+  - name: public_tblKlant
+    pk_id:
+    - KlantID
+    update_timestamp:
+    - DateChange
+  - name: public_tblKlantAbonnement
+    pk_id:
+    - KlantID
+    - VolgNr
+    - AbonnementID
+    update_timestamp:
+    - DateChange
+  - name: public_tblKlantAbonnementGebruik
+    pk_id:
+    - KlantID
+    - VolgNr
+    - GebruikID
+    update_timestamp:
+    - DateChange
+  - name: public_tblKlantAbonnementSysAttr
+    pk_id:
+    - KlantID
+    - VolgNr
+    - SysteemID
+    - attribuutid
+    update_timestamp:
+    - DateChange
+  - name: public_tblKlantBankMachtiging
+    pk_id:
+    - KlantID
+    - Code
+    update_timestamp:
+    - DateChange
+  - name: public_tblKlantDienst
+    pk_id:
+    - KlantID
+    - VolgNr
+    update_timestamp:
+    - DateChange
+  - name: public_tblKlantSysAttr
+    pk_id:
+    - KlantID
+    - SysteemID
+    - AttribuutID
+    - rowguid
+  - name: public_tblLand
+    pk_id:
+    - LandID
+    update_timestamp:
+    - DateChange
+  - name: public_tblOrganisatie
+    pk_id:
+    - OrganisatieID
+    update_timestamp:
+    - DateChange
+  - name: public_tblSysteemAttribuut
+    pk_id:
+    - SysteemID
+    - AttribuutID
+    update_timestamp:
+    - DateChange
+  - name: public_tblBTW
+    pk_id:
+    - BTWID
+    update_timestamp:
+    - DateChange
+- name: h3_hehe
+  schema: |
+    {{ target.schema }}_lake_view_cmd
+  tables:
+  - name: public_AuditAuthenticationSet
+    pk_id:
+    - __auditid
+    update_timestamp:
+    - __auditdateutc
+  - name: public_AuthenticationSet
+    pk_id:
+    - AuthenticationSetId
+  - name: public_AuthorizationSubject
+    pk_id:
+    - AuthorizationSubjectId
+  - name: public_ChainAuthorization
+    pk_id:
+    - ChainAuthorizationId
+  - name: public_ChainAuthorizationService
+    pk_id:
+    - ChainAuthorizationServiceId
+    update_timestamp:
+    - StartDate
+  - name: public_ChainedOrganisation
+    pk_id:
+    - ChainedOrganisationId
+    update_timestamp:
+    - StartDate
+  - name: public_Group
+    pk_id:
+    - GroupId
+    update_timestamp:
+    - CreationDate
+  - name: public_GroupUser
+    pk_id:
+    - GroupUserId
+    update_timestamp:
+    - CreationDate
+  - name: public_IntermediateAuthorizationService
+    pk_id:
+    - ChainedAuthorizationServiceId
+    update_timestamp:
+    - InsertDate
+  - name: public_Organisation
+    pk_id:
+    - OrganisationId
+    update_timestamp:
+    - LastUpdatedDate
+  - name: public_Person
+    pk_id:
+    - PersonId
+    update_timestamp:
+    - LastUpdatedDate
+  - name: public_PersonAttribute
+    pk_id:
+    - PersonId
+    - SourceUrnId
+    - attributeurnid
+    update_timestamp:
+    - VerifyDateUtc
+  - name: public_PersonOrganisationLink
+    pk_id:
+    - PersonOrganisationLinkId
+    update_timestamp:
+    - LastServiceAuthorizationUse
+  - name: public_PersonOrganisationRole
+    pk_id:
+    - PersonOrganisationRoleId
+    update_timestamp:
+    - InsertDate
+  - name: public_PersonUsageTransactions
+    pk_id:
+    - PersonUsageTransactionId
+    update_timestamp:
+    - TransactionTime
+  - name: public_ServiceAuthorization_1_13
+    pk_id:
+    - ServiceAuthorizationId
+    update_timestamp:
+    - FromDate
+  - name: public_Urn
+    pk_id:
+    - UrnId
+  - name: public_ISO_Country
+    pk_id:
+    - Alpha2
+  - name: public_RegistrationLevel
+    pk_id:
+    - RegistrationLevelId
+  - name: public_Roles
+    pk_id:
+    - Role
+  - name: public_Service
+    pk_id:
+    - ServiceId
+    update_timestamp:
+    - InsertDate
+  - name: public_ServiceProvider
+    pk_id:
+    - ServiceProviderId
+    update_timestamp:
+    - InsertDate

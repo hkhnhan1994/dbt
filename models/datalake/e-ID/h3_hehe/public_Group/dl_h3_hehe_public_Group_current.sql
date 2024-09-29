@@ -4,9 +4,9 @@ WITH current_table AS (
     ROW_NUMBER() OVER(PARTITION BY _pk_id ORDER BY INSERT_HIST_TIMESTAMP DESC) AS rn
     FROM (
         SELECT
-        CONCAT( `PersonId`  ,"") AS _pk_id,
+        CONCAT( `GroupId`  ,"") AS _pk_id,
         *
-        FROM  {{  ref('dl_h3_hehe_public_Person')  }} 
+        FROM  {{  ref('dl_h3_hehe_public_Group')  }} 
     ) 
 )
 SELECT * EXCEPT(rn)
