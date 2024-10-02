@@ -6,7 +6,7 @@ import yaml
 import pathlib
 from jinja2 import Template, DebugUndefined
 
-def BQ_schema_to_yml_dict(domain,table_name,schema: List[bigquery.SchemaField],ver='current'):
+def BQ_schema_to_yml_dict(domain,table_name,tags,schema: List[bigquery.SchemaField],ver='current'):
     """
     Transform a list of SchemaFields into a list of dictionaries.
 
@@ -24,7 +24,8 @@ def BQ_schema_to_yml_dict(domain,table_name,schema: List[bigquery.SchemaField],v
             'config':{
                 'materialized': 'table',
                 'dataset':f'dl_{domain}',
-                'alias': f"{table_name}"
+                'alias': f"{table_name}",
+                'tags': tags,
             },
             'columns': schema_fields
         }
@@ -89,7 +90,8 @@ env ="dev"
 project_id = "pj-bu-dw-data-sbx"
 client = bigquery.Client(project=project_id)
 
-whitelist_path = '/home/hkhnhan/Code/dbt/dbt/models/datalake/e-ID/dl_eID_source.yml'
+whitelist_path = '/home/hkhnhan/Code/dbt/dbt/models/STRH/datalake/dl_eID_source.yml'
+tags = ['datalake']
 with open(pathlib.Path(whitelist_path),'r') as f:
     sources = yaml.safe_load(f)
 for source in sources['sources']:
@@ -115,6 +117,7 @@ for source in sources['sources']:
         cur_schema = BQ_schema_to_yml_dict(
             domain=f"{parent_file_name}",
             table_name=table_name,
+            tags = tags,
             schema = bq_table.schema,
             ver="hist"
             )
@@ -125,6 +128,7 @@ for source in sources['sources']:
         cur_schema = BQ_schema_to_yml_dict(
             domain=f"{parent_file_name}",
             table_name=f'{table_name}_current',
+            tags = tags,
             schema = bq_table.schema,
             ver="current"
             )

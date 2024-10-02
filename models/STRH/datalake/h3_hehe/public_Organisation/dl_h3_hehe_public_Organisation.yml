@@ -1,0 +1,57 @@
+models:
+- name: dl_h3_hehe_public_Organisation
+  description: auto render table public_Organisation
+  config:
+    materialized: table
+    dataset: dl_h3_hehe
+    alias: public_Organisation
+    tags:
+    - datalake
+  columns:
+  - name: INSERT_HIST_TIMESTAMP
+  - name: ingestion_meta_data_processing_timestamp
+  - name: ingestion_meta_data_uuid
+  - name: ingestion_meta_data_read_timestamp
+  - name: ingestion_meta_data_source_timestamp
+  - name: ingestion_meta_data_object
+  - name: ingestion_meta_data_read_method
+  - name: source_metadata_schema
+  - name: source_metadata_table
+  - name: source_metadata_is_deleted
+  - name: source_metadata_change_type
+  - name: source_metadata_primary_keys
+  - name: organisationid
+  - name: name
+  - name: vestigingsnummer
+  - name: kvknummer
+  - name: kvkendossiernummer
+  - name: rsin
+  - name: kvkaddressstreet
+  - name: kvkaddressnumber
+  - name: kvkaddresszipcode
+  - name: kvkaddresscity
+  - name: kvkaddresscountry
+  - name: poststreet
+  - name: postnumber
+  - name: postzipcode
+  - name: postcity
+  - name: postcountry
+  - name: dashboardaccess
+  - name: enabled
+  - name: deleted
+  - name: phonenumber
+  - name: emailaddress
+  - name: bankaccountnumber
+  - name: bic
+  - name: contactname
+  - name: contactphonenumber
+  - name: contactcountry
+  - name: contactemailaddress
+  - name: externalreference
+  - name: insertdate
+  - name: lastupdateddate
+  - name: bsnkid
+  - name: trrnummer
+  - name: extra_col1
+  - name: ingestion_meta_data_gcs_path
+  - name: row_hash

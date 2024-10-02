@@ -1,0 +1,9 @@
+
+models:
+  - name: PCP_ATM
+    description: description text
+    config:
+      alias: PCP_ATM
+      tags:
+        - semesterly
+        - pst3

@@ -1,0 +1,9 @@
+
+models:
+  - name: PCP_MERCHANT_ACCT_TRX
+    description: description text
+    config:
+      alias: PCP_MERCHANT_ACCT_TRX
+      tags:
+        - semesterly
+        - pst3

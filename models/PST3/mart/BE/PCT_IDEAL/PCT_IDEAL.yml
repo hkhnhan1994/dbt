@@ -1,0 +1,9 @@
+
+models:
+  - name: PCT_IDEAL
+    description: description text
+    config:
+      alias: PCT_IDEAL
+      tags:
+        - semesterly
+        - pst3

@@ -1,0 +1,9 @@
+
+models:
+  - name: PCP_ALBATROS_CMD_OCS
+    description: description text
+    config:
+      alias: PCP_ALBATROS_CMD_OCS
+      tags:
+        - semesterly
+        - pst3

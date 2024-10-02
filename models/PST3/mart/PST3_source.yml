@@ -1,0 +1,7 @@
+sources:
+  - name: source_pst3_strp
+    project: pj-bu-dw-dwh-prod
+    schema: prd_data_warehouse_STRP
+    tables:
+      - name: D_ASPSP_CONSENT_DECRYPTED
+      - name: D_ASPSP_TPP

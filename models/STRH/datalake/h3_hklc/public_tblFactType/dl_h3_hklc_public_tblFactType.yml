@@ -1,0 +1,32 @@
+models:
+- name: dl_h3_hklc_public_tblFactType
+  description: auto render table public_tblFactType
+  config:
+    materialized: table
+    dataset: dl_h3_hklc
+    alias: public_tblFactType
+    tags:
+    - datalake
+  columns:
+  - name: INSERT_HIST_TIMESTAMP
+  - name: ingestion_meta_data_processing_timestamp
+  - name: ingestion_meta_data_uuid
+  - name: ingestion_meta_data_read_timestamp
+  - name: ingestion_meta_data_source_timestamp
+  - name: ingestion_meta_data_object
+  - name: ingestion_meta_data_read_method
+  - name: source_metadata_schema
+  - name: source_metadata_table
+  - name: source_metadata_is_deleted
+  - name: source_metadata_change_type
+  - name: source_metadata_primary_keys
+  - name: facttypeid
+  - name: naam
+  - name: mwidchange
+  - name: datechange
+  - name: sortnr
+  - name: rowguid
+  - name: months
+  - name: extra_col1
+  - name: ingestion_meta_data_gcs_path
+  - name: row_hash

@@ -1,0 +1,70 @@
+models:
+- name: dl_h3_hklc_public_tblOrganisatie_current
+  description: auto render table public_tblOrganisatie_current
+  config:
+    materialized: table
+    dataset: dl_h3_hklc
+    alias: public_tblOrganisatie_current
+    tags:
+    - datalake
+  columns:
+  - name: INSERT_HIST_TIMESTAMP
+  - name: ingestion_meta_data_processing_timestamp
+  - name: ingestion_meta_data_uuid
+  - name: ingestion_meta_data_read_timestamp
+  - name: ingestion_meta_data_source_timestamp
+  - name: ingestion_meta_data_object
+  - name: ingestion_meta_data_read_method
+  - name: source_metadata_schema
+  - name: source_metadata_table
+  - name: source_metadata_is_deleted
+  - name: source_metadata_change_type
+  - name: source_metadata_primary_keys
+  - name: organisatieid
+  - name: naam
+  - name: landid
+  - name: fstraat
+  - name: fhuisnr
+  - name: fpostcode
+  - name: fplaats
+  - name: bstraat
+  - name: bhuisnr
+  - name: bpostcode
+  - name: bplaats
+  - name: dealer
+  - name: telefoon
+  - name: telefax
+  - name: debiteurnr
+  - name: rekeningnr
+  - name: soortreknr
+  - name: email
+  - name: url
+  - name: eigenaarprogramma
+  - name: mwidchange
+  - name: datechange
+  - name: mwidlock
+  - name: datelock
+  - name: archief
+  - name: verantwmwid
+  - name: rootdir
+  - name: maxaccid
+  - name: maxcpid
+  - name: maxcrid
+  - name: maxdocid
+  - name: maxopmerkingid
+  - name: rowguid
+  - name: classificatieid
+  - name: finanadmin
+  - name: mailintrotekst
+  - name: logourl
+  - name: btwnr
+  - name: ponr
+  - name: exactchange
+  - name: emailfactuuremail
+  - name: facturatiewijzeid
+  - name: emailfactuurherinnering
+  - name: ftav
+  - name: maxkortingvolgnr
+  - name: extra_col1
+  - name: ingestion_meta_data_gcs_path
+  - name: row_hash

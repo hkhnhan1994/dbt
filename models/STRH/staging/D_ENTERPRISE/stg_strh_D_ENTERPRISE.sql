@@ -1,43 +1,4 @@
-with tblKlant_current as (
-    WITH current_table AS (
-    SELECT *,
-    ROW_NUMBER() OVER(PARTITION BY row_hash) AS rn
-    FROM  {{ source('stg_dl_h3_hklc', 'public_tblKlant_current') }}
-    )
-    SELECT * EXCEPT(rn)
-    FROM current_table
-    WHERE rn = 1
-),
-tblSysteemAttribuut_current as (
-    WITH current_table AS (
-    SELECT *,
-    ROW_NUMBER() OVER(PARTITION BY row_hash) AS rn
-    FROM  {{ source('stg_dl_h3_hklc', 'public_tblSysteemAttribuut_current') }}
-    ) 
-    SELECT * EXCEPT(rn)
-    FROM current_table
-    WHERE rn = 1
-),
-tblKlantSysAttr_current as (
-    WITH current_table AS (
-    SELECT *,
-    ROW_NUMBER() OVER(PARTITION BY row_hash) AS rn
-    FROM  {{ source('stg_dl_h3_hklc', 'public_tblKlantSysAttr_current') }}
-    )
-    SELECT * EXCEPT(rn)
-    FROM current_table
-    WHERE rn = 1
-),
-tblLand_current as (
-    WITH current_table AS (
-    SELECT *,
-    ROW_NUMBER() OVER(PARTITION BY row_hash) AS rn
-    FROM  {{ source('stg_dl_h3_hklc', 'public_tblLand_current') }}
-    )
-    SELECT * EXCEPT(rn)
-    FROM current_table
-    WHERE rn = 1
-),
+with
 pre_kal_sys AS (
     SELECT
       "H1_HKLC" AS T_SOURCE,
@@ -49,12 +10,12 @@ pre_kal_sys AS (
       SELECT
         ROW_NUMBER() OVER ( PARTITION BY klantid, AttribuutID, AttribuutID, waarde ORDER BY ingestion_meta_data_processing_timestamp) AS RN,
         KlantID, Waarde,AttribuutID
-      FROM tblKlantSysAttr_current
+      FROM {{ source('stg_dl_h3_hklc', 'public_tblKlantSysAttr_current') }}
       WHERE systeemid = 1
       AND Waarde IS NOT NULL
       AND Waarde != ""
     ) AS  kal_tblant_sys
-    JOIN tblSysteemAttribuut_current AS sys_at
+    JOIN {{ source('stg_dl_h3_hklc', 'public_tblSysteemAttribuut_current') }} AS sys_at
       ON sys_at.AttribuutID=kal_tblant_sys.AttribuutID
     WHERE kal_tblant_sys.RN = 1
     AND sys_at.code in('EHERKENNING3KVK','EHERKENNING3KVKVESTIGINGSNUMMER','EHERKENNINGCOMPLEVEL')
@@ -71,11 +32,11 @@ pre_kal_sys AS (
   source_table AS (
       SELECT
         CAST (kal_klant.ingestion_meta_data_uuid AS STRING) AS T_BATCH_ID,
-        CAST (kal_klant.ingestion_meta_data_source_timestamp AS STRING) AS T_LOAD_TIMESTAMP,
+        CURRENT_TIMESTAMP AS T_LOAD_TIMESTAMP,
         TO_BASE64(SHA256(CONCAT("HKLC", "$", CAST(kal_klant.KlantID AS STRING)))) AS T_BUS_KEY,
         "HKLC" AS T_SOURCE,
         CAST(kal_klant.KlantID AS STRING) AS T_SOURCE_PK_ID,
-        CAST(kal_klant.DateChange AS TIMESTAMP) AS T_INGESTION_TIMESTAMP,
+        CAST(kal_klant.INSERT_HIST_TIMESTAMP AS TIMESTAMP) AS T_INGESTION_TIMESTAMP,
         kal_klant.source_metadata_change_type AS T_DML_TYPE,
         CAST(COALESCE (kal_klant.DateCreate, NULL) AS TIMESTAMP) ENTERPRISE_CREATED_AT,
         CAST(COALESCE (kal_klant.DateChange, NULL) AS TIMESTAMP) ENTERPRISE_UPDATED_AT,
@@ -106,8 +67,8 @@ pre_kal_sys AS (
         COALESCE (CAST( kal_sys.ENTERPRISE_EH_AUTHENTICATION_LEVEL AS STRING), "NA") AS ENTERPRISE_EH_AUTHENTICATION_LEVEL,
         COALESCE (CAST(kal_klant.KlantNr AS STRING), "NA") AS ENTERPRISE_CUSTOMER_NUMBER,
         COALESCE (kal_klant.AgroSwitchID, "NA") AS ENTERPRISE_AGRO_SWITH_ID,
-      FROM tblKlant_current AS kal_klant
-      LEFT JOIN tblLand_current AS kal_tblant ON kal_klant.LandID = kal_tblant.LandID
+      FROM {{ source('stg_dl_h3_hklc', 'public_tblKlant_current') }} AS kal_klant
+      LEFT JOIN {{ source('stg_dl_h3_hklc', 'public_tblLand_current') }} AS kal_tblant ON kal_klant.LandID = kal_tblant.LandID
       LEFT JOIN kal_sys
         ON kal_sys.KlantID=kal_klant.KlantID
       LEFT JOIN {{ref('dwh_strh_D_LEGAL_ENTITY_CURRENT')}}  AS leg
@@ -116,5 +77,5 @@ pre_kal_sys AS (
   )
   SELECT
     src.*,
-    TO_BASE64(SHA256(FORMAT("%T", (SELECT AS STRUCT src.* EXCEPT(T_INGESTION_TIMESTAMP, T_DML_TYPE))))) AS T_ROW_HASH
+    TO_BASE64(SHA256(FORMAT("%T", (SELECT AS STRUCT src.* EXCEPT(T_BATCH_ID,T_INGESTION_TIMESTAMP,T_LOAD_TIMESTAMP, T_DML_TYPE))))) AS T_ROW_HASH
   FROM source_table AS src

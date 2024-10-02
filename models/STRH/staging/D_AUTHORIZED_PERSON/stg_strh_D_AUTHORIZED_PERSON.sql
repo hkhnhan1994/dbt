@@ -1,23 +1,4 @@
-with public_PersonAttribute as (
-    WITH current_table AS (
-    SELECT *,
-    ROW_NUMBER() OVER(PARTITION BY row_hash) AS rn
-    FROM  {{ source('stg_dl_h3_hehe', 'public_PersonAttribute_current') }}
-    )
-    SELECT * EXCEPT(rn)
-    FROM current_table
-    WHERE rn = 1
-),
-public_Person as (
-    WITH current_table AS (
-    SELECT *,
-    ROW_NUMBER() OVER(PARTITION BY row_hash) AS rn
-    FROM  {{ source('stg_dl_h3_hehe', 'public_Person_current') }}
-    )
-    SELECT * EXCEPT(rn)
-    FROM current_table
-    WHERE rn = 1
-),
+with
 persion_atribute_table AS(
     SELECT
         PersonId,
@@ -38,7 +19,7 @@ persion_atribute_table AS(
             IF (he_per_atb.AttributeUrnId=7, he_per_atb.Value, NULL) AS AUTHORIZED_PERSON_GENDER,
             IF (he_per_atb.AttributeUrnId=12, he_per_atb.Value, NULL) AS AUTHORIZED_PERSON_MOBILE_PHONE,
             IF (he_per_atb.AttributeUrnId=5, "Y", NULL) AS AUTHORIZED_PERSON_DATE_OF_BIRTH,
-        FROM public_PersonAttribute AS he_per_atb
+        FROM {{ source('stg_dl_h3_hehe', 'public_PersonAttribute_current') }} AS he_per_atb
     )
     GROUP BY PersonId
 ),
@@ -48,8 +29,8 @@ source_table as(
         TO_BASE64((SHA256(CONCAT("HEHE", "$", CAST (he_per.PersonId AS STRING))))) AS T_BUS_KEY,
         "HEHE" AS T_SOURCE,
         CAST (he_per.PersonId AS STRING) AS T_SOURCE_PK_ID,
-        CAST (he_per.ingestion_meta_data_source_timestamp AS TIMESTAMP) AS T_LOAD_TIMESTAMP,
-        CAST (he_per.LastUpdatedDate AS TIMESTAMP) AS T_INGESTION_TIMESTAMP,
+        CURRENT_TIMESTAMP AS T_LOAD_TIMESTAMP,
+        CAST (he_per.INSERT_HIST_TIMESTAMP AS TIMESTAMP) AS T_INGESTION_TIMESTAMP,
         he_per.source_metadata_change_type AS T_DML_TYPE,
         CAST (COALESCE (he_per.InsertDate, NULL) AS TIMESTAMP) AUTHORIZED_PERSON_CREATED_AT,
         CAST (COALESCE (he_per.LastUpdatedDate, NULL) AS TIMESTAMP) AUTHORIZED_PERSON_UPDATED_AT,
@@ -64,13 +45,13 @@ source_table as(
         COALESCE (he_per_atb.AUTHORIZED_PERSON_MOBILE_PHONE, "NA") AS AUTHORIZED_PERSON_MOBILE_PHONE,
         COALESCE (he_per.BsnkId, "NA") AS AUTHORIZED_PERSON_CSN,
 
-      FROM public_Person AS he_per
+      FROM {{ source('stg_dl_h3_hehe', 'public_Person_current') }} AS he_per
       LEFT JOIN persion_atribute_table AS he_per_atb
         ON he_per.PersonId = he_per_atb.PersonId
 )
 SELECT
     src.*,
-    TO_BASE64(SHA256(FORMAT("%T", (SELECT AS STRUCT src.* EXCEPT(T_BATCH_ID,T_INGESTION_TIMESTAMP, T_DML_TYPE))))) AS T_ROW_HASH
+    TO_BASE64(SHA256(FORMAT("%T", (SELECT AS STRUCT src.* EXCEPT(T_BATCH_ID,T_INGESTION_TIMESTAMP,T_LOAD_TIMESTAMP, T_DML_TYPE))))) AS T_ROW_HASH
   FROM source_table AS src
 
 

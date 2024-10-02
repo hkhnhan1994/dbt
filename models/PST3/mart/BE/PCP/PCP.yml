@@ -1,0 +1,9 @@
+
+models:
+  - name: PCP
+    description: description text
+    config:
+      alias: PCP
+      tags:
+        - semesterly
+        - pst3

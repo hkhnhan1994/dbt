@@ -1,0 +1,9 @@
+
+models:
+  - name: PCP_POS_ONLINE
+    description: description text
+    config:
+      alias: PCP_POS_ONLINE
+      tags:
+        - semesterly
+        - pst3

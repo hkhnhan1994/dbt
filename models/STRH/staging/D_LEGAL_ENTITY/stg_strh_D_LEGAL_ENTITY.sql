@@ -1,16 +1,7 @@
-with RequestCache_current as (
-  WITH current_table AS (
-    SELECT *,
-      ROW_NUMBER() OVER(PARTITION BY row_hash) AS rn
-    FROM  {{ source('stg_dl_h3_hkvk', 'public_RequestCache_current') }}
-  )  
-  SELECT * EXCEPT(rn)
-  FROM current_table
-  WHERE rn = 1
-),
+with 
 cast_respond_data AS(
   SELECT
-    RequestCacheID, ResponseTimeUTC,datatype,CacheKey,ingestion_meta_data_processing_timestamp,source_metadata_change_type,ingestion_meta_data_uuid,
+    RequestCacheID, ResponseTimeUTC,datatype,CacheKey,INSERT_HIST_TIMESTAMP,source_metadata_change_type,ingestion_meta_data_uuid,
     ingestion_meta_data_source_timestamp,
     CAST (KVKNumber AS STRING) AS LEGAL_ENTITY_IDENTIFIER,
     CAST (KVKName AS STRING) AS LEGAL_ENTITY_NAME,
@@ -22,7 +13,7 @@ cast_respond_data AS(
     CAST (KVKSBIdescription AS STRING) AS LEGAL_ENTITY_ACTIVITY,
   FROM(
     SELECT
-      RequestCacheID, ResponseTimeUTC,datatype,CacheKey,ingestion_meta_data_processing_timestamp,source_metadata_change_type,ingestion_meta_data_uuid,
+      RequestCacheID, ResponseTimeUTC,datatype,CacheKey,INSERT_HIST_TIMESTAMP,source_metadata_change_type,ingestion_meta_data_uuid,
       ingestion_meta_data_source_timestamp,
       CASE
       WHEN kr.datatype in (0, 1, 3) THEN
@@ -101,7 +92,7 @@ cast_respond_data AS(
     FROM(
       SELECT *,
       ROW_NUMBER()OVER(PARTITION BY RequestCacheID ORDER BY responsetimeutc DESC, ingestion_meta_data_processing_timestamp DESC) AS rn,
-      FROM RequestCache_current kr
+      FROM {{ source('stg_dl_h3_hkvk', 'public_RequestCache_current') }} kr
     ) AS kr
     WHERE kr.rn = 1
   )
@@ -109,12 +100,12 @@ cast_respond_data AS(
   source_table AS (
     SELECT
       CAST (re_ca.ingestion_meta_data_uuid AS STRING) AS T_BATCH_ID,
-      CAST (re_ca.ingestion_meta_data_source_timestamp AS TIMESTAMP) AS T_LOAD_TIMESTAMP,
+      CURRENT_TIMESTAMP AS T_LOAD_TIMESTAMP,
       TO_BASE64(SHA256(CONCAT("HKVK", "$", CAST(re_ca.CacheKey AS STRING),CAST(re_ca.RequestCacheID AS STRING)))) AS T_BUS_KEY,
       "HKVK" AS T_SOURCE,
       CAST(re_ca.RequestCacheID AS STRING) AS T_SOURCE_PK_ID,
       -- CAST(re_ca.RequestCacheID AS STRING) AS T_SOURCE_PK_UUID,
-      CAST(re_ca.ResponseTimeUTC AS TIMESTAMP) AS T_INGESTION_TIMESTAMP,
+      CAST(re_ca.INSERT_HIST_TIMESTAMP AS TIMESTAMP) AS T_INGESTION_TIMESTAMP,
       re_ca.source_metadata_change_type AS T_DML_TYPE,
       COALESCE (re_ca.LEGAL_ENTITY_NAME, "NA") AS LEGAL_ENTITY_NAME,
       COALESCE (re_ca.LEGAL_ENTITY_IDENTIFIER, "NA") AS LEGAL_ENTITY_IDENTIFIER,

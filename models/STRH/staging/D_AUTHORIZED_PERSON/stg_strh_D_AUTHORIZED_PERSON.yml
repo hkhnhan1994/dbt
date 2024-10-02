@@ -1,6 +1,6 @@
 models:
   - name: stg_strh_D_AUTHORIZED_PERSON
-    description: staging area of an authorized table.
+    description: description text
     config:
       alias: D_AUTHORIZED_PERSON
     columns:
