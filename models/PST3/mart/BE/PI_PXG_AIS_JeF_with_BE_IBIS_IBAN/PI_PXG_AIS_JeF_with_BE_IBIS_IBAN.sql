@@ -6,9 +6,9 @@
     a.APPLICATION_NAME AS Application_name,
     aa.APPLICATION_ACCOUNT_NAME Application_account_name,
     aa.T_SOURCE_PK_ID as Application_account_id ,
-    "{{period}}"  AS Period,
+    "{{period_time['period']}}"  AS Period,
     CURRENT_TIMESTAMP AS load_timestamp,
-    TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}')) AS Period_begin_date,
+    TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}')) AS Period_begin_date,
     CAST(NULL AS TIMESTAMP) AS Period_end_date,
   FROM {{ source('source_pst3_strp', 'D_ACCESS_CONSENT_INFO_CURRENT') }} AS ac
   JOIN {{ source('source_pst3_strp', 'D_ACCESS_CONSENT_INFO_DECRYPTED') }} acd
@@ -35,6 +35,6 @@
     ac.ACCESS_CONSENT_STATUS = 'ACTIVE'
     OR (
       ac.ACCESS_CONSENT_STATUS = 'OBSOLETE'
-      AND TIMESTAMP(ac.ACCESS_CONSENT_STATUS_AT) >= TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}'))
+      AND TIMESTAMP(ac.ACCESS_CONSENT_STATUS_AT) >= TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))
     ) --==> always start of the period
   )

@@ -1,9 +1,9 @@
 
 models:
-  - name: PCP_ALBATROS_CMD_OCS
+  - name: PI_NUMBER_OF_PAYMENT_ACCOUNTS
     description: description text
     config:
-      alias: PCP_ALBATROS_CMD_OCS
+      alias: PI_NUMBER_OF_PAYMENT_ACCOUNTS
       tags:
         - semesterly
         - pst3

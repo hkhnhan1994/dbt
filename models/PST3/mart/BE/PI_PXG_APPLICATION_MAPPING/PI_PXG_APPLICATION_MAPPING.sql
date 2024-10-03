@@ -7,7 +7,7 @@
         -- ap.APPLICATION_CREATED_AT AS CREATION_DATETIME,
         -- ao.APPLICATION_OWNER_NAME AS APPLICATION_OWNER_NAME,
         CURRENT_TIMESTAMP AS LOAD_TIMESTAMP,
-        "{{period}}"  AS Period,
+        "{{period_time['period']}}"  AS Period,
         CAST(NULL AS TIMESTAMP) AS Period_begin_date,
         CAST(NULL AS TIMESTAMP) AS Period_end_date,
     FROM (
@@ -32,5 +32,5 @@
     LEFT JOIN {{ source('source_pst3_strp', 'D_FINANCIAL_INSTITUTIONS') }}
         AS fi ON fi.T_DIM_KEY = fp.T_D_FINANCIAL_INSTITUTION_DIM_KEY
     -- WHERE ap.APPLICATION_NAME <>"NA"
-        -- AND TIMESTAMP(ap.APPLICATION_UPDATED_AT) >= TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}')) --pt winter time
-        -- AND TIMESTAMP(ap.APPLICATION_UPDATED_AT) <= TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))  --pt winter time
+        -- AND TIMESTAMP(ap.APPLICATION_UPDATED_AT) >= TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}')) --pt winter time
+        -- AND TIMESTAMP(ap.APPLICATION_UPDATED_AT) <= TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))  --pt winter time

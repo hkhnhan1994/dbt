@@ -1,9 +1,9 @@
 
 models:
-  - name: PCP_ALBATROS_CMD_OCS
+  - name: PIS
     description: description text
     config:
-      alias: PCP_ALBATROS_CMD_OCS
+      alias: PIS
       tags:
         - semesterly
         - pst3

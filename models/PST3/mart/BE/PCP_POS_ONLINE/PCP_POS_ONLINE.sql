@@ -74,8 +74,8 @@
   LEFT JOIN {{ source('source_pst3_strp', 'F_CI_CARD_TRANSACTION_EVENT') }} FTE on FTE.T_D_CI_CARD_TRANSACTION_DIM_KEY = DCT.T_DIM_KEY
   LEFT JOIN {{ source('source_pst3_strp', 'D_CI_CARD_TRANSACTION_EVENT') }} DTE on FTE.T_D_CI_CARD_TRANSACTION_EVENT_DIM_KEY = DTE.T_DIM_KEY
   LEFT JOIN {{ source('source_pst3_strp', 'D_CI_CARD_PRODUCT_DECRYPTED') }} CP on C.T_D_CI_CARD_PRODUCT_DIM_KEY = CP.T_DIM_KEY
-  WHERE FCT.CARD_TRANSACTION_USER_TIME >= TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}'))
-      AND FCT.CARD_TRANSACTION_USER_TIME <= TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))
+  WHERE FCT.CARD_TRANSACTION_USER_TIME >= TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))
+      AND FCT.CARD_TRANSACTION_USER_TIME <= TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))
       AND FTE.TRANSACTION_EVENT_TYPE in ('authorization','refund.authorization')
       AND FCT.CARD_TRANSACTION_CLEARED_AMOUNT > 0
       AND DTE.TRANSACTION_EVENT_STATUS = 'COMPLETED'
@@ -121,12 +121,12 @@
     pre.number_of_transactions,
     pre.total_sum,
     CURRENT_TIMESTAMP AS LOAD_TIMESTAMP,
-    "{{period}}"  AS Period,
+    "{{period_time['period']}}"  AS Period,
   FROM pre
-  LEFT JOIN PPST_BE.data_mart.PST3_MAPPING map_area
+  LEFT JOIN {{ source('source_dm_pst3_BE', 'PST3_MAPPING') }} map_area
     ON map_area.code = pre.Counterpart_area
     AND map_area.type = 'Geographical area'
-  LEFT JOIN PPST_BE.data_mart.PST3_MAPPING map_location
+  LEFT JOIN {{ source('source_dm_pst3_BE', 'PST3_MAPPING') }} map_location
     ON map_location.code = pre.POS_location
     AND map_location.type = 'Geographical area'
   LEFT JOIN NBB_onegate on  NBB_onegate.sca_reason = pre.SCA_Exemption_reason

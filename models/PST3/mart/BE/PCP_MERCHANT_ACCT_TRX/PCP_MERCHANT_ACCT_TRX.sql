@@ -35,8 +35,8 @@
         pcp.PERIOD,
         pcp.Period_begin_date,
         pcp.Period_end_date,
-    FROM PPST_BE.data_mart.PCP AS pcp
-    LEFT JOIN PPST_BE.data_mart.PCP_ALBATROS_CMD_OCS as ocs
+    FROM {{ref('PCP')}} AS pcp
+    LEFT JOIN  {{ref('PCP_ALBATROS_CMD_OCS')}} as ocs
       ON ocs.companyid_tobeexcluded = pcp.TRANSACTION_PUBLIC_IDENTIFIER
     ),
     code as(
@@ -63,12 +63,12 @@
     LOAD_TIMESTAMP,
     PERIOD,
   FROM code
-  LEFT JOIN PPST_BE.data_mart.PST3_MAPPING AS pst3_cp
+  LEFT JOIN {{ source('source_dm_pst3_BE', 'PST3_MAPPING') }} AS pst3_cp
       ON code.AREA_CODE = pst3_cp.CODE
       AND pst3_cp.TYPE = 'Geographical area'
-  LEFT JOIN PPST_BE.data_mart.PST3_MAPPING AS pst3_pos
+  LEFT JOIN {{ source('source_dm_pst3_BE', 'PST3_MAPPING') }} AS pst3_pos
       ON code.LOCATION_CODE = pst3_pos.CODE
       AND pst3_pos.TYPE = 'Geographical area'
-  LEFT JOIN PPST_BE.data_mart.PST3_MAPPING AS pst3_sca
+  LEFT JOIN {{ source('source_dm_pst3_BE', 'PST3_MAPPING') }} AS pst3_sca
       ON code.SCA_REASON = pst3_sca.name
       AND pst3_sca.TYPE = 'Strong customer authentication (SCA)'

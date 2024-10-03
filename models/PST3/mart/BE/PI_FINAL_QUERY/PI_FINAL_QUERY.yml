@@ -1,9 +1,9 @@
 
 models:
-  - name: PCP_ALBATROS_CMD_OCS
+  - name: PI_FINAL_QUERY
     description: description text
     config:
-      alias: PCP_ALBATROS_CMD_OCS
+      alias: PI_FINAL_QUERY
       tags:
         - semesterly
         - pst3

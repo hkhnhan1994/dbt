@@ -1,9 +1,9 @@
 
 models:
-  - name: PCP_ALBATROS_CMD_OCS
+  - name: PI_PXG_APPLICATION_MAPPING
     description: description text
     config:
-      alias: PCP_ALBATROS_CMD_OCS
+      alias: PI_PXG_APPLICATION_MAPPING
       tags:
         - semesterly
         - pst3

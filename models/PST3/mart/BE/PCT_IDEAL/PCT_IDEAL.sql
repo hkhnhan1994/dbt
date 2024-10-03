@@ -8,9 +8,9 @@
     COUNT(DISTINCT f_payment_items.T_FACT_KEY) AS VOLUME,
     ROUND(SUM(f_payment_items.PAYMENT_ITEM_AMOUNT)) AS AMOUNT,
     CURRENT_TIMESTAMP AS LOAD_TIMESTAMP,
-    "{{period}}"  AS Period,
-    TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}'))  AS Period_begin_date,
-    TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))  AS Period_end_date,
+    "{{period_time['period']}}"  AS Period,
+    TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))  AS Period_begin_date,
+    TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))  AS Period_end_date,
   FROM {{ source('source_pst3_strp', 'D_PAYMENT_ITEM_INFO_DECRYPTED') }}
       AS d_payment_item_info
   LEFT JOIN {{ source('source_pst3_strp', 'F_PAYMENT_TRANSACTIONS') }}
@@ -27,17 +27,17 @@
     transaction_id,
     key,
     AEAD.DECRYPT_STRING(k0.KEYSET, value, TO_HEX(_flycs_metadata_keyset_0)) value,
-    from P1_PSTA.datalake.dwh_transaction_properties_current
-    left join _.keysets.merged k0
-    on lower(k0.SOURCE) = "p1_psta_dwh_transaction_properties"
+    from {{ source('source_dl_p1_psta', 'dwh_transaction_properties_current') }}
+    left join {{ source('source_keyset', 'merged') }} k0
+    on k0.SOURCE = "p1_psta_dwh_transaction_properties"
     and _flycs_metadata_keyset_0 = k0.HASH_ID
     WHERE key = "PAYER_ACCOUNT_ID"
   ) as dl_trans_pro
    on cast (dl_trans_pro.transaction_id as string) = d_payment_transaction_info.T_SOURCE_PK_ID
   WHERE d_merchants.MERCHANT_COUNTRY  IS NOT NULL
       and d_payment_products.PRODUCT_CODE = "IDEAL_COLLECT"
-      and d_payment_transaction_info.payment_transaction_cutoff_at >= TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}'))   -- start of reporting period
-      and d_payment_transaction_info.payment_transaction_cutoff_at <= TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))   -- end of reporting period
+      and d_payment_transaction_info.payment_transaction_cutoff_at >= TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))   -- start of reporting period
+      and d_payment_transaction_info.payment_transaction_cutoff_at <= TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))   -- end of reporting period
   GROUP BY
       1,
       2

@@ -1,9 +1,9 @@
 
 models:
-  - name: PCP_ALBATROS_CMD_OCS
+  - name: PI_PXG_AIS_JeF_with_BE_IBIS_IBAN
     description: description text
     config:
-      alias: PCP_ALBATROS_CMD_OCS
+      alias: PI_PXG_AIS_JeF_with_BE_IBIS_IBAN
       tags:
         - semesterly
         - pst3

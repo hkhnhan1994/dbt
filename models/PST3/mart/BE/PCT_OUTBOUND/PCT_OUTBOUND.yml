@@ -1,9 +1,9 @@
 
 models:
-  - name: PCP_ALBATROS_CMD_OCS
+  - name: PCT_OUTBOUND
     description: description text
     config:
-      alias: PCP_ALBATROS_CMD_OCS
+      alias: PCT_OUTBOUND
       tags:
         - semesterly
         - pst3

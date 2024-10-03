@@ -1,9 +1,9 @@
 
 models:
-  - name: PCP_ALBATROS_CMD_OCS
+  - name: PCT_INITIATED_BY_PISP
     description: description text
     config:
-      alias: PCP_ALBATROS_CMD_OCS
+      alias: PCT_INITIATED_BY_PISP
       tags:
         - semesterly
         - pst3

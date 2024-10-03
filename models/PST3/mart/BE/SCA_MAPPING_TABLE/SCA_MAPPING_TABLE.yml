@@ -1,9 +1,9 @@
 
 models:
-  - name: PCP_ALBATROS_CMD_OCS
+  - name: SCA_MAPPING_TABLE
     description: description text
     config:
-      alias: PCP_ALBATROS_CMD_OCS
+      alias: SCA_MAPPING_TABLE
       tags:
         - semesterly
         - pst3
