@@ -1,0 +1,9 @@
+models:
+- name: 52505_NR_OF_ACCOUNTS
+  description: description text
+  config:
+    dataset: dm_pst3_IT
+    alias: 52505_NR_OF_ACCOUNTS
+    tags:
+    - pst3
+    - quarterly

@@ -1,0 +1,9 @@
+models:
+- name: T0402_AIS_ASPSP_API
+  description: description text
+  config:
+    dataset: dm_pst3_NL
+    alias: T0402_AIS_ASPSP_API
+    tags:
+    - pst3
+    - yearly

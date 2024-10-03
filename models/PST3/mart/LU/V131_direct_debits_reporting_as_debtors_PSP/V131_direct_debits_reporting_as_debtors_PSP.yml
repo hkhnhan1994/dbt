@@ -1,0 +1,9 @@
+models:
+- name: V131_direct_debits_reporting_as_debtors_PSP
+  description: description text
+  config:
+    dataset: dm_pst3_LU
+    alias: V131_direct_debits_reporting_as_debtors_PSP
+    tags:
+    - pst3
+    - monthly

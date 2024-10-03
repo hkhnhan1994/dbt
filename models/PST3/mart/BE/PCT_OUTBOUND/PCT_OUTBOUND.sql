@@ -25,11 +25,11 @@
         "{{period_time['period']}}"  AS Period,
         TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))  AS Period_begin_date,
         TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))  AS Period_end_date,
-    FROM {{ source('source_pst3_strp', 'F_ACCOUNT_TRANSACTIONS_DECRYPTED') }} AS f_account_transactions
-    LEFT JOIN {{ source('source_pst3_strp', 'D_ACCOUNT_TRANSACTION_CURRENT') }} AS d_account_transaction ON f_account_transactions.T_D_ACCOUNT_TRANSACTION_DIM_KEY = d_account_transaction.T_DIM_KEY
-    LEFT JOIN {{ source('source_pst3_strp', 'D_IBIS_ACCOUNT_CURRENT') }} AS d_ibis_account ON f_account_transactions.T_D_IBIS_ACCOUNT_DIM_KEY = d_ibis_account.T_DIM_KEY
-    INNER JOIN {{ source('source_pst3_strp', 'D_BANK_ACCOUNTS_DECRYPTED') }} AS d_bank_accounts ON d_ibis_account.T_D_BANK_ACCOUNT_DIM_KEY = d_bank_accounts.T_DIM_KEY
-    LEFT JOIN {{ source('source_pst3_strp', 'D_BANK_ACCOUNTS_DECRYPTED') }} AS d_counterparty_bank_accounts ON d_counterparty_bank_accounts.T_DIM_KEY = f_account_transactions.T_COUNTERPARTY_BANK_ACCOUNT_DIM_KEY
+    FROM {{ source('source_dwh_strp', 'F_ACCOUNT_TRANSACTIONS_DECRYPTED') }} AS f_account_transactions
+    LEFT JOIN {{ source('source_dwh_strp', 'D_ACCOUNT_TRANSACTION_CURRENT') }} AS d_account_transaction ON f_account_transactions.T_D_ACCOUNT_TRANSACTION_DIM_KEY = d_account_transaction.T_DIM_KEY
+    LEFT JOIN {{ source('source_dwh_strp', 'D_IBIS_ACCOUNT_CURRENT') }} AS d_ibis_account ON f_account_transactions.T_D_IBIS_ACCOUNT_DIM_KEY = d_ibis_account.T_DIM_KEY
+    INNER JOIN {{ source('source_dwh_strp', 'D_BANK_ACCOUNTS_DECRYPTED') }} AS d_bank_accounts ON d_ibis_account.T_D_BANK_ACCOUNT_DIM_KEY = d_bank_accounts.T_DIM_KEY
+    LEFT JOIN {{ source('source_dwh_strp', 'D_BANK_ACCOUNTS_DECRYPTED') }} AS d_counterparty_bank_accounts ON d_counterparty_bank_accounts.T_DIM_KEY = f_account_transactions.T_COUNTERPARTY_BANK_ACCOUNT_DIM_KEY
     WHERE f_account_transactions.TRANSACTION_DIRECTION = "OUTBOUND"
         AND f_account_transactions.TRANSACTION_TYPE = 'REGULAR'
         AND d_account_transaction.TRANSACTION_BOOKING_DATE_AT >= TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))

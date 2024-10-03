@@ -11,16 +11,16 @@
     "{{period_time['period']}}"  AS Period,
     TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))  AS Period_begin_date,
     TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))  AS Period_end_date,
-  FROM {{ source('source_pst3_strp', 'D_PAYMENT_ITEM_INFO_DECRYPTED') }}
+  FROM {{ source('source_dwh_strp', 'D_PAYMENT_ITEM_INFO_DECRYPTED') }}
       AS d_payment_item_info
-  LEFT JOIN {{ source('source_pst3_strp', 'F_PAYMENT_TRANSACTIONS') }}
+  LEFT JOIN {{ source('source_dwh_strp', 'F_PAYMENT_TRANSACTIONS') }}
       AS f_payment_transactions ON d_payment_item_info.T_DIM_KEY = f_payment_transactions.T_D_PAYMENT_ITEM_INFO_DIM_KEY
-  LEFT JOIN {{ source('source_pst3_strp', 'D_PAYMENT_PRODUCTS') }}
+  LEFT JOIN {{ source('source_dwh_strp', 'D_PAYMENT_PRODUCTS') }}
       AS d_payment_products ON f_payment_transactions.T_D_PRODUCT_DIM_KEY = d_payment_products.T_DIM_KEY
-  INNER JOIN {{ source('source_pst3_strp', 'F_PAYMENT_ITEMS') }}   AS f_payment_items ON d_payment_item_info.T_DIM_KEY = f_payment_items.T_D_PAYMENT_ITEM_INFO_DIM_KEY
-  LEFT JOIN {{ source('source_pst3_strp', 'D_MERCHANTS_DECRYPTED') }}
+  INNER JOIN {{ source('source_dwh_strp', 'F_PAYMENT_ITEMS') }}   AS f_payment_items ON d_payment_item_info.T_DIM_KEY = f_payment_items.T_D_PAYMENT_ITEM_INFO_DIM_KEY
+  LEFT JOIN {{ source('source_dwh_strp', 'D_MERCHANTS_DECRYPTED') }}
       AS d_merchants ON f_payment_items.T_D_MERCHANT_DIM_KEY = d_merchants.T_DIM_KEY
-  LEFT JOIN {{ source('source_pst3_strp', 'D_PAYMENT_TRANSACTION_INFO_DECRYPTED') }}
+  LEFT JOIN {{ source('source_dwh_strp', 'D_PAYMENT_TRANSACTION_INFO_DECRYPTED') }}
       AS d_payment_transaction_info ON d_payment_transaction_info.T_DIM_KEY =f_payment_transactions.T_D_PAYMENT_TRANSACTION_INFO_DIM_KEY
   LEFT JOIN (
   SELECT

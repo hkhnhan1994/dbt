@@ -1,0 +1,9 @@
+models:
+- name: KMS_C
+  description: description text
+  config:
+    dataset: dm_pst3_LV
+    alias: KMS_C
+    tags:
+    - pst3
+    - quarterly

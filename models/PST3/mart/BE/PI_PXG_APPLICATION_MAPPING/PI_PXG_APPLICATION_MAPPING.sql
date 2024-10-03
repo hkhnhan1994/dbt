@@ -13,23 +13,23 @@
     FROM (
         WITH current_table AS (
         SELECT *, ROW_NUMBER() OVER(PARTITION BY T_BUS_KEY ORDER BY T_INGESTION_TIMESTAMP desc, T_LOAD_TIMESTAMP desc) AS rn
-        FROM  {{ source('source_pst3_strp', 'D_APPLICATIONS_DECRYPTED') }}
+        FROM  {{ source('source_dwh_strp', 'D_APPLICATIONS_DECRYPTED') }}
     )
     SELECT * EXCEPT(rn)
     FROM current_table
     WHERE rn = 1
     ) AS ap
-    LEFT  JOIN {{ source('source_pst3_strp', 'D_APPLICATION_OWNERS_DECRYPTED') }} AS ao
+    LEFT  JOIN {{ source('source_dwh_strp', 'D_APPLICATION_OWNERS_DECRYPTED') }} AS ao
         ON ap.T_D_OWNER_DIM_KEY =  ao.T_DIM_KEY
-    LEFT JOIN {{ source('source_pst3_strp', 'D_APPLICATION_ACCOUNT_INFO_DECRYPTED') }} AS aa
+    LEFT JOIN {{ source('source_dwh_strp', 'D_APPLICATION_ACCOUNT_INFO_DECRYPTED') }} AS aa
         ON ap.t_dim_key = aa.T_D_APPLICATION_DIM_KEY
-    LEFT JOIN {{ source('source_pst3_strp', 'D_CONTRACT_INFO_CURRENT') }} AS ci
+    LEFT JOIN {{ source('source_dwh_strp', 'D_CONTRACT_INFO_CURRENT') }} AS ci
         ON aa.T_DIM_KEY= ci.T_D_APPLICATION_ACCOUNT_DIM_KEY
-    LEFT JOIN {{ source('source_pst3_strp', 'D_PXG_PAYMENT_ACCOUNT_DECRYPTED') }}
+    LEFT JOIN {{ source('source_dwh_strp', 'D_PXG_PAYMENT_ACCOUNT_DECRYPTED') }}
         AS pa on pa.T_DIM_KEY= ci.T_D_PXG_PAYMENT_ACCOUNT_DIM_KEY
-    LEFT JOIN {{ source('source_pst3_strp', 'D_FINANCIAL_PLATFORMS_DECRYPTED') }}
+    LEFT JOIN {{ source('source_dwh_strp', 'D_FINANCIAL_PLATFORMS_DECRYPTED') }}
         AS fp ON pa.T_D_FINANCIAL_PLATFORM_DIM_KEY=fp.T_DIM_KEY
-    LEFT JOIN {{ source('source_pst3_strp', 'D_FINANCIAL_INSTITUTIONS') }}
+    LEFT JOIN {{ source('source_dwh_strp', 'D_FINANCIAL_INSTITUTIONS') }}
         AS fi ON fi.T_DIM_KEY = fp.T_D_FINANCIAL_INSTITUTION_DIM_KEY
     -- WHERE ap.APPLICATION_NAME <>"NA"
         -- AND TIMESTAMP(ap.APPLICATION_UPDATED_AT) >= TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}')) --pt winter time

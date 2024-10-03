@@ -1,0 +1,9 @@
+models:
+- name: KMS_P11_Outgoing_transactions
+  description: description text
+  config:
+    dataset: dm_pst3_LV
+    alias: KMS_P11_Outgoing_transactions
+    tags:
+    - pst3
+    - semesterly

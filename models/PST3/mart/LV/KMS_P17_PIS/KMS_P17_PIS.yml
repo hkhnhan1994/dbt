@@ -1,0 +1,9 @@
+models:
+- name: KMS_P17_PIS
+  description: description text
+  config:
+    dataset: dm_pst3_LV
+    alias: KMS_P17_PIS
+    tags:
+    - pst3
+    - semesterly

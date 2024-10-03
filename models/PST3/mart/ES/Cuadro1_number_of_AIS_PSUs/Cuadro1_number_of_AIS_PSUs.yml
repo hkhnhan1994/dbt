@@ -1,0 +1,9 @@
+models:
+- name: Cuadro1_number_of_AIS_PSUs
+  description: description text
+  config:
+    dataset: dm_pst3_ES
+    alias: Cuadro1_number_of_AIS_PSUs
+    tags:
+    - pst3
+    - semesterly

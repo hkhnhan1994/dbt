@@ -12,11 +12,11 @@ SELECT
   TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))  AS Period_begin_date,
   TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))  AS Period_end_date,
   CURRENT_TIMESTAMP AS LOAD_TIMESTAMP,
-FROM {{ source('source_pst3_strp', 'F_CI_CARD_TRANSACTION_DECRYPTED') }}  FCT
-INNER JOIN {{ source('source_pst3_strp', 'D_CI_CARD') }} C on FCT.T_D_CI_CARD_DIM_KEY = C.T_DIM_KEY
-INNER JOIN {{ source('source_pst3_strp', 'D_CI_CARD_TRANSACTION') }} DCT on DCT.T_DIM_KEY = FCT.T_D_CI_CARD_TRANSACTION_DIM_KEY
-INNER JOIN {{ source('source_pst3_strp', 'F_CI_CARD_TRANSACTION_EVENT') }} FTE on FTE.T_D_CI_CARD_TRANSACTION_DIM_KEY = DCT.T_DIM_KEY
-INNER JOIN {{ source('source_pst3_strp', 'D_CI_CARD_PRODUCT_DECRYPTED') }} CP on C.T_D_CI_CARD_PRODUCT_DIM_KEY = CP.T_DIM_KEY
+FROM {{ source('source_dwh_strp', 'F_CI_CARD_TRANSACTION_DECRYPTED') }}  FCT
+INNER JOIN {{ source('source_dwh_strp', 'D_CI_CARD') }} C on FCT.T_D_CI_CARD_DIM_KEY = C.T_DIM_KEY
+INNER JOIN {{ source('source_dwh_strp', 'D_CI_CARD_TRANSACTION') }} DCT on DCT.T_DIM_KEY = FCT.T_D_CI_CARD_TRANSACTION_DIM_KEY
+INNER JOIN {{ source('source_dwh_strp', 'F_CI_CARD_TRANSACTION_EVENT') }} FTE on FTE.T_D_CI_CARD_TRANSACTION_DIM_KEY = DCT.T_DIM_KEY
+INNER JOIN {{ source('source_dwh_strp', 'D_CI_CARD_PRODUCT_DECRYPTED') }} CP on C.T_D_CI_CARD_PRODUCT_DIM_KEY = CP.T_DIM_KEY
 WHERE
 FCT.CARD_TRANSACTION_PAYMENT_CHANNEL = 'ATM'
 AND CP.CARD_PRODUCT_CARD_COUNTRY = 'BE'

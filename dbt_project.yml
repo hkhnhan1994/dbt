@@ -43,7 +43,7 @@ models:
       mart:
         BE:
           +materialized: table
-          +dataset: dm_pst3_BE
+          +dataset: dm_pst3
     STRH:
       datalake:
         +materialized: table

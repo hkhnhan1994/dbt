@@ -1,0 +1,9 @@
+models:
+- name: V1222_stock_of_accessed_accounts
+  description: description text
+  config:
+    dataset: dm_pst3_LU
+    alias: V1222_stock_of_accessed_accounts
+    tags:
+    - pst3
+    - monthly

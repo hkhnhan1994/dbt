@@ -1,0 +1,9 @@
+models:
+- name: C8_agMoyPaiTypeOpeCanalTypeCanalZoneGeo_NON_ELECTRONIQUE
+  description: description text
+  config:
+    dataset: dm_pst3_FR
+    alias: C8_agMoyPaiTypeOpeCanalTypeCanalZoneGeo_NON_ELECTRONIQUE
+    tags:
+    - pst3
+    - semesterly

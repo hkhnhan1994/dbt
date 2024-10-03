@@ -1,0 +1,9 @@
+models:
+- name: 58746_PAYMENT_INITIATIONS
+  description: description text
+  config:
+    dataset: dm_pst3_IT
+    alias: 58746_PAYMENT_INITIATIONS
+    tags:
+    - pst3
+    - quarterly

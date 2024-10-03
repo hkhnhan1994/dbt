@@ -1,0 +1,9 @@
+models:
+- name: 52525_FLOW_OF_NEW_CONTRACTS
+  description: description text
+  config:
+    dataset: dm_pst3_IT
+    alias: 52525_FLOW_OF_NEW_CONTRACTS
+    tags:
+    - pst3
+    - quarterly

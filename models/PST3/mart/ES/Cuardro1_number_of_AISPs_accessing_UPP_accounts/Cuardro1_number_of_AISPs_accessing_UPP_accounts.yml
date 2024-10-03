@@ -1,0 +1,9 @@
+models:
+- name: Cuardro1_number_of_AISPs_accessing_UPP_accounts
+  description: description text
+  config:
+    dataset: dm_pst3_ES
+    alias: Cuardro1_number_of_AISPs_accessing_UPP_accounts
+    tags:
+    - pst3
+    - semesterly

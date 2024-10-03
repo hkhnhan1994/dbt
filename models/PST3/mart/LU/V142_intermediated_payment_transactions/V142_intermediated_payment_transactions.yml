@@ -1,0 +1,9 @@
+models:
+- name: V142_intermediated_payment_transactions
+  description: description text
+  config:
+    dataset: dm_pst3_LU
+    alias: V142_intermediated_payment_transactions
+    tags:
+    - pst3
+    - monthly

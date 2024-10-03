@@ -48,8 +48,8 @@ SELECT
     D.T_SOURCE_PK_ID as companyid_tobeexcluded,
     D.ENTERPRISE_LEGAL_NAME as legal_name,
     D.ENTERPRISE_COUNTRY_OF_INCORPORATION as to_be_reported_in_country
-FROM {{ source('source_pst3_strp', 'D_LEGAL_ENTITY_CURRENT') }} C
-LEFT JOIN {{ source('source_pst3_strp', 'D_LEGAL_ENTITY_DECRYPTED') }} D  ON C.T_SOURCE_PK_ID = D.T_SOURCE_PK_ID
+FROM {{ source('source_dwh_strp', 'D_LEGAL_ENTITY_CURRENT') }} C
+LEFT JOIN {{ source('source_dwh_strp', 'D_LEGAL_ENTITY_DECRYPTED') }} D  ON C.T_SOURCE_PK_ID = D.T_SOURCE_PK_ID
 WHERE D.ENTERPRISE_OCS_ACTIVE = true
     AND D.ENTERPRISE_KYC_STATUS = 'APPROVED'
     AND D.ENTERPRISE_COUNTRY_OF_INCORPORATION not in ('BE','LT', 'RO', 'BG', 'HR')
@@ -61,8 +61,8 @@ SELECT
     D.T_SOURCE_PK_ID as companyid_tobeexcluded,
     D.ENTERPRISE_LEGAL_NAME as legal_name,
     D.ENTERPRISE_COUNTRY_OF_INCORPORATION as to_be_reported_in_country
-FROM {{ source('source_pst3_strp', 'D_LEGAL_ENTITY_CURRENT') }} C
-LEFT JOIN  {{ source('source_pst3_strp', 'D_LEGAL_ENTITY_DECRYPTED') }} D  ON C.T_SOURCE_PK_ID = D.T_SOURCE_PK_ID
+FROM {{ source('source_dwh_strp', 'D_LEGAL_ENTITY_CURRENT') }} C
+LEFT JOIN  {{ source('source_dwh_strp', 'D_LEGAL_ENTITY_DECRYPTED') }} D  ON C.T_SOURCE_PK_ID = D.T_SOURCE_PK_ID
 WHERE D.ENTERPRISE_SOURCE = 'ALBATROS'
     AND D.ENTERPRISE_KYC_STATUS = 'APPROVED'
     AND D.ENTERPRISE_COUNTRY_OF_INCORPORATION not in ('BE','LT', 'RO', 'BG', 'HR')

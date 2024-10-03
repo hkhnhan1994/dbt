@@ -5,5 +5,5 @@ models:
     config:
       alias: NUMBER_OF_PAYMENT_ACCOUNTS_ACCESSED_BY_AISPS
       tags:
-        - semesterly
-        - pst3
+      - semesterly
+      - pst3

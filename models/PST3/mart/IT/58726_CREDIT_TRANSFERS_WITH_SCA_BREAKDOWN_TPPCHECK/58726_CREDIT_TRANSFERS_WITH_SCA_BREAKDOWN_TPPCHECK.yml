@@ -1,0 +1,9 @@
+models:
+- name: 58726_CREDIT_TRANSFERS_WITH_SCA_BREAKDOWN_TPPCHECK
+  description: description text
+  config:
+    dataset: dm_pst3_IT
+    alias: 58726_CREDIT_TRANSFERS_WITH_SCA_BREAKDOWN_TPPCHECK
+    tags:
+    - pst3
+    - quarterly

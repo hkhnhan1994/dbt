@@ -1,0 +1,9 @@
+models:
+- name: KMS_C_non_euro_transactions
+  description: description text
+  config:
+    dataset: dm_pst3_LV
+    alias: KMS_C_non_euro_transactions
+    tags:
+    - pst3
+    - semesterly

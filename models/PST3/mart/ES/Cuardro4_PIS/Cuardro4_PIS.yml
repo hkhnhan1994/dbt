@@ -1,0 +1,9 @@
+models:
+- name: Cuardro4_PIS
+  description: description text
+  config:
+    dataset: dm_pst3_ES
+    alias: Cuardro4_PIS
+    tags:
+    - pst3
+    - semesterly

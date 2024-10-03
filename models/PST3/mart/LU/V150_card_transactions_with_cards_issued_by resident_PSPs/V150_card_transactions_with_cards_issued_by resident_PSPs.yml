@@ -1,0 +1,9 @@
+models:
+- name: V150_card_transactions_with_cards_issued_by resident_PSPs
+  description: description text
+  config:
+    dataset: dm_pst3_LU
+    alias: V150_card_transactions_with_cards_issued_by resident_PSPs
+    tags:
+    - pst3
+    - monthly

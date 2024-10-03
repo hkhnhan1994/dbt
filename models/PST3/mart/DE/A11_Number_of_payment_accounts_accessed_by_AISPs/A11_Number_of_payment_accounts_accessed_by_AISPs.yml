@@ -1,0 +1,9 @@
+models:
+- name: A11_Number_of_payment_accounts_accessed_by_AISPs
+  description: description text
+  config:
+    dataset: dm_pst3_DE
+    alias: A11_Number_of_payment_accounts_accessed_by_AISPs
+    tags:
+    - pst3
+    - semesterly

@@ -1,0 +1,38 @@
+SELECT
+  IF(credacc.FINANCIAL_INSTITUTION_COUNTRY_CODE = '{{country_code}}', '1','2') as residency,
+  credacc.FINANCIAL_INSTITUTION_COUNTRY_CODE as counterparty_country,
+  IF(IT.INBOUND_TRANSACTION_CURRENCY_CODE = 'EUR', '1','2') as currencyType,
+  count(*)  AS success_trx_count,
+  sum(IT.INBOUND_TRANSACTION_AMOUNT) AS success_trx_summed_value,
+  CURRENT_TIMESTAMP AS LOAD_TIMESTAMP,
+  "{{period}}"  AS Period,
+FROM  {{ source('source_dwh_strp,D_INBOUND_PAYMENT_INFO_DECRYPTED') }} as IP
+LEFT JOIN  {{ source('source_dwh_strp,D_FINANCIAL_PLATFORMS_DECRYPTED') }} FP
+    ON IP.T_D_FINANCIAL_PLATFORM_DIM_KEY=FP.T_DIM_KEY
+LEFT JOIN  {{ source('source_dwh_strp,D_FINANCIAL_INSTITUTIONS') }} FI
+    ON FI.T_DIM_KEY = FP.T_D_FINANCIAL_INSTITUTION_DIM_KEY
+LEFT JOIN  {{ source('source_dwh_strp,F_INBOUND_TRANSACTIONS_DECRYPTED') }} as IT
+    ON IP.T_DIM_KEY=IT.T_D_INBOUND_PAYMENT_INFO_DIM_KEY
+INNER JOIN  {{ source('source_dwh_strp,D_INBOUND_TRANSACTION_INFO') }} as DIT
+    ON DIT.T_DIM_KEY = IT.T_D_INBOUND_TRANSACTION_INFO_DIM_KEY
+LEFT JOIN  {{ source('source_dwh_strp,D_PAYMENT_INITIATIONS_CURRENT') }} as PI
+    ON IP.T_DIM_KEY=PI.T_D_INBOUND_PAYMENT_DIM_KEY
+LEFT JOIN  {{ source('source_dwh_strp,D_APPLICATIONS_DECRYPTED') }} as APP
+    ON IP.T_D_APPLICATION_DIM_KEY = APP.T_DIM_KEY
+LEFT JOIN  {{ source('source_dwh_strp,D_BANK_ACCOUNTS_DECRYPTED') }} debacc
+    ON IP.T_D_DEBTOR_BANK_ACCOUNTS_DIM_KEY = debacc.T_DIM_KEY
+LEFT JOIN  {{ source('source_dwh_strp,D_BANK_ACCOUNTS_DECRYPTED') }} credacc
+    ON IT.T_D_CREDITOR_BANK_ACCOUNTS_DIM_KEY = credacc.T_DIM_KEY
+  WHERE FI.FINANCIAL_INSTITUTION_CODE <> 'IBIS'
+    AND PI.PAYMENT_INITIATION_STATUS = 'SUCCESSFUL'
+    AND (
+      APP.APPLICATION_NAME = 'PAY-PXG-BANQUPIT'
+      OR (
+          APP.APPLICATION_NAME = 'PAY-PXG-OCS'
+          AND credacc.FINANCIAL_INSTITUTION_COUNTRY_CODE = 'IT'
+          AND substr( credacc.BANK_ACCOUNT_NUMBER,5,5)= '36330'
+         )
+      )
+    AND DIT.INBOUND_TRANSACTION_CREATED_AT >= TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))
+    AND DIT.INBOUND_TRANSACTION_CREATED_AT <= TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))
+GROUP BY 1,2,3

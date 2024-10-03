@@ -1,0 +1,9 @@
+models:
+- name: PAY_CPCA
+  description: description text
+  config:
+    dataset: dm_pst3_PT
+    alias: PAY_CPCA
+    tags:
+    - pst3
+    - monthly

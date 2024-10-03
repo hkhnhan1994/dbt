@@ -1,0 +1,9 @@
+models:
+- name: PAY_TROP_5845
+  description: description text
+  config:
+    dataset: dm_pst3_PT
+    alias: PAY_TROP_5845
+    tags:
+    - pst3
+    - daily

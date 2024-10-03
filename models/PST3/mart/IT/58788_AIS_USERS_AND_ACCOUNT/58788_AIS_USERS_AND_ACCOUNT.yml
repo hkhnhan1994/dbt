@@ -1,0 +1,9 @@
+models:
+- name: 58788_AIS_USERS_AND_ACCOUNT
+  description: description text
+  config:
+    dataset: dm_pst3_IT
+    alias: 58788_AIS_USERS_AND_ACCOUNT
+    tags:
+    - pst3
+    - semesterly

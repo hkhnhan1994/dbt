@@ -1,0 +1,9 @@
+models:
+- name: PAY_CPNC
+  description: description text
+  config:
+    dataset: dm_pst3_PT
+    alias: PAY_CPNC
+    tags:
+    - pst3
+    - monthly

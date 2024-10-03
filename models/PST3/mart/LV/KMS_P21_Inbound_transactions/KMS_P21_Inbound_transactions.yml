@@ -1,0 +1,9 @@
+models:
+- name: KMS_P21_Inbound_transactions
+  description: description text
+  config:
+    dataset: dm_pst3_LV
+    alias: KMS_P21_Inbound_transactions
+    tags:
+    - pst3
+    - semesterly

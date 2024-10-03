@@ -1,0 +1,51 @@
+SELECT
+  'CORP' as customerCategory,
+  IF(substr(bank.BANK_ACCOUNT_NUMBER,5,3) = substr(counter.BANK_ACCOUNT_NUMBER,5,3) and counter.FINANCIAL_INSTITUTION_COUNTRY_CODE = '{{country_code}}', 'ONUS', 'PSPN') AS settlementChannel,
+  counter.FINANCIAL_INSTITUTION_COUNTRY_CODE AS debtorPspCountry,
+  ftr.transaction_currency as currency,
+  'VOLU' as metric,
+  count(*) as reportedamount,
+  CURRENT_TIMESTAMP AS Load_timestamp,
+  "{{period}}"  AS Period,
+FROM {{ source('source_dwh_strp,F_ACCOUNT_TRANSACTIONS_DECRYPTED') }} as ftr
+LEFT JOIN {{ source('source_dwh_strp,D_ACCOUNT_TRANSACTION_CURRENT') }} as dtr  ON ftr.T_D_ACCOUNT_TRANSACTION_DIM_KEY = dtr.T_DIM_KEY
+LEFT JOIN {{ source('source_dwh_strp,D_IBIS_ACCOUNT_CURRENT') }} AS ibis ON ftr.T_D_IBIS_ACCOUNT_DIM_KEY = ibis.T_DIM_KEY
+LEFT JOIN {{ source('source_dwh_strp,D_BANK_ACCOUNTS_DECRYPTED') }} as bank ON ibis.T_D_BANK_ACCOUNT_DIM_KEY = bank.T_DIM_KEY
+LEFT JOIN {{ source('source_dwh_strp,D_BANK_ACCOUNTS_DECRYPTED') }} as counter ON counter.T_DIM_KEY = ftr.T_COUNTERPARTY_BANK_ACCOUNT_DIM_KEY
+WHERE
+  ftr.TRANSACTION_DIRECTION = "INBOUND"
+  AND ftr.TRANSACTION_TYPE = 'REGULAR'
+  AND dtr.TRANSACTION_STATUS IN ('RETURNED', 'SETTLED')
+  AND ibis.ACCOUNT_TYPE = 'PAYMENT'
+  AND bank.FINANCIAL_INSTITUTION_COUNTRY_CODE = '{{country_code}}'
+  AND ftr.TRANSACTION_BANK_FAMILY = 'RCDT'
+  AND dtr.TRANSACTION_BOOKING_DATE_AT >= TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))   -- +01 for winter time, +02 for summer time
+  AND dtr.TRANSACTION_BOOKING_DATE_AT <= TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))  -- like timezone('UTC', to_timestamp('2023-12-31 UTC+01', 'YYYY-MM-DD ""UTC""TZH') + interval '1 day') -- +01 for winter time, +02 for summer time
+group by 1,2,3,4
+
+UNION ALL
+
+SELECT
+    'CORP' as customerCategory,
+    IF(substr(bank.BANK_ACCOUNT_NUMBER,5,3) = substr(counter.BANK_ACCOUNT_NUMBER,5,3) and counter.FINANCIAL_INSTITUTION_COUNTRY_CODE = '{{country_code}}', 'ONUS', 'PSPN') AS settlementChannel,
+    counter.FINANCIAL_INSTITUTION_COUNTRY_CODE AS debtorPspCountry,
+    ftr.transaction_currency as currency,
+    'VALE' as metric,
+    sum (ftr.TRANSACTION_AMOUNT) as reportedAmount,
+    CURRENT_TIMESTAMP AS Load_timestamp,
+    "{{period}}"  AS Period,
+FROM {{ source('source_dwh_strp,F_ACCOUNT_TRANSACTIONS_DECRYPTED') }} as ftr
+LEFT JOIN {{ source('source_dwh_strp,D_ACCOUNT_TRANSACTION_CURRENT') }} as dtr  ON ftr.T_D_ACCOUNT_TRANSACTION_DIM_KEY = dtr.T_DIM_KEY
+LEFT JOIN {{ source('source_dwh_strp,D_IBIS_ACCOUNT_CURRENT') }} AS ibis ON ftr.T_D_IBIS_ACCOUNT_DIM_KEY = ibis.T_DIM_KEY
+LEFT JOIN {{ source('source_dwh_strp,D_BANK_ACCOUNTS_DECRYPTED') }} as bank ON ibis.T_D_BANK_ACCOUNT_DIM_KEY = bank.T_DIM_KEY
+LEFT JOIN {{ source('source_dwh_strp,D_BANK_ACCOUNTS_DECRYPTED') }} as counter ON counter.T_DIM_KEY = ftr.T_COUNTERPARTY_BANK_ACCOUNT_DIM_KEY
+WHERE
+    ftr.TRANSACTION_DIRECTION = "INBOUND"
+  AND ftr.TRANSACTION_TYPE = 'REGULAR'
+  AND dtr.TRANSACTION_STATUS IN ('RETURNED', 'SETTLED')
+  AND ibis.ACCOUNT_TYPE = 'PAYMENT'
+  AND bank.FINANCIAL_INSTITUTION_COUNTRY_CODE = '{{country_code}}'
+  AND  ftr.TRANSACTION_BANK_FAMILY = 'RCDT'
+  AND dtr.TRANSACTION_BOOKING_DATE_AT >= TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))   -- +01 for winter time, +02 for summer time
+  AND dtr.TRANSACTION_BOOKING_DATE_AT <= TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))  -- like timezone('UTC', to_timestamp('2023-12-31 UTC+01', 'YYYY-MM-DD ""UTC""TZH') + interval '1 day') -- +01 for winter time, +02 for summer time
+group by 1,2,3,4

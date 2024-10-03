@@ -1,0 +1,9 @@
+models:
+- name: C7_agMoyPaiTypeOpeSystZoneGeo
+  description: description text
+  config:
+    dataset: dm_pst3_FR
+    alias: C7_agMoyPaiTypeOpeSystZoneGeo
+    tags:
+    - pst3
+    - semesterly

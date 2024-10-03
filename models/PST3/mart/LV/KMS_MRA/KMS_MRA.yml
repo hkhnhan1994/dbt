@@ -1,0 +1,9 @@
+models:
+- name: KMS_MRA
+  description: description text
+  config:
+    dataset: dm_pst3_LV
+    alias: KMS_MRA
+    tags:
+    - pst3
+    - semesterly

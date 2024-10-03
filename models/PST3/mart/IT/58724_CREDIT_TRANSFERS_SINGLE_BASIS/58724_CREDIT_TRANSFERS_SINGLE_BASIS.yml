@@ -1,0 +1,9 @@
+models:
+- name: 58724_CREDIT_TRANSFERS_SINGLE_BASIS
+  description: description text
+  config:
+    dataset: dm_pst3_IT
+    alias: 58724_CREDIT_TRANSFERS_SINGLE_BASIS
+    tags:
+    - pst3
+    - quarterly

@@ -1,0 +1,9 @@
+models:
+- name: Cuadro9_Credit_transfers_sent
+  description: description text
+  config:
+    dataset: dm_pst3_ES
+    alias: Cuadro9_Credit_transfers_sent
+    tags:
+    - pst3
+    - quarterly

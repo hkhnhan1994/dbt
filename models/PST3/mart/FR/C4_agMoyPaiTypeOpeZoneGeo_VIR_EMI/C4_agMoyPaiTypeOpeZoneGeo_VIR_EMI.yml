@@ -1,0 +1,9 @@
+models:
+- name: C4_agMoyPaiTypeOpeZoneGeo_VIR_EMI
+  description: description text
+  config:
+    dataset: dm_pst3_FR
+    alias: C4_agMoyPaiTypeOpeZoneGeo_VIR_EMI
+    tags:
+    - pst3
+    - semesterly

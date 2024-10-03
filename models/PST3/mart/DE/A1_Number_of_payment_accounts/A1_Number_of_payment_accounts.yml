@@ -1,0 +1,9 @@
+models:
+- name: A1_Number_of_payment_accounts
+  description: description text
+  config:
+    dataset: dm_pst3_DE
+    alias: A1_Number_of_payment_accounts
+    tags:
+    - pst3
+    - semesterly

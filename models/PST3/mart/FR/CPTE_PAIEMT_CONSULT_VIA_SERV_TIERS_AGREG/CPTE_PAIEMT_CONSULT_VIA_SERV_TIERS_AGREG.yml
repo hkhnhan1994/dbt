@@ -1,0 +1,9 @@
+models:
+- name: CPTE_PAIEMT_CONSULT_VIA_SERV_TIERS_AGREG
+  description: description text
+  config:
+    dataset: dm_pst3_FR
+    alias: CPTE_PAIEMT_CONSULT_VIA_SERV_TIERS_AGREG
+    tags:
+    - pst3
+    - semesterly

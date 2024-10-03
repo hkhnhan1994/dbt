@@ -1,0 +1,9 @@
+models:
+- name: T0202_credit_transfers
+  description: description text
+  config:
+    dataset: dm_pst3_NL
+    alias: T0202_credit_transfers
+    tags:
+    - pst3
+    - yearly

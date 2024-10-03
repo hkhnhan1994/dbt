@@ -1,0 +1,9 @@
+models:
+- name: T0401_misc
+  description: description text
+  config:
+    dataset: dm_pst3_NL
+    alias: T0401_misc
+    tags:
+    - pst3
+    - semesterly

@@ -1,0 +1,9 @@
+models:
+- name: V1230_number_of_accounts
+  description: description text
+  config:
+    dataset: dm_pst3_LU
+    alias: V1230_number_of_accounts
+    tags:
+    - pst3
+    - monthly

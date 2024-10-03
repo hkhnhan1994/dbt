@@ -1,0 +1,9 @@
+models:
+- name: Banque_en_ligne
+  description: description text
+  config:
+    dataset: dm_pst3_FR
+    alias: Banque_en_ligne
+    tags:
+    - pst3
+    - semesterly

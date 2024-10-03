@@ -31,7 +31,7 @@
         {% set period = prefix + selection_date.year| string() + suffix + semester %}
     {%- endif %}
 
-    {%- if time == "days" %}
+    {%- if time == "daily" %}
         {%- if selection_date == "today" %}
             {% set selection_date = modules.datetime.datetime.now() %}
         {%- else %}
@@ -41,7 +41,7 @@
         {% set end_date = selection_date.strftime("%Y-%m-%d") %}
         {% set period = prefix + selection_date.year| string() + suffix + semester %}
     {%- endif %}
-    {%- if time == "months" %}
+    {%- if time == "monthly" %}
          {%- if selection_date == "today" %}
             {% set selection_date = modules.datetime.datetime.now() %}
         {%- else %}
@@ -52,7 +52,7 @@
         {% set end_date = last_day_of_month(selection_date) %}
         {% set period = prefix + begin_date.year| string() + suffix + (begin_date.strftime("%m")) %}
     {%- endif %}
-    {%- if time == "quarter" %}
+    {%- if time == "quarterly" %}
         {%- if selection_date == "today" %}
             {% set selection_date = modules.datetime.datetime.now() %}
         {%- else %}
@@ -81,7 +81,7 @@
             {% set period = prefix + (selection_date.year)| string() + suffix + quarter| string() %}
         {%- endif %}
     {%- endif %}
-    {%- if time == "year" %}    
+    {%- if time == "yearly" %}    
         {%- if selection_date == "today" %}
             {% set selection_date = modules.datetime.datetime.now() %}
         {%- else %}
@@ -91,7 +91,7 @@
         {% set end_date = selection_date.replace( day=31, month=12, year=selection_date.year - 1).strftime("%Y-%m-%d") %}
         {% set period = prefix + (selection_date.year -1 )| string() + suffix %}
     {%- endif %}
-    {%- if time == "week" %}
+    {%- if time == "weekly" %}
         {%- if selection_date == "today" %}
             {% set selection_date = modules.datetime.datetime.now() %}
         {%- else %}

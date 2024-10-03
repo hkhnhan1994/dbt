@@ -1,0 +1,9 @@
+models:
+- name: KMS_P6a_number_of_AIS
+  description: description text
+  config:
+    dataset: dm_pst3_LV
+    alias: KMS_P6a_number_of_AIS
+    tags:
+    - pst3
+    - semesterly

@@ -1,0 +1,9 @@
+models:
+- name: ZVS41_Outbound_credit_transfers
+  description: description text
+  config:
+    dataset: dm_pst3_DE
+    alias: ZVS41_Outbound_credit_transfers
+    tags:
+    - pst3
+    - semesterly

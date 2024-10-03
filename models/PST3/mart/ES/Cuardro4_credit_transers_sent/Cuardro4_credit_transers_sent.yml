@@ -1,0 +1,9 @@
+models:
+- name: Cuardro4_credit_transers_sent
+  description: description text
+  config:
+    dataset: dm_pst3_ES
+    alias: Cuardro4_credit_transers_sent
+    tags:
+    - pst3
+    - semesterly

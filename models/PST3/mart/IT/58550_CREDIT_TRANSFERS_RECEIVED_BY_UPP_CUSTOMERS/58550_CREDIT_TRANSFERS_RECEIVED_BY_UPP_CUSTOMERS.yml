@@ -1,0 +1,9 @@
+models:
+- name: 58550_CREDIT_TRANSFERS_RECEIVED_BY_UPP_CUSTOMERS
+  description: description text
+  config:
+    dataset: dm_pst3_IT
+    alias: 58550_CREDIT_TRANSFERS_RECEIVED_BY_UPP_CUSTOMERS
+    tags:
+    - pst3
+    - quarterly

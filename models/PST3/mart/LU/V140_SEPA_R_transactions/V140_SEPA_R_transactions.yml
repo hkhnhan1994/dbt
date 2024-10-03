@@ -1,0 +1,9 @@
+models:
+- name: V140_SEPA_R_transactions
+  description: description text
+  config:
+    dataset: dm_pst3_LU
+    alias: V140_SEPA_R_transactions
+    tags:
+    - pst3
+    - monthly

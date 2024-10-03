@@ -1,0 +1,9 @@
+models:
+- name: T0402_AIS_PXG
+  description: description text
+  config:
+    dataset: dm_pst3_NL
+    alias: T0402_AIS_PXG
+    tags:
+    - pst3
+    - yearly

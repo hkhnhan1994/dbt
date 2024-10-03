@@ -1,0 +1,9 @@
+models:
+- name: V1110_payment_initiation_services
+  description: description text
+  config:
+    dataset: dm_pst3_LU
+    alias: V1110_payment_initiation_services
+    tags:
+    - pst3
+    - monthly

@@ -8,8 +8,8 @@
       "{{period_time['period']}}"  AS Period,
       CAST(NULL AS TIMESTAMP) AS Period_begin_date,
       TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}')) AS Period_end_date,
-    FROM {{ source('source_pst3_strp', 'D_IBIS_ACCOUNT_CURRENT') }} AS ibis
-    LEFT JOIN {{ source('source_pst3_strp', 'D_BANK_ACCOUNTS_DECRYPTED') }} AS bank
+    FROM {{ source('source_dwh_strp', 'D_IBIS_ACCOUNT_CURRENT') }} AS ibis
+    LEFT JOIN {{ source('source_dwh_strp', 'D_BANK_ACCOUNTS_DECRYPTED') }} AS bank
         ON ibis.T_D_BANK_ACCOUNT_DIM_KEY = bank.T_DIM_KEY
     WHERE
         ibis.ACCOUNT_TYPE  in ('PAYMENT')

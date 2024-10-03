@@ -1,5 +1,5 @@
 sources:
-  - name: source_pst3_strp
+  - name: source_dwh_strp
     project: pj-bu-dw-dwh-prod
     schema: prd_data_warehouse_STRP
     tables:

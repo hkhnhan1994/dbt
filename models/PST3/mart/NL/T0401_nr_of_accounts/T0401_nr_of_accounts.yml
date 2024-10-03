@@ -1,0 +1,9 @@
+models:
+- name: T0401_nr_of_accounts
+  description: description text
+  config:
+    dataset: dm_pst3_NL
+    alias: T0401_nr_of_accounts
+    tags:
+    - pst3
+    - yearly

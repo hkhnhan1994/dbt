@@ -1,0 +1,9 @@
+models:
+- name: V120_customer_credit_transfers_sent
+  description: description text
+  config:
+    dataset: dm_pst3_LU
+    alias: V120_customer_credit_transfers_sent
+    tags:
+    - pst3
+    - monthly

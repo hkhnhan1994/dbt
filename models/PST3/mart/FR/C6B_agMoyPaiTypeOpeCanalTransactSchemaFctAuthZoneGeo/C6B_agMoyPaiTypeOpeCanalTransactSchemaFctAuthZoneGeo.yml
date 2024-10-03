@@ -1,0 +1,9 @@
+models:
+- name: C6B_agMoyPaiTypeOpeCanalTransactSchemaFctAuthZoneGeo
+  description: description text
+  config:
+    dataset: dm_pst3_FR
+    alias: C6B_agMoyPaiTypeOpeCanalTransactSchemaFctAuthZoneGeo
+    tags:
+    - pst3
+    - semesterly

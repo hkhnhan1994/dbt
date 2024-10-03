@@ -1,0 +1,9 @@
+models:
+- name: Cross_join
+  description: description text
+  config:
+    dataset: dm_pst3_FR
+    alias: Cross_join
+    tags:
+    - pst3
+    - daily
