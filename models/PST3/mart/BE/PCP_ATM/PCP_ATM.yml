@@ -1,9 +1,9 @@
-
 models:
-  - name: PCP_ATM
-    description: description text
-    config:
-      alias: PCP_ATM
-      tags:
-        - semesterly
-        - pst3
+- name: PCP_ATM
+  description: description text
+  config:
+    dataset: dm_pst3_BE
+    alias: PCP_ATM
+    tags:
+    - pst3
+    - semesterly

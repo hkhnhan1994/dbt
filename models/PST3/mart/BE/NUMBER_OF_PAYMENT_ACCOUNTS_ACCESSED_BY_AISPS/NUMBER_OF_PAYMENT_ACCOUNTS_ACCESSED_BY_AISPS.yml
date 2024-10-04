@@ -1,9 +1,9 @@
-
 models:
-  - name: NUMBER_OF_PAYMENT_ACCOUNTS_ACCESSED_BY_AISPS
-    description: description text
-    config:
-      alias: NUMBER_OF_PAYMENT_ACCOUNTS_ACCESSED_BY_AISPS
-      tags:
-      - semesterly
-      - pst3
+- name: NUMBER_OF_PAYMENT_ACCOUNTS_ACCESSED_BY_AISPS
+  description: description text
+  config:
+    dataset: dm_pst3_BE
+    alias: NUMBER_OF_PAYMENT_ACCOUNTS_ACCESSED_BY_AISPS
+    tags:
+    - pst3
+    - semesterly

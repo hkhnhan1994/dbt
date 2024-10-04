@@ -1,9 +1,9 @@
-
 models:
-  - name: PCT_INITIATED_BY_PISP
-    description: description text
-    config:
-      alias: PCT_INITIATED_BY_PISP
-      tags:
-        - semesterly
-        - pst3
+- name: PCT_INITIATED_BY_PISP
+  description: description text
+  config:
+    dataset: dm_pst3_BE
+    alias: PCT_INITIATED_BY_PISP
+    tags:
+    - pst3
+    - semesterly

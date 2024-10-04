@@ -1,0 +1,9 @@
+models:
+- name: PCP_BREAKDOWN_BY_CARD
+  description: description text
+  config:
+    dataset: dm_pst3_BE
+    alias: PCP_BREAKDOWN_BY_CARD
+    tags:
+    - pst3
+    - semesterly

@@ -1,4 +1,8 @@
-WITH type AS (
+
+{% set period_time = period_calculate(time = 'daily', selection_date="today", prefix='', suffix='' ) -%}
+{% set time_zone = "Etc/UTC" -%}
+{% set country_code = 'FR' -%}
+        WITH type AS (
   SELECT
     'agMoyPaiTypeOpeCanalTransactZoneGeo' AS axe,
     'VIREMENT' AS moyenPaiementtype,
@@ -27,9 +31,9 @@ final as (
     typeTransaction,
     ct.code as country_code,
     mcc.Coded as MCC_code
-  FROM {{ source('source_dm_strp,COUNTRIES') }} ct
+  FROM {{ source('source_dm_PPST_FR','COUNTRIES') }} ct
   cross join type
-  cross join {{ source('source_dm_strp,MCC_CODES') }} mcc
+  cross join {{ source('source_dm_PPST_FR','MCC_CODES') }} mcc
   where type.axe = 'agMoyPaiTypeOpeCanalTransactZoneGeoMcc' and typeTransaction = 'DISTANCE'
   UNION ALL
   SELECT
@@ -41,9 +45,9 @@ final as (
     typeTransaction,
     ct.code as country_code,
     NULL as MCC_code,
-  FROM {{ source('source_dm_strp,COUNTRIES') }} ct
+  FROM {{ source('source_dm_PPST_FR','COUNTRIES') }} ct
   cross join type
-  cross join {{ source('source_dm_strp,MCC_CODES') }} mcc
+  cross join {{ source('source_dm_PPST_FR','MCC_CODES') }} mcc
   where type.axe <> 'agMoyPaiTypeOpeCanalTransactZoneGeoMcc'
 )
 SELECT
@@ -62,5 +66,5 @@ COALESCE(total_outbound_ibis_payments_amount_sum_in_EUR, 0) AS total_outbound_ib
 load_timestamp,
 period,
 FROM final
-LEFT JOIN {{ source('source_dm_strp,CT1_agMoyPaiTypeOpeCanalTransactZoneGeo_totals') }}
+LEFT JOIN {{ ref('CT1_agMoyPaiTypeOpeCanalTransactZoneGeo_totals') }}
 ON payee_psp_country = country_code

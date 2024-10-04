@@ -1,21 +1,27 @@
-SELECT
+
+{% set period_time = period_calculate(time = 'semesterly', selection_date="today", prefix='', suffix='S' ) -%}
+{% set time_zone = "Etc/UTC" -%}
+{% set country_code = 'FR' -%}
+
+
+        SELECT
      d_access_consent_info.USER_EMAIL AS user_token,
      COUNT(DISTINCT(d_access_consent_info.USER_EMAIL)) OVER(PARTITION BY d_access_consent_info.USER_EMAIL) unique_users_count_in_period,
      COUNT(DISTINCT(d_access_consent_info.T_BUS_KEY)) OVER(PARTITION BY d_access_consent_info.T_BUS_KEY) number_of_consents,
      CURRENT_TIMESTAMP AS Load_timestamp,
      "{{period}}"  AS Period,
-FROM {{ source('source_dwh_strp,D_PXG_PAYMENT_ACCOUNT_DECRYPTED') }} AS d_pxg_payment_account
-LEFT JOIN {{ source('source_dwh_strp,D_FINANCIAL_PLATFORMS_DECRYPTED') }} AS d_financial_platforms
+FROM {{ source('source_dwh_STRP','D_PXG_PAYMENT_ACCOUNT_DECRYPTED') }} AS d_pxg_payment_account
+LEFT JOIN {{ source('source_dwh_STRP','D_FINANCIAL_PLATFORMS_DECRYPTED') }} AS d_financial_platforms
      ON d_pxg_payment_account.T_D_FINANCIAL_PLATFORM_DIM_KEY=d_financial_platforms.T_DIM_KEY
-LEFT JOIN {{ source('source_dwh_strp,D_FINANCIAL_INSTITUTIONS') }} AS d_financial_institutions
+LEFT JOIN {{ source('source_dwh_STRP','D_FINANCIAL_INSTITUTIONS') }} AS d_financial_institutions
      ON d_financial_institutions.T_DIM_KEY = d_financial_platforms.T_D_FINANCIAL_INSTITUTION_DIM_KEY
-LEFT JOIN {{ source('source_dwh_strp,D_ACCESS_CONSENT_INFO_DECRYPTED') }} AS d_access_consent_info
+LEFT JOIN {{ source('source_dwh_STRP','D_ACCESS_CONSENT_INFO_DECRYPTED') }} AS d_access_consent_info
      ON d_pxg_payment_account.T_DIM_KEY=d_access_consent_info.T_D_PXG_PAYMENT_ACCOUNT_DIM_KEY
-LEFT JOIN {{ source('source_dwh_strp,D_CONTRACT_INFO') }} AS d_contract_info
+LEFT JOIN {{ source('source_dwh_STRP','D_CONTRACT_INFO') }} AS d_contract_info
      ON d_pxg_payment_account.T_DIM_KEY=d_contract_info.T_D_PXG_PAYMENT_ACCOUNT_DIM_KEY
-LEFT JOIN {{ source('source_dwh_strp,D_APPLICATION_ACCOUNT_INFO_DECRYPTED') }} AS d_application_account_info
+LEFT JOIN {{ source('source_dwh_STRP','D_APPLICATION_ACCOUNT_INFO_DECRYPTED') }} AS d_application_account_info
      ON d_contract_info.T_D_APPLICATION_ACCOUNT_DIM_KEY=d_application_account_info.T_DIM_KEY
-LEFT JOIN {{ source('source_dwh_strp,D_APPLICATIONS_DECRYPTED') }} AS d_applications
+LEFT JOIN {{ source('source_dwh_STRP','D_APPLICATIONS_DECRYPTED') }} AS d_applications
      ON d_application_account_info.T_D_APPLICATION_DIM_KEY = d_applications.T_DIM_KEY
 WHERE  (
      d_applications.APPLICATION_NAME  = 'PAY-PXG-JEFACTURE'
@@ -30,12 +36,12 @@ WHERE  (
      AND
      (
           (
-          d_access_consent_info.ACCESS_CONSENT_CREATED_AT >= TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))
-          AND d_access_consent_info.ACCESS_CONSENT_CREATED_AT <= TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))
+          d_access_consent_info.ACCESS_CONSENT_CREATED_AT >= TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}'))
+          AND d_access_consent_info.ACCESS_CONSENT_CREATED_AT <= TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))
           )
      OR
           (
-          d_access_consent_info.ACCESS_CONSENT_STATUS_AT >= TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))
-          AND d_access_consent_info.ACCESS_CONSENT_STATUS_AT <= TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))
+          d_access_consent_info.ACCESS_CONSENT_STATUS_AT >= TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}'))
+          AND d_access_consent_info.ACCESS_CONSENT_STATUS_AT <= TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))
           )
      )

@@ -1,9 +1,9 @@
-
 models:
-  - name: PIS
-    description: description text
-    config:
-      alias: PIS
-      tags:
-        - semesterly
-        - pst3
+- name: PIS
+  description: description text
+  config:
+    dataset: dm_pst3_BE
+    alias: PIS
+    tags:
+    - pst3
+    - semesterly

@@ -1,8 +1,10 @@
-{% set period_time = period_calculate(time = "semesterly", selection_date="today", prefix="", suffix="S" ) -%}
-{% set time_zone = "Etc/UTC" -%}
-{% set country_code = "BE" -%}
 
-WITH ALB AS (
+{% set period_time = period_calculate(time = 'semesterly', selection_date="today", prefix='', suffix='S' ) -%}
+{% set time_zone = "Etc/UTC" -%}
+{% set country_code = 'BE' -%}
+
+
+        WITH ALB AS (
 SELECT
     '73f02cef-1f20-446a-b66f-5368c222a58e' AS companyid_tobeexcluded,
     'VigorPlus Holding B.V.' AS legal_name,
@@ -48,26 +50,26 @@ SELECT
     D.T_SOURCE_PK_ID as companyid_tobeexcluded,
     D.ENTERPRISE_LEGAL_NAME as legal_name,
     D.ENTERPRISE_COUNTRY_OF_INCORPORATION as to_be_reported_in_country
-FROM {{ source('source_dwh_strp', 'D_LEGAL_ENTITY_CURRENT') }} C
-LEFT JOIN {{ source('source_dwh_strp', 'D_LEGAL_ENTITY_DECRYPTED') }} D  ON C.T_SOURCE_PK_ID = D.T_SOURCE_PK_ID
+FROM {{ source('source_dwh_STRP','D_LEGAL_ENTITY_CURRENT') }} C
+LEFT JOIN {{ source('source_dwh_STRP','D_LEGAL_ENTITY_DECRYPTED') }} D  ON C.T_SOURCE_PK_ID = D.T_SOURCE_PK_ID
 WHERE D.ENTERPRISE_OCS_ACTIVE = true
     AND D.ENTERPRISE_KYC_STATUS = 'APPROVED'
     AND D.ENTERPRISE_COUNTRY_OF_INCORPORATION not in ('BE','LT', 'RO', 'BG', 'HR')
-    AND C.ENTERPRISE_UPDATED_AT >= TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))
-    AND C.ENTERPRISE_UPDATED_AT <= TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))
+    AND C.ENTERPRISE_UPDATED_AT >= TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}'))
+    AND C.ENTERPRISE_UPDATED_AT <= TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))
 
 UNION ALL
 SELECT
     D.T_SOURCE_PK_ID as companyid_tobeexcluded,
     D.ENTERPRISE_LEGAL_NAME as legal_name,
     D.ENTERPRISE_COUNTRY_OF_INCORPORATION as to_be_reported_in_country
-FROM {{ source('source_dwh_strp', 'D_LEGAL_ENTITY_CURRENT') }} C
-LEFT JOIN  {{ source('source_dwh_strp', 'D_LEGAL_ENTITY_DECRYPTED') }} D  ON C.T_SOURCE_PK_ID = D.T_SOURCE_PK_ID
+FROM {{ source('source_dwh_STRP','D_LEGAL_ENTITY_CURRENT') }} C
+LEFT JOIN  {{ source('source_dwh_STRP','D_LEGAL_ENTITY_DECRYPTED') }} D  ON C.T_SOURCE_PK_ID = D.T_SOURCE_PK_ID
 WHERE D.ENTERPRISE_SOURCE = 'ALBATROS'
     AND D.ENTERPRISE_KYC_STATUS = 'APPROVED'
     AND D.ENTERPRISE_COUNTRY_OF_INCORPORATION not in ('BE','LT', 'RO', 'BG', 'HR')
-    AND C.ENTERPRISE_UPDATED_AT >= TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))
-    AND C.ENTERPRISE_UPDATED_AT <= TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))
+    AND C.ENTERPRISE_UPDATED_AT >= TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}'))
+    AND C.ENTERPRISE_UPDATED_AT <= TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))
 
 ORDER BY 2
 ),
@@ -83,8 +85,8 @@ ORDER BY 2
 )
 SELECT
 *,
-"{{period_time['period']}}"  AS Period,
-TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))  AS Period_begin_date,
-TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))  AS Period_end_date,
+"{{period}}"  AS Period,
+TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}'))  AS Period_begin_date,
+TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))  AS Period_end_date,
 CURRENT_TIMESTAMP AS load_timestamp,
 FROM souce_table

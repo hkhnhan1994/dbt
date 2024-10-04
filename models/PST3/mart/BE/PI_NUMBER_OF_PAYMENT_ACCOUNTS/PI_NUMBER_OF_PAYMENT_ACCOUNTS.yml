@@ -1,9 +1,9 @@
-
 models:
-  - name: PI_NUMBER_OF_PAYMENT_ACCOUNTS
-    description: description text
-    config:
-      alias: PI_NUMBER_OF_PAYMENT_ACCOUNTS
-      tags:
-        - semesterly
-        - pst3
+- name: PI_NUMBER_OF_PAYMENT_ACCOUNTS
+  description: description text
+  config:
+    dataset: dm_pst3_BE
+    alias: PI_NUMBER_OF_PAYMENT_ACCOUNTS
+    tags:
+    - pst3
+    - semesterly

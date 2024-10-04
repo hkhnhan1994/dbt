@@ -1,4 +1,10 @@
-WITH credit_transfers as
+
+{% set period_time = period_calculate(time = 'quarterly', selection_date="today", prefix='', suffix='Q' ) -%}
+{% set time_zone = "Etc/UTC" -%}
+{% set country_code = 'IT' -%}
+
+
+        WITH credit_transfers as
   (
   SELECT
     CASE
@@ -19,16 +25,16 @@ WITH credit_transfers as
     CURRENT_TIMESTAMP AS LOAD_TIMESTAMP,
     "{{period}}"  AS Period,
 
-    FROM {{ source('source_dwh_strp,F_ACCOUNT_TRANSACTIONS_DECRYPTED') }} AS FAT
-    LEFT JOIN {{ source('source_dwh_strp,D_ACCOUNT_TRANSACTION_CURRENT') }} AS DAT
+    FROM {{ source('source_dwh_STRP','F_ACCOUNT_TRANSACTIONS_DECRYPTED') }} AS FAT
+    LEFT JOIN {{ source('source_dwh_STRP','D_ACCOUNT_TRANSACTION_CURRENT') }} AS DAT
       ON FAT.T_D_ACCOUNT_TRANSACTION_DIM_KEY = DAT.T_DIM_KEY
-    LEFT JOIN {{ source('source_dwh_strp,D_IBIS_ACCOUNT_CURRENT') }} AS IA
+    LEFT JOIN {{ source('source_dwh_STRP','D_IBIS_ACCOUNT_CURRENT') }} AS IA
       ON FAT.T_D_IBIS_ACCOUNT_DIM_KEY = IA.T_DIM_KEY
-    JOIN {{ source('source_dwh_strp,D_BANK_ACCOUNTS_DECRYPTED') }} AS BA
+    JOIN {{ source('source_dwh_STRP','D_BANK_ACCOUNTS_DECRYPTED') }} AS BA
       ON IA.T_D_BANK_ACCOUNT_DIM_KEY = BA.T_DIM_KEY
-    LEFT JOIN {{ source('source_dwh_strp,D_BANK_ACCOUNTS_DECRYPTED') }} AS CBA
+    LEFT JOIN {{ source('source_dwh_STRP','D_BANK_ACCOUNTS_DECRYPTED') }} AS CBA
       ON CBA.T_DIM_KEY = FAT.T_COUNTERPARTY_BANK_ACCOUNT_DIM_KEY
-    JOIN {{ source('source_dwh_strp,F_ACCOUNT_BALANCE') }} FAB
+    JOIN {{ source('source_dwh_STRP','F_ACCOUNT_BALANCE') }} FAB
       ON FAB.T_D_IBIS_ACCOUNT_DIM_KEY = IA.T_DIM_KEY
     WHERE FAT.TRANSACTION_DIRECTION = "OUTBOUND"
       AND FAT.TRANSACTION_TYPE = 'REGULAR'
@@ -37,15 +43,15 @@ WITH credit_transfers as
       AND  FAT.TRANSACTION_BANK_FAMILY = 'ICDT'
       AND FAT.TRANSACTION_CHANNEL <> 'CARDS'
       AND BA.FINANCIAL_INSTITUTION_COUNTRY_CODE IN ('{{country_code}}')
-      AND DAT.TRANSACTION_BOOKING_DATE_AT >= TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))
-      AND DAT.TRANSACTION_BOOKING_DATE_AT <= TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))
+      AND DAT.TRANSACTION_BOOKING_DATE_AT >= TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}'))
+      AND DAT.TRANSACTION_BOOKING_DATE_AT <= TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))
       AND  FAB.BALANCE_DATE =
       (
           SELECT max(max.BALANCE_DATE)
-          FROM  {{ source('source_dwh_strp,F_ACCOUNT_BALANCE') }} max
-          JOIN  {{ source('source_dwh_strp,D_IBIS_ACCOUNT_CURRENT') }} a
+          FROM  {{ source('source_dwh_STRP','F_ACCOUNT_BALANCE') }} max
+          JOIN  {{ source('source_dwh_STRP','D_IBIS_ACCOUNT_CURRENT') }} a
             ON max.T_D_IBIS_ACCOUNT_DIM_KEY = a.T_DIM_KEY
-          WHERE TIMESTAMP(max.BALANCE_DATE) <= TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))
+          WHERE TIMESTAMP(max.BALANCE_DATE) <= TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))
       )
   ),
   cmd as (
@@ -54,10 +60,10 @@ WITH credit_transfers as
           L.ENTERPRISE_COUNTRY_OF_INCORPORATION,
           L.ENTERPRISE_PROVINCE_OF_INCORPORATION,
           --ba.code as ""NACEcodeToBeMappedToSettore"" ==> to add by CMD team (dragos)
-      FROM  {{ source('source_dwh_strp,D_PAYMENT_ACCOUNT_CURRENT') }} P
-      inner join {{ source('source_dwh_strp,F_LEGAL_ENTITY_PAYMENT_ACCOUNT_ROLES') }} LPR
+      FROM  {{ source('source_dwh_STRP','D_PAYMENT_ACCOUNT_CURRENT') }} P
+      inner join {{ source('source_dwh_STRP','F_LEGAL_ENTITY_PAYMENT_ACCOUNT_ROLES') }} LPR
       on LPR.T_D_PAYMENT_ACCOUNT_DIM_KEY = P.T_DIM_KEY
-      inner join {{ source('source_dwh_strp,D_LEGAL_ENTITY_DECRYPTED') }} L
+      inner join {{ source('source_dwh_STRP','D_LEGAL_ENTITY_DECRYPTED') }} L
       on LPR.T_D_LEGAL_ENTITY_DIM_KEY = L.T_DIM_KEY
       WHERE
               LPR.ROLE = 'ACCOUNT_HOLDER'

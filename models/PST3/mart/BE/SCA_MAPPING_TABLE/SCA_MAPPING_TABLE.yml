@@ -1,9 +1,9 @@
-
 models:
-  - name: SCA_MAPPING_TABLE
-    description: description text
-    config:
-      alias: SCA_MAPPING_TABLE
-      tags:
-        - semesterly
-        - pst3
+- name: SCA_MAPPING_TABLE
+  description: description text
+  config:
+    dataset: dm_pst3_BE
+    alias: SCA_MAPPING_TABLE
+    tags:
+    - pst3
+    - semesterly

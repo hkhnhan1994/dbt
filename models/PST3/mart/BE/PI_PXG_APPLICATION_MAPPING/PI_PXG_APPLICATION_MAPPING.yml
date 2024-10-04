@@ -1,9 +1,9 @@
-
 models:
-  - name: PI_PXG_APPLICATION_MAPPING
-    description: description text
-    config:
-      alias: PI_PXG_APPLICATION_MAPPING
-      tags:
-        - semesterly
-        - pst3
+- name: PI_PXG_APPLICATION_MAPPING
+  description: description text
+  config:
+    dataset: dm_pst3_BE
+    alias: PI_PXG_APPLICATION_MAPPING
+    tags:
+    - pst3
+    - semesterly

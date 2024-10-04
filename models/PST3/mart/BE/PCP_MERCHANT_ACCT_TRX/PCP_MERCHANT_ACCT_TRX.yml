@@ -1,9 +1,9 @@
-
 models:
-  - name: PCP_MERCHANT_ACCT_TRX
-    description: description text
-    config:
-      alias: PCP_MERCHANT_ACCT_TRX
-      tags:
-        - semesterly
-        - pst3
+- name: PCP_MERCHANT_ACCT_TRX
+  description: description text
+  config:
+    dataset: dm_pst3_BE
+    alias: PCP_MERCHANT_ACCT_TRX
+    tags:
+    - pst3
+    - semesterly

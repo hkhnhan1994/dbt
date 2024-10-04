@@ -39,7 +39,7 @@
         {%- endif %}
         {% set begin_date = (selection_date - modules.datetime.timedelta(days=1)).strftime("%Y-%m-%d") %}
         {% set end_date = selection_date.strftime("%Y-%m-%d") %}
-        {% set period = prefix + selection_date.year| string() + suffix + semester %}
+        {% set period = prefix + selection_date.year| string() + suffix %}
     {%- endif %}
     {%- if time == "monthly" %}
          {%- if selection_date == "today" %}

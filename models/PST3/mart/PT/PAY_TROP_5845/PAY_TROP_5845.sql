@@ -1,4 +1,10 @@
-SELECT
+
+{% set period_time = period_calculate(time = 'daily', selection_date="today", prefix='', suffix='D' ) -%}
+{% set time_zone = "Etc/UTC" -%}
+{% set country_code = 'BE' -%}
+
+
+        SELECT
   -- COALESCE(cmd_deb.identifier,cmd_cre.identifier) AS payment_account_number,
   -- COALESCE(cmd_deb.enterprise_number,cmd_cre.enterprise_number) AS enterprise_number,
   -- COALESCE(cmd_deb.legal_form,cmd_cre.legal_form) AS legal_form,
@@ -51,11 +57,11 @@ SELECT
   bis.InfUltOrd,
   bis.Period,
   bis.load_timestamp,
-FROM {{ source('source_dm_strp,PAY_TROP_5845_IBIS') }} AS bis
--- LEFT JOIN {{ source('source_dm_strp,PAY_TROP_5845_CMD') }} as cmd_deb
+FROM {{ ref('PAY_TROP_5845_IBIS') }} AS bis
+-- LEFT JOIN {{ ref('PAY_TROP_5845_CMD') }} as cmd_deb
 --   ON bis.debtor_account_identifier = cmd_deb.identifier
 --   AND bis.Ot = 'O'
--- LEFT JOIN {{ source('source_dm_strp,PAY_TROP_5845_CMD') }} as cmd_cre
+-- LEFT JOIN {{ ref('PAY_TROP_5845_CMD') }} as cmd_cre
 --   ON bis.creditor_account_identifier = cmd_cre.identifier
 --   AND bis.Ot = 'B'
 UNION ALL
@@ -112,6 +118,6 @@ SELECT
   pis.InfUltOrd,
   pis.Period,
   pis.load_timestamp,
-FROM {{ source('source_dm_strp,PAY_TROP_5845_PIS') }} AS pis
--- LEFT JOIN {{ source('source_dm_strp,PAY_TROP_5845_CMD') }} as cmd_cre
+FROM {{ ref('PAY_TROP_5845_PIS') }} AS pis
+-- LEFT JOIN {{ ref('PAY_TROP_5845_CMD') }} as cmd_cre
 --  ON pis.creditor_account_identifier = cmd_cre.identifier

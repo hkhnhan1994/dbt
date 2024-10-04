@@ -1,9 +1,9 @@
-
 models:
-  - name: PCP_POS_ONLINE
-    description: description text
-    config:
-      alias: PCP_POS_ONLINE
-      tags:
-        - semesterly
-        - pst3
+- name: PCP_POS_ONLINE
+  description: description text
+  config:
+    dataset: dm_pst3_BE
+    alias: PCP_POS_ONLINE
+    tags:
+    - pst3
+    - semesterly

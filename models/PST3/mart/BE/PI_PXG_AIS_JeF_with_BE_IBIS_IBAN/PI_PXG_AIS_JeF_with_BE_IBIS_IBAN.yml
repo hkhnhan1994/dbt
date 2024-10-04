@@ -1,9 +1,9 @@
-
 models:
-  - name: PI_PXG_AIS_JeF_with_BE_IBIS_IBAN
-    description: description text
-    config:
-      alias: PI_PXG_AIS_JeF_with_BE_IBIS_IBAN
-      tags:
-        - semesterly
-        - pst3
+- name: PI_PXG_AIS_JeF_with_BE_IBIS_IBAN
+  description: description text
+  config:
+    dataset: dm_pst3_BE
+    alias: PI_PXG_AIS_JeF_with_BE_IBIS_IBAN
+    tags:
+    - pst3
+    - semesterly

@@ -1,9 +1,9 @@
-
 models:
-  - name: PCT_OUTBOUND
-    description: description text
-    config:
-      alias: PCT_OUTBOUND
-      tags:
-        - semesterly
-        - pst3
+- name: PCT_OUTBOUND
+  description: description text
+  config:
+    dataset: dm_pst3_BE
+    alias: PCT_OUTBOUND
+    tags:
+    - pst3
+    - semesterly

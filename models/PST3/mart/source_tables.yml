@@ -1,0 +1,97 @@
+sources:
+- name: source_dwh_STRP
+  project: pj-bu-dw-dwh-prod
+  schema: prd_data_warehouse_STRP
+  tables:
+  - name: D_IBIS_ACCOUNT_CURRENT
+  - name: D_BANK_ACCOUNTS_DECRYPTED
+  - name: D_ACCESS_CONSENT_INFO
+  - name: D_PXG_PAYMENT_ACCOUNT_CURRENT
+  - name: D_FINANCIAL_PLATFORMS_DECRYPTED
+  - name: D_FINANCIAL_INSTITUTIONS
+  - name: D_CONTRACT_INFO
+  - name: D_APPLICATION_ACCOUNT_INFO_DECRYPTED
+  - name: D_APPLICATIONS_DECRYPTED
+  - name: F_ACCOUNT_TRANSACTIONS_DECRYPTED
+  - name: D_ACCOUNT_TRANSACTION_CURRENT
+  - name: D_ASPSP_CONSENT_DECRYPTED
+  - name: D_ASPSP_TPP
+  - name: D_INBOUND_PAYMENT_INFO_DECRYPTED
+  - name: F_INBOUND_TRANSACTIONS_DECRYPTED
+  - name: D_INBOUND_TRANSACTION_INFO
+  - name: D_PAYMENT_INITIATIONS_CURRENT
+  - name: D_PAYMENT_ITEM_INFO_DECRYPTED
+  - name: F_PAYMENT_ITEMS
+  - name: D_MERCHANTS_DECRYPTED
+  - name: F_PAYMENT_TRANSACTIONS_DECRYPTED
+  - name: D_PAYMENT_TRANSACTION_INFO_DECRYPTED
+  - name: D_PAYMENT_PRODUCTS
+  - name: F_PAYMENT_TRANSACTIONS
+  - name: D_APPLICATION_OWNERS_DECRYPTED
+  - name: D_CONTRACT_INFO_CURRENT
+  - name: D_PXG_PAYMENT_ACCOUNT_DECRYPTED
+  - name: D_INBOUND_PAYMENT_INFO_CURRENT
+  - name: D_PAYMENT_INITIATIONS
+  - name: D_LEGAL_ENTITY_CURRENT
+  - name: D_LEGAL_ENTITY_DECRYPTED
+  - name: D_ACCESS_CONSENT_INFO_CURRENT
+  - name: D_ACCESS_CONSENT_INFO_DECRYPTED
+  - name: F_CI_CARD_TRANSACTION_DECRYPTED
+  - name: D_CI_CARD
+  - name: D_CI_CARD_TRANSACTION
+  - name: F_CI_CARD_TRANSACTION_EVENT
+  - name: D_CI_CARD_PRODUCT_DECRYPTED
+  - name: D_CI_CARD_TRANSACTION_EVENT
+  - name: F_ASPSP_PAYMENT_INITIATION
+  - name: D_ASPSP_TPP_DECRYPTED
+  - name: F_ACCOUNT_BALANCE
+  - name: D_PAYMENT_ACCOUNT_CURRENT
+  - name: F_LEGAL_ENTITY_PAYMENT_ACCOUNT_ROLES
+  - name: D_ASPSP_TPP_CURRENT
+  - name: D_ACCOUNT_TRANSACTION_DECRYPTED
+  - name: D_INBOUND_TRANSACTION_INFO_DECRYPTED
+  - name: D_PAYMENT_ACCOUNT_DECRYPTED
+  - name: F_LEGAL_ENTITY_PAYMENT_ACCOUNT_ROLES_DECRYPTED
+  - name: F_UNMATCHED_ACCOUNT_TRANSACTIONS
+  - name: F_ACCOUNT_MOVEMENTS
+  - name: D_IBIS_ACCOUNT
+  - name: D_PXG_PAYMENT_ACCOUNT
+  - name: D_FINANCIAL_PLATFORMS
+  - name: D_APPLICATION_ACCOUNT_INFO
+  - name: D_MERCHANTS_CURRENT
+  - name: F_ACCOUNT_MOVEMENTS_DECRYPTED
+- name: source_dm_PPST_BE
+  project: pj-bu-dw-dm-prod
+  schema: prd_data_mart_PPST_BE
+  tables:
+  - name: SCA_MAPPING_TABLE
+  - name: PCP
+  - name: PCP_ALBATROS_CMD_OCS
+  - name: PST3_MAPPING
+  - name: PCP_MERCHANT_ACCT_TRX
+  - name: PCP_POS_ONLINE
+- name: source_dl_P1_PSTA
+  project: pj-bu-dw-dl-prod
+  schema: prd_datalake_P1_PSTA
+  tables:
+  - name: dwh_transaction_properties_current
+- name: source_keyset__
+  project: pj-bu-dw-ks-prod
+  schema: prd_keysets__
+  tables:
+  - name: merged
+- name: source_dm_PPST_PT
+  project: pj-bu-dw-data-sbx
+  schema: dev_dm_pst3_PPST_PT
+  tables:
+  - name: PAY_TROP_5845_IBIS
+  - name: PAY_TROP_5845_CMD
+  - name: PAY_TROP_5845_PIS
+- name: source_dm_PPST_FR
+  project: pj-bu-dw-dm-prod
+  schema: prd_data_mart_PPST_FR
+  tables:
+  - name: CT1_agMoyPaiTypeOpeCanalTransactZoneGeo
+  - name: COUNTRIES
+  - name: MCC_CODES
+  - name: CT1_agMoyPaiTypeOpeCanalTransactZoneGeo_totals

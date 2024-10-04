@@ -1,4 +1,10 @@
-WITH outbound as (
+
+{% set period_time = period_calculate(time = 'daily', selection_date="today", prefix='', suffix='D' ) -%}
+{% set time_zone = "Etc/UTC" -%}
+{% set country_code = 'BE' -%}
+
+
+        WITH outbound as (
   SELECT
   'O' AS Ot,
   fat.T_SOURCE_PK_ID AS Ref,
@@ -74,16 +80,16 @@ WITH outbound as (
   "{{period}}"  AS Period,
   CURRENT_TIMESTAMP AS load_timestamp,
 
-FROM {{ source('source_dwh_strp,F_ACCOUNT_TRANSACTIONS_DECRYPTED') }} as fat
-LEFT JOIN {{ source('source_dwh_strp,D_IBIS_ACCOUNT_CURRENT') }} ibis
+FROM {{ source('source_dwh_STRP','F_ACCOUNT_TRANSACTIONS_DECRYPTED') }} as fat
+LEFT JOIN {{ source('source_dwh_STRP','D_IBIS_ACCOUNT_CURRENT') }} ibis
   ON fat.T_D_IBIS_ACCOUNT_DIM_KEY = ibis.T_DIM_KEY
-JOIN {{ source('source_dwh_strp,D_BANK_ACCOUNTS_DECRYPTED') }} as baBA
+JOIN {{ source('source_dwh_STRP','D_BANK_ACCOUNTS_DECRYPTED') }} as baBA
   ON ibis.T_D_BANK_ACCOUNT_DIM_KEY = baBA.T_DIM_KEY
   -- AND baBA.T_SOURCE_TABLE = "READ_DWH_TRANSACTIONS"
-LEFT JOIN {{ source('source_dwh_strp,D_BANK_ACCOUNTS_DECRYPTED') }} as baCB
+LEFT JOIN {{ source('source_dwh_STRP','D_BANK_ACCOUNTS_DECRYPTED') }} as baCB
   ON baCB.T_DIM_KEY = fat.T_COUNTERPARTY_BANK_ACCOUNT_DIM_KEY
   -- AND baCB.T_SOURCE_TABLE = "READ_DWH_TRANSACTIONS"
-LEFT JOIN {{ source('source_dwh_strp,D_ACCOUNT_TRANSACTION_DECRYPTED') }} AS ats
+LEFT JOIN {{ source('source_dwh_STRP','D_ACCOUNT_TRANSACTION_DECRYPTED') }} AS ats
   ON fat.T_D_ACCOUNT_TRANSACTION_DIM_KEY = ats.T_DIM_KEY
 
 WHERE fat.TRANSACTION_DIRECTION = "OUTBOUND"
@@ -93,8 +99,8 @@ WHERE fat.TRANSACTION_DIRECTION = "OUTBOUND"
   AND (ibis.ACCOUNT_TYPE ) = 'PAYMENT'
   AND fat.TRANSACTION_BANK_FAMILY = 'ICDT'
   AND fat.TRANSACTION_CHANNEL <> 'CARDS'
-  AND TIMESTAMP(ats.TRANSACTION_BOOKING_DATE_AT) >= TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}')) --pt winter time
-  AND TIMESTAMP(ats.TRANSACTION_BOOKING_DATE_AT) <= TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))  --pt winter time
+  AND TIMESTAMP(ats.TRANSACTION_BOOKING_DATE_AT) >= TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}')) --pt winter time
+  AND TIMESTAMP(ats.TRANSACTION_BOOKING_DATE_AT) <= TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))  --pt winter time
 ),
 inbound as (
   SELECT
@@ -146,16 +152,16 @@ inbound as (
   "{{period}}"  AS Period,
   CURRENT_TIMESTAMP AS load_timestamp,
 
-FROM {{ source('source_dwh_strp,F_ACCOUNT_TRANSACTIONS_DECRYPTED') }} as fat
-LEFT JOIN {{ source('source_dwh_strp,D_IBIS_ACCOUNT_CURRENT') }} ibis
+FROM {{ source('source_dwh_STRP','F_ACCOUNT_TRANSACTIONS_DECRYPTED') }} as fat
+LEFT JOIN {{ source('source_dwh_STRP','D_IBIS_ACCOUNT_CURRENT') }} ibis
   ON fat.T_D_IBIS_ACCOUNT_DIM_KEY = ibis.T_DIM_KEY
-JOIN {{ source('source_dwh_strp,D_BANK_ACCOUNTS_DECRYPTED') }} as baBA
+JOIN {{ source('source_dwh_STRP','D_BANK_ACCOUNTS_DECRYPTED') }} as baBA
   ON ibis.T_D_BANK_ACCOUNT_DIM_KEY = baBA.T_DIM_KEY
   -- AND baBA.T_SOURCE_TABLE = "READ_DWH_TRANSACTIONS"
-LEFT JOIN {{ source('source_dwh_strp,D_BANK_ACCOUNTS_DECRYPTED') }} as baCB
+LEFT JOIN {{ source('source_dwh_STRP','D_BANK_ACCOUNTS_DECRYPTED') }} as baCB
   ON baCB.T_DIM_KEY = fat.T_COUNTERPARTY_BANK_ACCOUNT_DIM_KEY
   -- AND baCB.T_SOURCE_TABLE = "READ_DWH_TRANSACTIONS"
-LEFT JOIN {{ source('source_dwh_strp,D_ACCOUNT_TRANSACTION_DECRYPTED') }} AS ats
+LEFT JOIN {{ source('source_dwh_STRP','D_ACCOUNT_TRANSACTION_DECRYPTED') }} AS ats
   ON fat.T_D_ACCOUNT_TRANSACTION_DIM_KEY = ats.T_DIM_KEY
 
 WHERE fat.TRANSACTION_DIRECTION = "INBOUND"
@@ -164,8 +170,8 @@ WHERE fat.TRANSACTION_DIRECTION = "INBOUND"
   AND (ats.TRANSACTION_STATUS ) IN ('RETURNED', 'SETTLED')
   AND (ibis.ACCOUNT_TYPE ) = 'PAYMENT'
   AND fat.TRANSACTION_BANK_FAMILY = 'RCDT'
-  AND TIMESTAMP(ats.TRANSACTION_BOOKING_DATE_AT) >= TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}')) --pt winter time
-  AND TIMESTAMP(ats.TRANSACTION_BOOKING_DATE_AT) <= TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))  --pt winter time
+  AND TIMESTAMP(ats.TRANSACTION_BOOKING_DATE_AT) >= TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}')) --pt winter time
+  AND TIMESTAMP(ats.TRANSACTION_BOOKING_DATE_AT) <= TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))  --pt winter time
 )
 SELECT * FROM outbound
 UNION ALL

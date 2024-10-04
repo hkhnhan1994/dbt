@@ -1,4 +1,10 @@
-SELECT
+
+{% set period_time = period_calculate(time = 'yearly', selection_date="today", prefix='', suffix='Y' ) -%}
+{% set time_zone = "Etc/UTC" -%}
+{% set country_code = 'NL' -%}
+
+
+        SELECT
   CASE
       WHEN DCA.FINANCIAL_INSTITUTION_COUNTRY_CODE = 'GB' THEN 'Extra-EEA'
       WHEN DCA.FINANCIAL_INSTITUTION_COUNTRY_CODE = 'CH' THEN 'Extra-EEA'
@@ -29,25 +35,25 @@ SELECT
   '{{period}}' AS PERIOD,
 
 FROM
-    {{ source('source_dwh_strp,F_ACCOUNT_TRANSACTIONS_DECRYPTED') }} AS FAT
+    {{ source('source_dwh_STRP','F_ACCOUNT_TRANSACTIONS_DECRYPTED') }} AS FAT
 LEFT JOIN
-    {{ source('source_dwh_strp,D_ACCOUNT_TRANSACTION_CURRENT') }} AS DAT
+    {{ source('source_dwh_STRP','D_ACCOUNT_TRANSACTION_CURRENT') }} AS DAT
     ON FAT.T_D_ACCOUNT_TRANSACTION_DIM_KEY = DAT.T_DIM_KEY
 LEFT JOIN
-    {{ source('source_dwh_strp,D_IBIS_ACCOUNT_CURRENT') }} AS DIAT
+    {{ source('source_dwh_STRP','D_IBIS_ACCOUNT_CURRENT') }} AS DIAT
     ON FAT.T_D_IBIS_ACCOUNT_DIM_KEY = DIAT.T_DIM_KEY
 INNER JOIN
-    {{ source('source_dwh_strp,D_BANK_ACCOUNTS_DECRYPTED') }} AS DBA
+    {{ source('source_dwh_STRP','D_BANK_ACCOUNTS_DECRYPTED') }} AS DBA
     ON DIAT.T_D_BANK_ACCOUNT_DIM_KEY = DBA.T_DIM_KEY
 LEFT JOIN
-    {{ source('source_dwh_strp,D_BANK_ACCOUNTS_DECRYPTED') }} AS DCA
+    {{ source('source_dwh_STRP','D_BANK_ACCOUNTS_DECRYPTED') }} AS DCA
     ON DCA.T_DIM_KEY = FAT.T_COUNTERPARTY_BANK_ACCOUNT_DIM_KEY
 
 WHERE
     FAT.TRANSACTION_DIRECTION = 'OUTBOUND'
     AND FAT.TRANSACTION_TYPE = 'REGULAR'
-    AND DAT.TRANSACTION_BOOKING_DATE_AT >= TIMESTAMP(DATETIME('{{period_time['begin_date']}}', '{{time_zone}}'))
-    AND DAT.TRANSACTION_BOOKING_DATE_AT <= TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))
+    AND DAT.TRANSACTION_BOOKING_DATE_AT >= TIMESTAMP(DATETIME('{{begin_date}}', '{{time_zone}}'))
+    AND DAT.TRANSACTION_BOOKING_DATE_AT <= TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))
     AND DAT.TRANSACTION_STATUS IN ('RETURNED', 'SETTLED')
     AND DIAT.ACCOUNT_TYPE = 'PAYMENT'
     AND FAT.TRANSACTION_BANK_FAMILY = 'ICDT'

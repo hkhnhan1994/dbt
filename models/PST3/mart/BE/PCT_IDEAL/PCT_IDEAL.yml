@@ -1,9 +1,9 @@
-
 models:
-  - name: PCT_IDEAL
-    description: description text
-    config:
-      alias: PCT_IDEAL
-      tags:
-        - semesterly
-        - pst3
+- name: PCT_IDEAL
+  description: description text
+  config:
+    dataset: dm_pst3_BE
+    alias: PCT_IDEAL
+    tags:
+    - pst3
+    - semesterly

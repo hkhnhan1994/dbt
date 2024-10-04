@@ -1,0 +1,9 @@
+models:
+- name: PCP_BREAKDOWN_BY_SCA
+  description: description text
+  config:
+    dataset: dm_pst3_BE
+    alias: PCP_BREAKDOWN_BY_SCA
+    tags:
+    - pst3
+    - semesterly

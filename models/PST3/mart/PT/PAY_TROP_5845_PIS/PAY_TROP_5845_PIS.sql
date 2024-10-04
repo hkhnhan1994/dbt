@@ -1,4 +1,10 @@
-SELECT
+
+{% set period_time = period_calculate(time = 'daily', selection_date="today", prefix='', suffix='D' ) -%}
+{% set time_zone = "Etc/UTC" -%}
+{% set country_code = 'BE' -%}
+
+
+        SELECT
     'I' AS Ot,
     '' AS Ref,
     '' AS ORef,
@@ -47,22 +53,22 @@ SELECT
     "{{period}}"  AS Period,
     CURRENT_TIMESTAMP AS load_timestamp,
 
-FROM {{ source('source_dwh_strp,D_INBOUND_PAYMENT_INFO_DECRYPTED') }} AS ip
-LEFT JOIN {{ source('source_dwh_strp,D_FINANCIAL_PLATFORMS_DECRYPTED') }}
+FROM {{ source('source_dwh_STRP','D_INBOUND_PAYMENT_INFO_DECRYPTED') }} AS ip
+LEFT JOIN {{ source('source_dwh_STRP','D_FINANCIAL_PLATFORMS_DECRYPTED') }}
     AS fp ON ip.T_D_FINANCIAL_PLATFORM_DIM_KEY=fp.T_DIM_KEY
-LEFT JOIN {{ source('source_dwh_strp,D_FINANCIAL_INSTITUTIONS') }}
+LEFT JOIN {{ source('source_dwh_STRP','D_FINANCIAL_INSTITUTIONS') }}
     AS fi ON fi.T_DIM_KEY = fp.T_D_FINANCIAL_INSTITUTION_DIM_KEY
-LEFT JOIN {{ source('source_dwh_strp,F_INBOUND_TRANSACTIONS_DECRYPTED') }}
+LEFT JOIN {{ source('source_dwh_STRP','F_INBOUND_TRANSACTIONS_DECRYPTED') }}
     AS it ON ip.T_DIM_KEY=it.T_D_INBOUND_PAYMENT_INFO_DIM_KEY
-LEFT JOIN {{ source('source_dwh_strp,D_INBOUND_TRANSACTION_INFO_DECRYPTED') }}
+LEFT JOIN {{ source('source_dwh_STRP','D_INBOUND_TRANSACTION_INFO_DECRYPTED') }}
     AS dit ON dit.T_DIM_KEY=it.T_D_INBOUND_TRANSACTION_INFO_DIM_KEY
-LEFT JOIN {{ source('source_dwh_strp,D_PAYMENT_INITIATIONS') }}
+LEFT JOIN {{ source('source_dwh_STRP','D_PAYMENT_INITIATIONS') }}
     AS pi ON ip.T_DIM_KEY=pi.T_D_INBOUND_PAYMENT_DIM_KEY
-LEFT JOIN {{ source('source_dwh_strp,D_APPLICATIONS_DECRYPTED') }}
+LEFT JOIN {{ source('source_dwh_STRP','D_APPLICATIONS_DECRYPTED') }}
     AS app ON ip.T_D_APPLICATION_DIM_KEY = app.T_DIM_KEY
-LEFT JOIN {{ source('source_dwh_strp,D_BANK_ACCOUNTS_DECRYPTED') }}
+LEFT JOIN {{ source('source_dwh_STRP','D_BANK_ACCOUNTS_DECRYPTED') }}
     AS deb ON deb.T_DIM_KEY=ip.T_D_DEBTOR_BANK_ACCOUNTS_DIM_KEY
-LEFT JOIN {{ source('source_dwh_strp,D_BANK_ACCOUNTS_DECRYPTED') }}
+LEFT JOIN {{ source('source_dwh_STRP','D_BANK_ACCOUNTS_DECRYPTED') }}
     AS cred ON cred.T_DIM_KEY=it.T_D_CREDITOR_BANK_ACCOUNTS_DIM_KEY
 
 WHERE pi.PAYMENT_INITIATION_STATUS = 'SUCCESSFUL'
@@ -84,5 +90,5 @@ WHERE pi.PAYMENT_INITIATION_STATUS = 'SUCCESSFUL'
     --         AND substr(cred.BANK_ACCOUNT_NUMBER,5,4) = '5845'
     --         )
     --     )-- creditor account is a PANX PT account
-    AND TIMESTAMP(dit.INBOUND_TRANSACTION_CREATED_AT) >= TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}')) --pt winter time
-    AND TIMESTAMP(dit.INBOUND_TRANSACTION_CREATED_AT) <= TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))  --pt winter time
+    AND TIMESTAMP(dit.INBOUND_TRANSACTION_CREATED_AT) >= TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}')) --pt winter time
+    AND TIMESTAMP(dit.INBOUND_TRANSACTION_CREATED_AT) <= TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))  --pt winter time
