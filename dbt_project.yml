@@ -41,9 +41,8 @@ models:
   project_dbt:
     PST3:
       mart:
-        BE:
-          +materialized: table
-          +dataset: dm_pst3
+        +materialized: incremental
+        +dataset: dm_pst3
     STRH:
       datalake:
         +materialized: table

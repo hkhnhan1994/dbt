@@ -27,7 +27,7 @@ WHERE ftr.TRANSACTION_DIRECTION = 'OUTBOUND'
   AND ftr.TRANSACTION_CHANNEL not IN ('DASHBOARD', 'OTHER', 'CARDS')
   AND dtr.TRANSACTION_STATUS  IN ('SETTLED', 'RETURNED')
   AND ftr.TRANSACTION_BANK_FAMILY = 'ICDT'
-  AND dtr.TRANSACTION_BOOKING_DATE_AT >= TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}'))
-  AND dtr.TRANSACTION_BOOKING_DATE_AT <= TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))
+  AND dtr.TRANSACTION_BOOKING_DATE_AT >= TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))
+  AND dtr.TRANSACTION_BOOKING_DATE_AT <= TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))
 group by cred.FINANCIAL_INSTITUTION_COUNTRY_CODE
 order by payee_psp_country ASC

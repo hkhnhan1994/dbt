@@ -36,12 +36,12 @@ WHERE  (
      AND
      (
           (
-          d_access_consent_info.ACCESS_CONSENT_CREATED_AT >= TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}'))
-          AND d_access_consent_info.ACCESS_CONSENT_CREATED_AT <= TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))
+          d_access_consent_info.ACCESS_CONSENT_CREATED_AT >= TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))
+          AND d_access_consent_info.ACCESS_CONSENT_CREATED_AT <= TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))
           )
      OR
           (
-          d_access_consent_info.ACCESS_CONSENT_STATUS_AT >= TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}'))
-          AND d_access_consent_info.ACCESS_CONSENT_STATUS_AT <= TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))
+          d_access_consent_info.ACCESS_CONSENT_STATUS_AT >= TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))
+          AND d_access_consent_info.ACCESS_CONSENT_STATUS_AT <= TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))
           )
      )

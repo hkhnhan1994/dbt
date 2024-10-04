@@ -55,8 +55,8 @@ LEFT JOIN {{ source('source_dwh_STRP','D_LEGAL_ENTITY_DECRYPTED') }} D  ON C.T_S
 WHERE D.ENTERPRISE_OCS_ACTIVE = true
     AND D.ENTERPRISE_KYC_STATUS = 'APPROVED'
     AND D.ENTERPRISE_COUNTRY_OF_INCORPORATION not in ('BE','LT', 'RO', 'BG', 'HR')
-    AND C.ENTERPRISE_UPDATED_AT >= TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}'))
-    AND C.ENTERPRISE_UPDATED_AT <= TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))
+    AND C.ENTERPRISE_UPDATED_AT >= TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))
+    AND C.ENTERPRISE_UPDATED_AT <= TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))
 
 UNION ALL
 SELECT
@@ -68,8 +68,8 @@ LEFT JOIN  {{ source('source_dwh_STRP','D_LEGAL_ENTITY_DECRYPTED') }} D  ON C.T_
 WHERE D.ENTERPRISE_SOURCE = 'ALBATROS'
     AND D.ENTERPRISE_KYC_STATUS = 'APPROVED'
     AND D.ENTERPRISE_COUNTRY_OF_INCORPORATION not in ('BE','LT', 'RO', 'BG', 'HR')
-    AND C.ENTERPRISE_UPDATED_AT >= TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}'))
-    AND C.ENTERPRISE_UPDATED_AT <= TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))
+    AND C.ENTERPRISE_UPDATED_AT >= TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))
+    AND C.ENTERPRISE_UPDATED_AT <= TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))
 
 ORDER BY 2
 ),
@@ -86,7 +86,7 @@ ORDER BY 2
 SELECT
 *,
 "{{period}}"  AS Period,
-TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}'))  AS Period_begin_date,
-TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))  AS Period_end_date,
+TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))  AS Period_begin_date,
+TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))  AS Period_end_date,
 CURRENT_TIMESTAMP AS load_timestamp,
 FROM souce_table

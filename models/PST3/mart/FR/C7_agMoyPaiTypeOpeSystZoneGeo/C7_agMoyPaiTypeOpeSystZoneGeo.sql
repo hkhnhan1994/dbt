@@ -30,7 +30,7 @@ WHERE ftr.TRANSACTION_DIRECTION = 'OUTBOUND'
   AND dtr.TRANSACTION_STATUS  IN ('SETTLED', 'RETURNED')
   AND ftr.TRANSACTION_BANK_FAMILY = 'ICDT'
   AND ftr.TRANSACTION_CHANNEL <> 'CARDS'
-  AND dtr.TRANSACTION_BOOKING_DATE_AT >= TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}'))
-  AND dtr.TRANSACTION_BOOKING_DATE_AT <= TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))
+  AND dtr.TRANSACTION_BOOKING_DATE_AT >= TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))
+  AND dtr.TRANSACTION_BOOKING_DATE_AT <= TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))
 GROUP BY 1,2
 ORDER BY 1,2

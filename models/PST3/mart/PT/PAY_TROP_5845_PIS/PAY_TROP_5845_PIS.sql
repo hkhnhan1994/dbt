@@ -90,5 +90,5 @@ WHERE pi.PAYMENT_INITIATION_STATUS = 'SUCCESSFUL'
     --         AND substr(cred.BANK_ACCOUNT_NUMBER,5,4) = '5845'
     --         )
     --     )-- creditor account is a PANX PT account
-    AND TIMESTAMP(dit.INBOUND_TRANSACTION_CREATED_AT) >= TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}')) --pt winter time
-    AND TIMESTAMP(dit.INBOUND_TRANSACTION_CREATED_AT) <= TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))  --pt winter time
+    AND TIMESTAMP(dit.INBOUND_TRANSACTION_CREATED_AT) >= TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}')) --pt winter time
+    AND TIMESTAMP(dit.INBOUND_TRANSACTION_CREATED_AT) <= TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))  --pt winter time

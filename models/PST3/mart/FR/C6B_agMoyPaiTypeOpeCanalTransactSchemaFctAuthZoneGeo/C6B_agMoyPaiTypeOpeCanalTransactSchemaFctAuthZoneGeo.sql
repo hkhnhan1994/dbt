@@ -37,8 +37,8 @@ WHERE ftr.TRANSACTION_DIRECTION = 'OUTBOUND'
   AND ftr.transaction_type  = 'REGULAR'
   AND ftr.TRANSACTION_CHANNEL NOT IN ('DASHBOARD','ADMIN', 'OTHER', 'CARDS')
   AND ftr.TRANSACTION_BANK_FAMILY = 'ICDT'
-  AND TIMESTAMP(ftr.TRANSACTION_DATE_AT) >= TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}'))
-  AND TIMESTAMP(ftr.TRANSACTION_DATE_AT) <= TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))
+  AND TIMESTAMP(ftr.TRANSACTION_DATE_AT) >= TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))
+  AND TIMESTAMP(ftr.TRANSACTION_DATE_AT) <= TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))
 GROUP BY 1,2
 ORDER BY 1,2
 )

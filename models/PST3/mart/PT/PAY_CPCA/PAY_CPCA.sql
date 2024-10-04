@@ -8,7 +8,7 @@
   SELECT
     row_number() over () as IDReg,
     'Y' as Ot,     -- PXG perspective
-    LAST_DAY(date_add(DATE(TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}'))), INTERVAL -1 MONTH)) as DtRef,
+    LAST_DAY(date_add(DATE(TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))), INTERVAL -1 MONTH)) as DtRef,
     substr(bad.BANK_ACCOUNT_NUMBER,5,4) as ASPSP,
     'PSDBE-NBB-0649860804' as AISP,
     '{{country_code}}' as PasASPSP,
@@ -39,10 +39,10 @@
   -- ad.APPLICATION_NAME = 'PAY-PXG-BANQUPPT' --PT
   ad.APPLICATION_NAME in ('PAY-PXG-COMMUNITY', 'PAY-PXG-GOCOMPTA', 'PAY-PXG-MAGIC4BUSINESS', 'PAY-PXG-YOURSMINC', 'PAY-PXG-MIJNBOEKHOUDER')  -- BE data
   AND fi.FINANCIAL_INSTITUTION_CODE != 'IBIS'
-  AND acic.ACCESS_CONSENT_CREATED_AT <= TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}'))
+  AND acic.ACCESS_CONSENT_CREATED_AT <= TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))
   AND (
     acic.ACCESS_CONSENT_STATUS = 'ACTIVE'
-    OR DATE(acic.ACCESS_CONSENT_STATUS_AT) >= DATE_ADD(DATE(TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}'))), INTERVAL -6 MONTH)
+    OR DATE(acic.ACCESS_CONSENT_STATUS_AT) >= DATE_ADD(DATE(TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))), INTERVAL -6 MONTH)
   )
   -- Created before the end of the reporting period AND still active or status last changed within 6 months before the reporting period
   GROUP BY DtRef, bad.BANK_ACCOUNT_NUMBER
@@ -51,7 +51,7 @@ count_NContAISPM_previous_month AS(
   SELECT
     row_number() over () as IDReg,
    'Y' as Ot,     -- PXG perspective
-   LAST_DAY(date_add(DATE(TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}'))), INTERVAL -1 MONTH)) as DtRef,
+   LAST_DAY(date_add(DATE(TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))), INTERVAL -1 MONTH)) as DtRef,
    substr(bad.BANK_ACCOUNT_NUMBER,5,4) as ASPSP,
    'PSDBE-NBB-0649860804' as AISP,
    '{{country_code}}' as PasASPSP,
@@ -62,7 +62,7 @@ count_NContAISPM_previous_month AS(
     count(distinct bad.BANK_ACCOUNT_NUMBER) as NContAISPM,       -- Number of accounts with consent in month
     0 as NContAISPS,                                             -- Number of accounts with consent in last 6 months (numbers were in previous part of the union)
     count(distinct bad.BANK_ACCOUNT_NUMBER) as NPedInUt,         -- Assuming one access per day
-    4 * count(distinct bad.BANK_ACCOUNT_NUMBER) * extract(DAY FROM LAST_DAY(date_add(DATE(TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}'))), INTERVAL -1 MONTH)))  as NPedSInUt,     -- 4 * Number of days in month * number of accounts with consent in month
+    4 * count(distinct bad.BANK_ACCOUNT_NUMBER) * extract(DAY FROM LAST_DAY(date_add(DATE(TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))), INTERVAL -1 MONTH)))  as NPedSInUt,     -- 4 * Number of days in month * number of accounts with consent in month
   FROM {{ source('source_dwh_STRP','D_ACCESS_CONSENT_INFO_CURRENT') }} acic
   JOIN {{ source('source_dwh_STRP','D_PXG_PAYMENT_ACCOUNT') }} pac
     ON pac.T_DIM_KEY = acic.T_D_PXG_PAYMENT_ACCOUNT_DIM_KEY
@@ -82,10 +82,10 @@ count_NContAISPM_previous_month AS(
   -- ad.APPLICATION_NAME = 'PAY-PXG-BANQUPPT' -- PT
   ad.APPLICATION_NAME in ('PAY-PXG-COMMUNITY', 'PAY-PXG-GOCOMPTA', 'PAY-PXG-MAGIC4BUSINESS', 'PAY-PXG-YOURSMINC', 'PAY-PXG-MIJNBOEKHOUDER')  -- BE data
   and fi.FINANCIAL_INSTITUTION_CODE != 'IBIS'
-  AND acic.ACCESS_CONSENT_CREATED_AT <= TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}'))
+  AND acic.ACCESS_CONSENT_CREATED_AT <= TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))
   AND (
     acic.ACCESS_CONSENT_STATUS = 'ACTIVE'
-    OR DATE(acic.ACCESS_CONSENT_STATUS_AT) >= DATE_ADD(DATE(TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}'))), INTERVAL -1 MONTH)
+    OR DATE(acic.ACCESS_CONSENT_STATUS_AT) >= DATE_ADD(DATE(TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))), INTERVAL -1 MONTH)
   )
   -- Created before the end of the reporting period and (is still active or status last changed before the start of the reporting period)
   GROUP BY DtRef, bad.BANK_ACCOUNT_NUMBER
@@ -95,7 +95,7 @@ count_NContAISPM AS(
     ROW_NUMBER() OVER () AS IDReg,
     'X' AS Ot,
     -- PXG perspective
-    LAST_DAY(DATE_ADD(DATE(TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}'))), INTERVAL -1 MONTH)) AS DtRef,
+    LAST_DAY(DATE_ADD(DATE(TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))), INTERVAL -1 MONTH)) AS DtRef,
     '5845' AS ASPSP,
     REPLACE (t.SERVICE_PROVIDER_PSP_AUTHORISATION_NUMBER, '.', '') as AISP,
     '{{country_code}}' AS PasASPSP,
@@ -118,9 +118,9 @@ count_NContAISPM AS(
   WHERE
     -- c.CONSENT_STATUS = 'VALID'
     LEFT(c.consent_iban,2) ='{{country_code}}'
-    AND c.CONSENT_CREATED_AT <= TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}'))
+    AND c.CONSENT_CREATED_AT <= TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))
     -- AND (c.CONSENT_STATUS = 'VALID'
-    --   OR DATE(acic.ACCESS_CONSENT_STATUS_AT) >=  DATE_ADD(DATE(TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}'))), INTERVAL -1 MONTH)
+    --   OR DATE(acic.ACCESS_CONSENT_STATUS_AT) >=  DATE_ADD(DATE(TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))), INTERVAL -1 MONTH)
     --   ) -- ==> geen consent_status_at in DWH ook niet in DL
     AND t.T_SOURCE_PK_UUID <> '93773d5d-00b9-422d-af5c-b90259cf50ee'
   GROUP BY DtRef, t.SERVICE_PROVIDER_PSP_AUTHORISATION_NUMBER
@@ -130,7 +130,7 @@ count_NContAISPS AS(
     ROW_NUMBER() OVER () AS IDReg,
     'X' AS Ot,
     -- PXG perspective
-    LAST_DAY(DATE_ADD(DATE(TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}'))), INTERVAL -1 MONTH)) AS DtRef,
+    LAST_DAY(DATE_ADD(DATE(TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))), INTERVAL -1 MONTH)) AS DtRef,
     '5845' AS ASPSP,
     REPLACE (t.SERVICE_PROVIDER_PSP_AUTHORISATION_NUMBER, '.', '') as AISP,
     '{{country_code}}' AS PasASPSP,
@@ -153,9 +153,9 @@ count_NContAISPS AS(
   WHERE
     --  c.CONSENT_STATUS = 'VALID'
     LEFT(c.consent_iban,2) ='{{country_code}}'
-    AND c.CONSENT_CREATED_AT <= TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}'))
+    AND c.CONSENT_CREATED_AT <= TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))
     -- AND (acic.ACCESS_CONSENT_STATUS = 'ACTIVE'
-    --   or DATE(acic.ACCESS_CONSENT_STATUS_AT) >= DATE_ADD(DATE(TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}'))), INTERVAL -6 MONTH)
+    --   or DATE(acic.ACCESS_CONSENT_STATUS_AT) >= DATE_ADD(DATE(TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))), INTERVAL -6 MONTH)
     --   ) ==> no consent status at?
     AND t.T_SOURCE_PK_UUID <> '93773d5d-00b9-422d-af5c-b90259cf50ee'
   GROUP BY DtRef, t.SERVICE_PROVIDER_PSP_AUTHORISATION_NUMBER

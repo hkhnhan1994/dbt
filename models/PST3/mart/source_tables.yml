@@ -77,7 +77,7 @@ sources:
   - name: dwh_transaction_properties_current
 - name: source_keyset__
   project: pj-bu-dw-ks-prod
-  schema: prd_keysets__
+  schema: prd_keysets
   tables:
   - name: merged
 - name: source_dm_PPST_PT

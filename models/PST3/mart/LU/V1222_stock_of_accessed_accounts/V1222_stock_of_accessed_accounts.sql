@@ -28,12 +28,12 @@
       a.APPLICATION_NAME in ('PAY-PXG-BANQUPLU')
       AND fi.FINANCIAL_INSTITUTION_CODE <> 'IBIS' -- consents on UPP's own accounts are not counted
       AND (
-            ac.ACCESS_CONSENT_CREATED_AT >= TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}'))
-            AND ac.ACCESS_CONSENT_CREATED_AT < TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))
+            ac.ACCESS_CONSENT_CREATED_AT >= TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))
+            AND ac.ACCESS_CONSENT_CREATED_AT < TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))
           )
           OR (
-            ac.ACCESS_CONSENT_STATUS_AT >= TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}'))
-            AND ac.ACCESS_CONSENT_STATUS_AT < TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))
+            ac.ACCESS_CONSENT_STATUS_AT >= TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))
+            AND ac.ACCESS_CONSENT_STATUS_AT < TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))
               )
   GROUP BY
   1,2,3,4
@@ -66,6 +66,6 @@ where
   c.CONSENT_STATUS = 'VALID'
   and left(c.consent_iban,2) ='{{country_code}}'
   and  t.T_SOURCE_PK_UUID <> '93773d5d-00b9-422d-af5c-b90259cf50ee'
-  and  c.CONSENT_CREATED_AT <  TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))
-  and c.CONSENT_EXPIRED_AT >= TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}'))
+  and  c.CONSENT_CREATED_AT <  TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))
+  and c.CONSENT_EXPIRED_AT >= TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))
 group by 1,2,3

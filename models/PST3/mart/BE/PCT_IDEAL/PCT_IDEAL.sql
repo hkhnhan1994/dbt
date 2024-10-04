@@ -11,8 +11,8 @@
   ROUND(SUM(f_payment_items.PAYMENT_ITEM_AMOUNT)) AS AMOUNT,
   CURRENT_TIMESTAMP AS LOAD_TIMESTAMP,
   "{{period}}"  AS Period,
-  TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}'))  AS Period_begin_date,
-  TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))  AS Period_end_date,
+  TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))  AS Period_begin_date,
+  TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))  AS Period_end_date,
 FROM {{ source('source_dwh_STRP','D_PAYMENT_ITEM_INFO_DECRYPTED') }}
     AS d_payment_item_info
 LEFT JOIN {{ source('source_dwh_STRP','F_PAYMENT_TRANSACTIONS') }}
@@ -38,8 +38,8 @@ SELECT
  on cast (dl_trans_pro.transaction_id as string) = d_payment_transaction_info.T_SOURCE_PK_ID
 WHERE d_merchants.MERCHANT_COUNTRY  IS NOT NULL
     and d_payment_products.PRODUCT_CODE = "IDEAL_COLLECT"
-    and d_payment_transaction_info.payment_transaction_cutoff_at >= TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}'))   -- start of reporting period
-    and d_payment_transaction_info.payment_transaction_cutoff_at <= TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))   -- end of reporting period
+    and d_payment_transaction_info.payment_transaction_cutoff_at >= TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))   -- start of reporting period
+    and d_payment_transaction_info.payment_transaction_cutoff_at <= TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))   -- end of reporting period
 GROUP BY
     1,
     2

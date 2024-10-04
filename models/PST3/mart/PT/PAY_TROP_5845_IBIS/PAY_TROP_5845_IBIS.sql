@@ -99,8 +99,8 @@ WHERE fat.TRANSACTION_DIRECTION = "OUTBOUND"
   AND (ibis.ACCOUNT_TYPE ) = 'PAYMENT'
   AND fat.TRANSACTION_BANK_FAMILY = 'ICDT'
   AND fat.TRANSACTION_CHANNEL <> 'CARDS'
-  AND TIMESTAMP(ats.TRANSACTION_BOOKING_DATE_AT) >= TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}')) --pt winter time
-  AND TIMESTAMP(ats.TRANSACTION_BOOKING_DATE_AT) <= TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))  --pt winter time
+  AND TIMESTAMP(ats.TRANSACTION_BOOKING_DATE_AT) >= TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}')) --pt winter time
+  AND TIMESTAMP(ats.TRANSACTION_BOOKING_DATE_AT) <= TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))  --pt winter time
 ),
 inbound as (
   SELECT
@@ -170,8 +170,8 @@ WHERE fat.TRANSACTION_DIRECTION = "INBOUND"
   AND (ats.TRANSACTION_STATUS ) IN ('RETURNED', 'SETTLED')
   AND (ibis.ACCOUNT_TYPE ) = 'PAYMENT'
   AND fat.TRANSACTION_BANK_FAMILY = 'RCDT'
-  AND TIMESTAMP(ats.TRANSACTION_BOOKING_DATE_AT) >= TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}')) --pt winter time
-  AND TIMESTAMP(ats.TRANSACTION_BOOKING_DATE_AT) <= TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))  --pt winter time
+  AND TIMESTAMP(ats.TRANSACTION_BOOKING_DATE_AT) >= TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}')) --pt winter time
+  AND TIMESTAMP(ats.TRANSACTION_BOOKING_DATE_AT) <= TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))  --pt winter time
 )
 SELECT * FROM outbound
 UNION ALL

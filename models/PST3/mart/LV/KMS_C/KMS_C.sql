@@ -9,7 +9,7 @@
   count(*) as outbound_ibis_paymennts_trx_count,
   sum(FAT.TRANSACTION_AMOUNT) AS outbound_ibis_payments_amount_sum_in_EUR,
   CURRENT_TIMESTAMP AS LOAD_TIMESTAMP,
-  '{{period}}' AS PERIOD,
+  '{{period_time['period']}}' AS PERIOD,
 FROM {{ source('source_dwh_STRP','F_ACCOUNT_TRANSACTIONS_DECRYPTED') }} AS FAT
 LEFT JOIN {{ source('source_dwh_STRP','D_ACCOUNT_TRANSACTION_CURRENT') }} AS DAT
   ON FAT.T_D_ACCOUNT_TRANSACTION_DIM_KEY = DAT.T_DIM_KEY
@@ -22,8 +22,8 @@ LEFT JOIN {{ source('source_dwh_STRP','D_BANK_ACCOUNTS_DECRYPTED') }} AS CBA
 
 WHERE FAT.TRANSACTION_DIRECTION = "OUTBOUND"
   AND FAT.TRANSACTION_TYPE = 'REGULAR'
-  AND DAT.TRANSACTION_BOOKING_DATE_AT >= TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}'))
-  AND DAT.TRANSACTION_BOOKING_DATE_AT <= TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))
+  AND DAT.TRANSACTION_BOOKING_DATE_AT >= TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))
+  AND DAT.TRANSACTION_BOOKING_DATE_AT <= TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))
   AND DAT.TRANSACTION_STATUS IN ('RETURNED', 'SETTLED')
   AND IA.ACCOUNT_TYPE = 'PAYMENT'
   AND FAT.TRANSACTION_BANK_FAMILY = 'ICDT'

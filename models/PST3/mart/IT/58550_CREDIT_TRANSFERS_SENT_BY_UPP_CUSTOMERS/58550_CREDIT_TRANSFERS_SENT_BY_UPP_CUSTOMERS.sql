@@ -43,15 +43,15 @@
       AND  FAT.TRANSACTION_BANK_FAMILY = 'ICDT'
       AND FAT.TRANSACTION_CHANNEL <> 'CARDS'
       AND BA.FINANCIAL_INSTITUTION_COUNTRY_CODE IN ('{{country_code}}')
-      AND DAT.TRANSACTION_BOOKING_DATE_AT >= TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}'))
-      AND DAT.TRANSACTION_BOOKING_DATE_AT <= TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))
+      AND DAT.TRANSACTION_BOOKING_DATE_AT >= TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))
+      AND DAT.TRANSACTION_BOOKING_DATE_AT <= TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))
       AND  FAB.BALANCE_DATE =
       (
           SELECT max(max.BALANCE_DATE)
           FROM  {{ source('source_dwh_STRP','F_ACCOUNT_BALANCE') }} max
           JOIN  {{ source('source_dwh_STRP','D_IBIS_ACCOUNT_CURRENT') }} a
             ON max.T_D_IBIS_ACCOUNT_DIM_KEY = a.T_DIM_KEY
-          WHERE TIMESTAMP(max.BALANCE_DATE) <= TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))
+          WHERE TIMESTAMP(max.BALANCE_DATE) <= TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))
       )
   ),
   cmd as (

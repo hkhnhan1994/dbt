@@ -36,8 +36,8 @@ WHERE ftr.TRANSACTION_DIRECTION = 'OUTBOUND'
     AND dtr.TRANSACTION_STATUS IN ('SETTLED', 'RETURNED')
     AND ftr.TRANSACTION_BANK_FAMILY = 'ICDT'
     AND ftr.TRANSACTION_CHANNEL <> 'CARDS'
-    AND TIMESTAMP(dtr.TRANSACTION_BOOKING_DATE_AT) >= TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}')) --pt winter time
-    AND TIMESTAMP(dtr.TRANSACTION_BOOKING_DATE_AT) <= TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))   --pt winter time
+    AND TIMESTAMP(dtr.TRANSACTION_BOOKING_DATE_AT) >= TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}')) --pt winter time
+    AND TIMESTAMP(dtr.TRANSACTION_BOOKING_DATE_AT) <= TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))   --pt winter time
 UNION ALL
 SELECT
     'B' AS Ot,
@@ -71,8 +71,8 @@ WHERE ftr.TRANSACTION_DIRECTION = 'INBOUND'
     AND ftr.transaction_type IN ('RETURN')
     AND dtr.TRANSACTION_STATUS IN ('SETTLED', 'RETURNED')
     AND ftr.TRANSACTION_BANK_FAMILY = 'RCDT'
-    AND TIMESTAMP(dtr.TRANSACTION_BOOKING_DATE_AT) >= TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}')) --pt winter time
-    AND TIMESTAMP(dtr.TRANSACTION_BOOKING_DATE_AT) <= TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))   --pt winter time
+    AND TIMESTAMP(dtr.TRANSACTION_BOOKING_DATE_AT) >= TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}')) --pt winter time
+    AND TIMESTAMP(dtr.TRANSACTION_BOOKING_DATE_AT) <= TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))   --pt winter time
 --UNMATCHED TRANSACTIONS
 UNION ALL
 SELECT
@@ -105,8 +105,8 @@ WHERE utr.TRANSACTION_DIRECTION = 'OUTBOUND'
     AND utr.TRANSACTION_STATUS IN ('SETTLED', 'RETURNED')
     AND utr.TRANSACTION_BANK_FAMILY = 'ICDT'
     AND utr.TRANSACTION_CHANNEL <> 'CARDS'
-    AND TIMESTAMP(utr.TRANSACTION_BOOKING_DATE_AT) >= TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}')) --pt winter time
-    AND TIMESTAMP(utr.TRANSACTION_BOOKING_DATE_AT) <= TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))   --pt winter time
+    AND TIMESTAMP(utr.TRANSACTION_BOOKING_DATE_AT) >= TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}')) --pt winter time
+    AND TIMESTAMP(utr.TRANSACTION_BOOKING_DATE_AT) <= TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))   --pt winter time
 UNION ALL
 SELECT
     'B' AS Ot,
@@ -137,5 +137,5 @@ WHERE utr.TRANSACTION_DIRECTION = 'INBOUND'
     AND utr.transaction_type = 'RETURN'
     AND utr.TRANSACTION_STATUS IN ('SETTLED', 'RETURNED')
     AND utr.TRANSACTION_BANK_FAMILY = 'RCDT'
-    AND TIMESTAMP(utr.TRANSACTION_BOOKING_DATE_AT) >= TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}')) --pt winter time
-    AND TIMESTAMP(utr.TRANSACTION_BOOKING_DATE_AT) <= TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))   --pt winter time
+    AND TIMESTAMP(utr.TRANSACTION_BOOKING_DATE_AT) >= TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}')) --pt winter time
+    AND TIMESTAMP(utr.TRANSACTION_BOOKING_DATE_AT) <= TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))   --pt winter time

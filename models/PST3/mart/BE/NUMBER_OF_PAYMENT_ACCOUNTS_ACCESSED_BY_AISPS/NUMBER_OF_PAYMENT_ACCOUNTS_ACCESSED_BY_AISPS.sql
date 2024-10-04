@@ -8,8 +8,8 @@
     LEFT(t.SERVICE_PROVIDER_PSP_AUTHORITY_ID,2) countryOfAISP,
     c.consent_iban,
     "{{period}}"  AS Period,
-    TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}'))  AS Period_begin_date,
-    TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))  AS Period_end_date,
+    TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))  AS Period_begin_date,
+    TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))  AS Period_end_date,
     CURRENT_TIMESTAMP AS LOAD_TIMESTAMP,
 FROM {{ source('source_dwh_STRP','D_ASPSP_CONSENT_DECRYPTED') }} c
 JOIN {{ source('source_dwh_STRP','D_ASPSP_CONSENT_DECRYPTED') }} cc
@@ -19,6 +19,6 @@ JOIN {{ source('source_dwh_STRP','D_ASPSP_TPP') }} t
 WHERE
     c.CONSENT_STATUS = 'VALID'
     AND left(c.consent_iban,2) = '{{country_code}}'
-    AND c.CONSENT_CREATED_AT >= TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}'))
-    AND c.CONSENT_EXPIRED_AT <= TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))
+    AND c.CONSENT_CREATED_AT >= TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))
+    AND c.CONSENT_EXPIRED_AT <= TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))
     AND  t.T_SOURCE_PK_UUID <> '93773d5d-00b9-422d-af5c-b90259cf50ee'

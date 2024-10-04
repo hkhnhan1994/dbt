@@ -32,7 +32,7 @@
   COUNT(DISTINCT FAT.T_SOURCE_PK_ID) AS outbound_ibis_payments_trx_count,
   COALESCE(SUM(FAT.TRANSACTION_AMOUNT), 0) AS outbound_ibis_payments_amount_sum_in_EUR,
   CURRENT_TIMESTAMP AS LOAD_TIMESTAMP,
-  '{{period}}' AS PERIOD,
+  '{{period_time['period']}}' AS PERIOD,
 
 FROM
     {{ source('source_dwh_STRP','F_ACCOUNT_TRANSACTIONS_DECRYPTED') }} AS FAT
@@ -52,8 +52,8 @@ LEFT JOIN
 WHERE
     FAT.TRANSACTION_DIRECTION = 'OUTBOUND'
     AND FAT.TRANSACTION_TYPE = 'REGULAR'
-    AND DAT.TRANSACTION_BOOKING_DATE_AT >= TIMESTAMP(DATETIME('{{begin_date}}', '{{time_zone}}'))
-    AND DAT.TRANSACTION_BOOKING_DATE_AT <= TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))
+    AND DAT.TRANSACTION_BOOKING_DATE_AT >= TIMESTAMP(DATETIME('{{period_time['begin_date']}}', '{{time_zone}}'))
+    AND DAT.TRANSACTION_BOOKING_DATE_AT <= TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))
     AND DAT.TRANSACTION_STATUS IN ('RETURNED', 'SETTLED')
     AND DIAT.ACCOUNT_TYPE = 'PAYMENT'
     AND FAT.TRANSACTION_BANK_FAMILY = 'ICDT'

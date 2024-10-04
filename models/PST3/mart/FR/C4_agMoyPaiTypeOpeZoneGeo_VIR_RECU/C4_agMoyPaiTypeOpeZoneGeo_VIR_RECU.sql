@@ -28,8 +28,8 @@ JOIN {{ source('source_dwh_STRP','D_ACCOUNT_TRANSACTION_CURRENT') }} dtr
   AND cred.FINANCIAL_INSTITUTION_COUNTRY_CODE =  '{{country_code}}'
   AND ftr.TRANSACTION_BANK_FAMILY = 'RCDT'
   AND iacc.ACCOUNT_TYPE = 'PAYMENT'
-  AND dtr.TRANSACTION_BOOKING_DATE_AT >= TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}'))
-  AND dtr.TRANSACTION_BOOKING_DATE_AT <= TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))
+  AND dtr.TRANSACTION_BOOKING_DATE_AT >= TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))
+  AND dtr.TRANSACTION_BOOKING_DATE_AT <= TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))
 WHERE ftr.TRANSACTION_DIRECTION = 'INBOUND'
   AND ftr.transaction_type  = 'REGULAR'
 GROUP BY deb.FINANCIAL_INSTITUTION_COUNTRY_CODE

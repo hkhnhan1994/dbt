@@ -24,10 +24,10 @@
   WHERE
     a.APPLICATION_NAME in ('PAY-PXG-BANQUPLV')
     AND fi.FINANCIAL_INSTITUTION_CODE <> 'IBIS' -- consents on UPP's own accounts are not counted
-    AND ( ac.ACCESS_CONSENT_CREATED_AT >= TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}'))
-          AND ac.ACCESS_CONSENT_CREATED_AT <= TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))
-          OR (ac.ACCESS_CONSENT_STATUS_AT > TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}'))
-              AND ac.ACCESS_CONSENT_STATUS_AT <= TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))
+    AND ( ac.ACCESS_CONSENT_CREATED_AT >= TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))
+          AND ac.ACCESS_CONSENT_CREATED_AT <= TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))
+          OR (ac.ACCESS_CONSENT_STATUS_AT > TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))
+              AND ac.ACCESS_CONSENT_STATUS_AT <= TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))
             )
     )
   GROUP BY ac.USER_TOKEN
@@ -35,5 +35,5 @@
   SELECT
     COUNT(DISTINCT USER_TOKEN) AS unique_users_count_in_period,
     CURRENT_TIMESTAMP AS LOAD_TIMESTAMP,
-    '{{period}}' AS PERIOD,
+    '{{period_time['period']}}' AS PERIOD,
   FROM obsolete_and_active_consents_count_in_reporting_period

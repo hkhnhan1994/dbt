@@ -39,6 +39,6 @@ LEFT JOIN  {{ source('source_dwh_STRP','D_BANK_ACCOUNTS_DECRYPTED') }} credacc
           AND substr( credacc.BANK_ACCOUNT_NUMBER,5,5)= '36330'
          )
       )
-    AND DIT.INBOUND_TRANSACTION_CREATED_AT >= TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}'))
-    AND DIT.INBOUND_TRANSACTION_CREATED_AT <= TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))
+    AND DIT.INBOUND_TRANSACTION_CREATED_AT >= TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))
+    AND DIT.INBOUND_TRANSACTION_CREATED_AT <= TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))
 GROUP BY 1,2,3

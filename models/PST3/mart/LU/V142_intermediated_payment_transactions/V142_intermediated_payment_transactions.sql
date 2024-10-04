@@ -28,8 +28,8 @@ WHERE
     f_payment_transactions.PAYMENT_TRANSACTION_TYPE != 'REFUND'
     AND (d_merchants.MERCHANT_COUNTRY )= '{{country_code}}'
     AND d_payment_products.PRODUCT_CODE IN ('SILVERFLOW_CARDS')
-    AND d_payment_transaction_info.PAYMENT_TRANSACTION_CUTOFF_AT >= TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}'))   -- +01 for winter time, +02 for summer time
-    AND d_payment_transaction_info.PAYMENT_TRANSACTION_CUTOFF_AT <= TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}')) -- like timezone('UTC', to_timestamp('2023-12-31 UTC+01', 'YYYY-MM-DD ""UTC""TZH') + interval '1 day') -- +01 for winter time, +02 for summer time
+    AND d_payment_transaction_info.PAYMENT_TRANSACTION_CUTOFF_AT >= TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))   -- +01 for winter time, +02 for summer time
+    AND d_payment_transaction_info.PAYMENT_TRANSACTION_CUTOFF_AT <= TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}')) -- like timezone('UTC', to_timestamp('2023-12-31 UTC+01', 'YYYY-MM-DD ""UTC""TZH') + interval '1 day') -- +01 for winter time, +02 for summer time
   group by 1,2,3,4,5,6,7,8
 union all
 
@@ -55,8 +55,8 @@ LEFT JOIN {{ source('source_dwh_STRP','D_PAYMENT_PRODUCTS') }} AS d_payment_prod
 LEFT JOIN {{ source('source_dwh_STRP','D_PAYMENT_TRANSACTION_INFO_DECRYPTED') }} AS REFUND ON REFUND.T_DIM_KEY = f_payment_transactions.REFUND_ORIGINAL_PAYMENT_TRANSACTION_DIM_KEY
 WHERE (d_merchants.MERCHANT_COUNTRY )= '{{country_code}}'
     AND d_payment_products.PRODUCT_CODE IN ('SILVERFLOW_CARDS')
-    AND d_payment_transaction_info.PAYMENT_TRANSACTION_CUTOFF_AT >= TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}'))   -- +01 for winter time, +02 for summer time
-    AND d_payment_transaction_info.PAYMENT_TRANSACTION_CUTOFF_AT <= TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}')) -- like timezone('UTC', to_timestamp('2023-12-31 UTC+01', 'YYYY-MM-DD ""UTC""TZH') + interval '1 day') -- +01 for winter time, +02 for summer time
+    AND d_payment_transaction_info.PAYMENT_TRANSACTION_CUTOFF_AT >= TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))   -- +01 for winter time, +02 for summer time
+    AND d_payment_transaction_info.PAYMENT_TRANSACTION_CUTOFF_AT <= TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}')) -- like timezone('UTC', to_timestamp('2023-12-31 UTC+01', 'YYYY-MM-DD ""UTC""TZH') + interval '1 day') -- +01 for winter time, +02 for summer time
 group by 1,2,3,4,5,6,7,8
 union all
 
@@ -87,8 +87,8 @@ SELECT
       f_payment_transactions.PAYMENT_TRANSACTION_TYPE = 'REFUND'
       AND (d_merchants.MERCHANT_COUNTRY )= '{{country_code}}'
       AND d_payment_products.PRODUCT_CODE IN ('SILVERFLOW_CARDS')
-      AND REFUND.PAYMENT_TRANSACTION_CUTOFF_AT >= TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}'))   -- +01 for winter time, +02 for summer time
-      AND REFUND.PAYMENT_TRANSACTION_CUTOFF_AT <= TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}')) -- like timez
+      AND REFUND.PAYMENT_TRANSACTION_CUTOFF_AT >= TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))   -- +01 for winter time, +02 for summer time
+      AND REFUND.PAYMENT_TRANSACTION_CUTOFF_AT <= TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}')) -- like timez
     group by 1,2,3,4,5,6,7,8
     union all
 
@@ -118,6 +118,6 @@ WHERE
     f_payment_transactions.PAYMENT_TRANSACTION_TYPE = 'REFUND'
     AND (d_merchants.MERCHANT_COUNTRY )= '{{country_code}}'
     AND d_payment_products.PRODUCT_CODE IN ('SILVERFLOW_CARDS')
-    AND REFUND.PAYMENT_TRANSACTION_CUTOFF_AT >= TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}'))   -- +01 for winter time, +02 for summer time
-    AND REFUND.PAYMENT_TRANSACTION_CUTOFF_AT <= TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}')) -- like timez
+    AND REFUND.PAYMENT_TRANSACTION_CUTOFF_AT >= TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))   -- +01 for winter time, +02 for summer time
+    AND REFUND.PAYMENT_TRANSACTION_CUTOFF_AT <= TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}')) -- like timez
   group by 1,2,3,4,5,6,7,8

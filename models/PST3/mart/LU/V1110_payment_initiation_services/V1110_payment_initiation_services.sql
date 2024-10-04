@@ -32,8 +32,8 @@ WHERE FI.FINANCIAL_INSTITUTION_CODE  <> 'IBIS'
     AND PI.PAYMENT_INITIATION_STATUS = 'SUCCESSFUL'
     AND (
         APP.APPLICATION_NAME  = '	PAY-PXG-BANQUPLU')
-    AND TIMESTAMP(DIT.INBOUND_TRANSACTION_CREATED_AT) >= TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}'))  --pt winter time
-    AND TIMESTAMP(DIT.INBOUND_TRANSACTION_CREATED_AT) <= TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))   --pt winter time
+    AND TIMESTAMP(DIT.INBOUND_TRANSACTION_CREATED_AT) >= TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))  --pt winter time
+    AND TIMESTAMP(DIT.INBOUND_TRANSACTION_CREATED_AT) <= TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))   --pt winter time
 
 
 GROUP BY 1, 2, 3
@@ -69,8 +69,8 @@ WHERE
   AND APP.APPLICATION_NAME  = 'PAY-PXG-OCS'
   AND FI.FINANCIAL_INSTITUTION_CODE <> 'IBIS'
   AND NOT (credacc.FINANCIAL_INSTITUTION_COUNTRY_CODE = 'LU' AND  SUBSTR( credacc.BANK_ACCOUNT_NUMBER,5,3) = '625')
-  AND TIMESTAMP(DIT.INBOUND_TRANSACTION_CREATED_AT) >= TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}'))  --pt winter time
-  AND TIMESTAMP(DIT.INBOUND_TRANSACTION_CREATED_AT) <= TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))   --pt winter time
+  AND TIMESTAMP(DIT.INBOUND_TRANSACTION_CREATED_AT) >= TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))  --pt winter time
+  AND TIMESTAMP(DIT.INBOUND_TRANSACTION_CREATED_AT) <= TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))   --pt winter time
 
 GROUP BY 1, 2, 3
 ORDER BY 4 DESC
@@ -113,7 +113,7 @@ ORDER BY 4 DESC
       country,
       CURRENT_TIMESTAMP AS LOAD_TIMESTAMP,
       CAST ("{{period}}" AS STRING) AS Period,
-      TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}'))  AS Period_begin_date,
-      TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))  AS Period_end_date,
+      TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))  AS Period_begin_date,
+      TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))  AS Period_end_date,
   FROM pre_source
   LEFT JOIN country_mapping on country_mapping.code =pre_source.COUNTERPARTY_COUNTRY

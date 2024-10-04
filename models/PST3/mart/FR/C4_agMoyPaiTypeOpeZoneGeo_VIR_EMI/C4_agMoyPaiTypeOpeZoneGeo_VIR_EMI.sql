@@ -29,8 +29,8 @@ DM as (
     AND dtr.TRANSACTION_STATUS  IN ('SETTLED', 'RETURNED')
     AND ftr.TRANSACTION_BANK_FAMILY = 'ICDT'
     AND ftr.TRANSACTION_CHANNEL <> 'CARDS'
-    AND dtr.TRANSACTION_BOOKING_DATE_AT >= TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}'))
-    AND dtr.TRANSACTION_BOOKING_DATE_AT <= TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))
+    AND dtr.TRANSACTION_BOOKING_DATE_AT >= TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))
+    AND dtr.TRANSACTION_BOOKING_DATE_AT <= TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))
   GROUP BY cred.FINANCIAL_INSTITUTION_COUNTRY_CODE
   ORDER BY payee_psp_country ASC
 )

@@ -34,5 +34,5 @@ LEFT JOIN {{ source('source_dwh_STRP','D_FINANCIAL_PLATFORMS_DECRYPTED') }}
 LEFT JOIN {{ source('source_dwh_STRP','D_FINANCIAL_INSTITUTIONS') }}
     AS fi ON fi.T_DIM_KEY = fp.T_D_FINANCIAL_INSTITUTION_DIM_KEY
 -- WHERE ap.APPLICATION_NAME <>"NA"
-    -- AND TIMESTAMP(ap.APPLICATION_UPDATED_AT) >= TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}')) --pt winter time
-    -- AND TIMESTAMP(ap.APPLICATION_UPDATED_AT) <= TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))  --pt winter time
+    -- AND TIMESTAMP(ap.APPLICATION_UPDATED_AT) >= TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}')) --pt winter time
+    -- AND TIMESTAMP(ap.APPLICATION_UPDATED_AT) <= TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))  --pt winter time

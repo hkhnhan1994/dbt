@@ -35,8 +35,8 @@ WHERE FI.FINANCIAL_INSTITUTION_CODE  <> 'IBIS'
      AND NOT (credacc.FINANCIAL_INSTITUTION_COUNTRY_CODE = 'BE'
           AND  SUBSTR( credacc.BANK_ACCOUNT_NUMBER ,5,3) = '504'
           )
-     AND DIT.INBOUND_TRANSACTION_CREATED_AT >= TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}'))
-     AND DIT.INBOUND_TRANSACTION_CREATED_AT <= TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))
+     AND DIT.INBOUND_TRANSACTION_CREATED_AT >= TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))
+     AND DIT.INBOUND_TRANSACTION_CREATED_AT <= TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))
 
 GROUP BY 1, 2, 3
 
@@ -74,8 +74,8 @@ AND APP.APPLICATION_NAME  = 'PAY-PXG-OCS'
 AND FI.FINANCIAL_INSTITUTION_CODE  <> 'IBIS'
 AND (credacc.FINANCIAL_INSTITUTION_COUNTRY_CODE = '{{country_code}}'
 AND  SUBSTR( credacc.BANK_ACCOUNT_NUMBER,5,5) = '27933')
-AND DIT.INBOUND_TRANSACTION_CREATED_AT >= TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}'))
-AND DIT.INBOUND_TRANSACTION_CREATED_AT <= TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))
+AND DIT.INBOUND_TRANSACTION_CREATED_AT >= TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))
+AND DIT.INBOUND_TRANSACTION_CREATED_AT <= TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))
 
 GROUP BY 1, 2, 3
 ORDER BY 4 DESC

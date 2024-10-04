@@ -16,10 +16,10 @@ AND (ibis.ACCOUNT_STATUS = 'OPEN'
   OR
     (
       ibis.ACCOUNT_STATUS = 'CLOSED'
-      AND ibis.ACCOUNT_UPDATED_AT >= TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))
+      AND ibis.ACCOUNT_UPDATED_AT >= TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))
     )
 )
 -- as timezone('UTC', to_timestamp('2023-06-30 UTC+02', 'YYYY-MM-DD "UTC"TZH') + interval '1 day')))
 AND bank.FINANCIAL_INSTITUTION_COUNTRY_CODE = '{{country_code}}'
-AND ibis.ACCOUNT_CREATED_AT >= TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))
+AND ibis.ACCOUNT_CREATED_AT >= TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))
 -- as timezone('UTC', to_timestamp('2023-06-30 UTC+02', 'YYYY-MM-DD "UTC"TZH') + interval '1 day')

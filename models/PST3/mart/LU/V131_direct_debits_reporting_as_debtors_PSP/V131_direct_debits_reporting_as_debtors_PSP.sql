@@ -30,8 +30,8 @@ WHERE
   AND bank.FINANCIAL_INSTITUTION_COUNTRY_CODE = '{{country_code}}'
   AND ftr.TRANSACTION_BANK_FAMILY = 'RDDT'
   AND ftr.TRANSACTION_BANK_SUBFAMILY in ('ESDD', 'OODD', 'BBDD')
-  AND dtr.TRANSACTION_BOOKING_DATE_AT >= TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}'))   -- +01 for winter time, +02 for summer time
-  AND dtr.TRANSACTION_BOOKING_DATE_AT <= TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))  -- like timezone('UTC', to_timestamp('2023-12-31 UTC+01', 'YYYY-MM-DD ""UTC""TZH') + interval '1 day') -- +01 for winter time, +02 for summer time
+  AND dtr.TRANSACTION_BOOKING_DATE_AT >= TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))   -- +01 for winter time, +02 for summer time
+  AND dtr.TRANSACTION_BOOKING_DATE_AT <= TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))  -- like timezone('UTC', to_timestamp('2023-12-31 UTC+01', 'YYYY-MM-DD ""UTC""TZH') + interval '1 day') -- +01 for winter time, +02 for summer time
 group by 1,2,3,4,5,6,7,8
 union all
 
@@ -61,7 +61,7 @@ WHERE
   AND bank.FINANCIAL_INSTITUTION_COUNTRY_CODE = '{{country_code}}'
   AND ftr.TRANSACTION_BANK_FAMILY = 'RDDT'
   AND ftr.TRANSACTION_BANK_SUBFAMILY in ('ESDD', 'OODD', 'BBDD')
-  AND dtr.TRANSACTION_BOOKING_DATE_AT >= TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}'))   -- +01 for winter time, +02 for summer time
-  AND dtr.TRANSACTION_BOOKING_DATE_AT <= TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))  -- like timezone('UTC', to_timestamp('2023-12-31 UTC+01', 'YYYY-MM-DD ""UTC""TZH') + interval '1 day') -- +01 for winter time, +02 for summer time
+  AND dtr.TRANSACTION_BOOKING_DATE_AT >= TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))   -- +01 for winter time, +02 for summer time
+  AND dtr.TRANSACTION_BOOKING_DATE_AT <= TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))  -- like timezone('UTC', to_timestamp('2023-12-31 UTC+01', 'YYYY-MM-DD ""UTC""TZH') + interval '1 day') -- +01 for winter time, +02 for summer time
 group by 1,2,3,4,5,6,7,8
 order by 1,2,3,4,5,6,7,8

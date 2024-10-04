@@ -22,7 +22,7 @@ and BANK.FINANCIAL_INSTITUTION_COUNTRY_CODE = '{{country_code}}'
 and IACC.ACCOUNT_STATUS = 'OPEN'
 or (
   IACC.ACCOUNT_STATUS = 'CLOSED'
-  and IACC.ACCOUNT_UPDATED_AT > TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}'))
+  and IACC.ACCOUNT_UPDATED_AT > TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))
   )
-and IACC.ACCOUNT_CREATED_AT < TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))
+and IACC.ACCOUNT_CREATED_AT < TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))
 group by 1,2

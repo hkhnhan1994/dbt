@@ -7,7 +7,7 @@
         SELECT
     "Y" AS Ot,
     row_number() over () as IDReg,
-    LAST_DAY(date_add(DATE(TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}'))), INTERVAL -1 MONTH)) as DtRef,
+    LAST_DAY(date_add(DATE(TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))), INTERVAL -1 MONTH)) as DtRef,
     'PSDBE-NBB-0649860804' as AISP,
     '{{country_code}}' as PasCl,
     COUNT(DISTINCT acic.USER_TOKEN) as NCl,
@@ -30,6 +30,6 @@ WHERE
     -- ad.APPLICATION_NAME = 'PAY-PXG-BANQUPPT'
     ad.APPLICATION_NAME in ('PAY-PXG-COMMUNITY', 'PAY-PXG-GOCOMPTA', 'PAY-PXG-MAGIC4BUSINESS', 'PAY-PXG-YOURSMINC', 'PAY-PXG-MIJNBOEKHOUDER')  -- Replace previous premise with thise for test with BE data
     and fi.FINANCIAL_INSTITUTION_CODE != 'IBIS'
-    AND acic.ACCESS_CONSENT_CREATED_AT >= TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}'))
-    AND acic.ACCESS_CONSENT_CREATED_AT <= TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))
+    AND acic.ACCESS_CONSENT_CREATED_AT >= TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))
+    AND acic.ACCESS_CONSENT_CREATED_AT <= TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))
 GROUP BY 1,3,4,5,7,8

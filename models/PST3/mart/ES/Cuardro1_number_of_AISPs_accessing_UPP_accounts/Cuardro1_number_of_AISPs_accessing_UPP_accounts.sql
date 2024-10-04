@@ -17,6 +17,6 @@ INNER JOIN {{ source('source_dwh_STRP','D_ASPSP_TPP') }} t
 WHERE
   c.CONSENT_STATUS = 'VALID'
   and left(c.consent_iban,2) ='{{country_code}}'
-  and c.CONSENT_EXPIRED_AT >= TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}'))
-  and c.CONSENT_CREATED_AT <= TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))
+  and c.CONSENT_EXPIRED_AT >= TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))
+  and c.CONSENT_CREATED_AT <= TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))
   and  t.T_SOURCE_PK_UUID <> '93773d5d-00b9-422d-af5c-b90259cf50ee'

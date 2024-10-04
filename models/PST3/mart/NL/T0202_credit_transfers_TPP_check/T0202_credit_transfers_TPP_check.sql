@@ -14,10 +14,10 @@
   D.SERVICE_PROVIDER_CREATED_AT,
   D.SERVICE_PROVIDER_UPDATED_AT,
   CURRENT_TIMESTAMP AS LOAD_TIMESTAMP,
-  '{{period}}' AS PERIOD,
+  '{{period_time['period']}}' AS PERIOD,
 from {{ source('source_dwh_STRP','D_ASPSP_TPP_CURRENT') }} C
 inner join  {{ source('source_dwh_STRP','D_ASPSP_TPP_DECRYPTED') }} D
   on C.T_SOURCE_PK_UUID = D.T_SOURCE_PK_UUID
 where D.T_SOURCE_PK_UUID <> '93773d5d-00b9-422d-af5c-b90259cf50ee'
-  AND C.SERVICE_PROVIDER_CREATED_AT >= TIMESTAMP(DATETIME('{{begin_date}}', '{{time_zone}}'))
-  AND C.SERVICE_PROVIDER_CREATED_AT <= TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))
+  AND C.SERVICE_PROVIDER_CREATED_AT >= TIMESTAMP(DATETIME('{{period_time['begin_date']}}', '{{time_zone}}'))
+  AND C.SERVICE_PROVIDER_CREATED_AT <= TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))

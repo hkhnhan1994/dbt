@@ -10,7 +10,7 @@
   count(*) as count,
   COALESCE(SUM(FAM.MOVEMENT_AMOUNT), 0) as amount,
   CURRENT_TIMESTAMP AS LOAD_TIMESTAMP,
-  '{{period}}' AS PERIOD
+  '{{period_time['period']}}' AS PERIOD
 FROM {{ source('source_dwh_STRP','F_ACCOUNT_MOVEMENTS_DECRYPTED') }} AS FAM
 LEFT JOIN {{ source('source_dwh_STRP','D_IBIS_ACCOUNT_CURRENT') }} AS DIAT
   ON FAM.T_D_IBIS_ACCOUNT_DIM_KEY = DIAT.T_DIM_KEY
@@ -20,7 +20,7 @@ LEFT JOIN {{ source('source_dwh_STRP','D_BANK_ACCOUNTS_DECRYPTED') }} AS DCA
   ON DCA.T_DIM_KEY = FAM.T_COUNTERPARTY_BANK_ACCOUNT_DIM_KEY
 WHERE DIAT.ACCOUNT_TYPE = 'PAYMENT'
   AND DBA.FINANCIAL_INSTITUTION_COUNTRY_CODE = '{{country_code}}'
-  AND FAM.MOVEMENT_BOOKING_DATE_AT >= TIMESTAMP(DATETIME('{{begin_date}}', '{{time_zone}}'))
-  AND FAM.MOVEMENT_BOOKING_DATE_AT <= TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))
+  AND FAM.MOVEMENT_BOOKING_DATE_AT >= TIMESTAMP(DATETIME('{{period_time['begin_date']}}', '{{time_zone}}'))
+  AND FAM.MOVEMENT_BOOKING_DATE_AT <= TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))
 GROUP BY 1,2
 ORDER BY 1,2

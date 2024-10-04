@@ -10,8 +10,8 @@
   count(*) AS number_of_consents,
   "{{period}}"  AS Period,
   CURRENT_TIMESTAMP AS load_timestamp,
-  TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}'))  AS Period_begin_date,
-  TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))  AS Period_end_date,
+  TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))  AS Period_begin_date,
+  TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))  AS Period_end_date,
 FROM {{ source('source_dwh_STRP','D_ACCESS_CONSENT_INFO_CURRENT') }} AS ac
 JOIN {{ source('source_dwh_STRP','D_ACCESS_CONSENT_INFO_DECRYPTED') }} acd on acd.T_DIM_KEY = ac.T_DIM_KEY
 JOIN {{ source('source_dwh_STRP','D_PXG_PAYMENT_ACCOUNT_DECRYPTED') }}
@@ -32,13 +32,13 @@ WHERE
   fi.FINANCIAL_INSTITUTION_CODE <> 'IBIS'
   AND (
     (
-    TIMESTAMP(ac.ACCESS_CONSENT_STATUS_AT) >= TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}'))  --pt winter time
-    AND TIMESTAMP(ac.ACCESS_CONSENT_STATUS_AT) <= TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))   --pt winter time
+    TIMESTAMP(ac.ACCESS_CONSENT_STATUS_AT) >= TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))  --pt winter time
+    AND TIMESTAMP(ac.ACCESS_CONSENT_STATUS_AT) <= TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))   --pt winter time
     )
     OR
     (
-    TIMESTAMP(ac.ACCESS_CONSENT_CREATED_AT) >= TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}'))  --pt winter time
-    AND TIMESTAMP(ac.ACCESS_CONSENT_CREATED_AT) <= TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))   --pt winter time
+    TIMESTAMP(ac.ACCESS_CONSENT_CREATED_AT) >= TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))  --pt winter time
+    AND TIMESTAMP(ac.ACCESS_CONSENT_CREATED_AT) <= TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))   --pt winter time
     )
   )
 GROUP BY 1,2

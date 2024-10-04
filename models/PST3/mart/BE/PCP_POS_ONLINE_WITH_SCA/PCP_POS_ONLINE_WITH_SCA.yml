@@ -1,9 +1,0 @@
-models:
-- name: PCP_POS_ONLINE_WITH_SCA
-  description: description text
-  config:
-    dataset: dm_pst3_BE
-    alias: PCP_POS_ONLINE_WITH_SCA
-    tags:
-    - pst3
-    - semesterly

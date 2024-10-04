@@ -42,6 +42,6 @@
     AND FAT.TRANSACTION_BANK_FAMILY = 'ICDT'
     AND FAT.TRANSACTION_CHANNEL <> 'CARDS'
     AND BA.FINANCIAL_INSTITUTION_COUNTRY_CODE IN ('{{country_code}}')
-    AND DAT.TRANSACTION_BOOKING_DATE_AT >= TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}'))
-    AND DAT.TRANSACTION_BOOKING_DATE_AT <= TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))
+    AND DAT.TRANSACTION_BOOKING_DATE_AT >= TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))
+    AND DAT.TRANSACTION_BOOKING_DATE_AT <= TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))
   group by 1,2,3,4,5

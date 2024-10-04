@@ -28,8 +28,8 @@
     on FAB.T_D_IBIS_ACCOUNT_DIM_KEY = IA.T_DIM_KEY
   WHERE FAT.TRANSACTION_DIRECTION = "INBOUND"
       AND FAT.TRANSACTION_TYPE = 'REGULAR'
-      AND DAT.TRANSACTION_BOOKING_DATE_AT >= TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}'))
-      AND DAT.TRANSACTION_BOOKING_DATE_AT <= TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))
+      AND DAT.TRANSACTION_BOOKING_DATE_AT >= TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))
+      AND DAT.TRANSACTION_BOOKING_DATE_AT <= TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))
       AND DAT.TRANSACTION_STATUS IN ('RETURNED', 'SETTLED')
       AND IA.ACCOUNT_TYPE = 'PAYMENT'
       AND FAT.TRANSACTION_BANK_FAMILY = 'RCDT'
@@ -39,7 +39,7 @@
         FROM  {{ source('source_dwh_STRP','F_ACCOUNT_BALANCE') }} max
         JOIN  {{ source('source_dwh_STRP','D_IBIS_ACCOUNT_CURRENT') }} a
           ON FAB.T_D_IBIS_ACCOUNT_DIM_KEY = a.T_DIM_KEY
-        WHERE TIMESTAMP(max.BALANCE_DATE) <= TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))
+        WHERE TIMESTAMP(max.BALANCE_DATE) <= TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))
         )
   ),
 cmd as (

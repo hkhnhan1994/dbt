@@ -10,7 +10,7 @@
   count(*)  AS success_trx_count,
   sum(IT.INBOUND_TRANSACTION_AMOUNT) AS success_trx_summed_value,
   CURRENT_TIMESTAMP AS LOAD_TIMESTAMP,
-  '{{period}}' AS PERIOD,
+  '{{period_time['period']}}' AS PERIOD,
   FROM {{ source('source_dwh_STRP','D_INBOUND_PAYMENT_INFO_DECRYPTED') }} as IP
   LEFT JOIN {{ source('source_dwh_STRP','D_FINANCIAL_PLATFORMS_DECRYPTED') }} FP
       ON IP.T_D_FINANCIAL_PLATFORM_DIM_KEY=FP.T_DIM_KEY
@@ -37,6 +37,6 @@
             AND substr( credacc.BANK_ACCOUNT_NUMBER,5,4)= '6918'
             )
         )
-    AND DIT.INBOUND_TRANSACTION_CREATED_AT >= TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}'))
-    AND DIT.INBOUND_TRANSACTION_CREATED_AT <= TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))
+    AND DIT.INBOUND_TRANSACTION_CREATED_AT >= TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))
+    AND DIT.INBOUND_TRANSACTION_CREATED_AT <= TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))
   GROUP BY 1,2

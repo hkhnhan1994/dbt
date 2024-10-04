@@ -103,6 +103,5 @@
         {% set begin_date = begin_date.strftime("%Y-%m-%d") %}
         {% set end_date = end_date.strftime("%Y-%m-%d") %}
     {%- endif %}  
-    {{ print("{} {} {}".format(period, begin_date, end_date)) }}  
     {{ return({"period":period,"begin_date":begin_date,"end_date":end_date }) }}
 {% endmacro %}

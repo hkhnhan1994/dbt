@@ -21,15 +21,15 @@ WHERE
     iacc.ACCOUNT_STATUS = 'OPEN'
     OR (
       iacc.ACCOUNT_STATUS = 'CLOSED'
-      AND iacc.ACCOUNT_UPDATED_AT > TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))
+      AND iacc.ACCOUNT_UPDATED_AT > TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))
       )
   )
-  AND iacc.ACCOUNT_UPDATED_AT <= TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))
+  AND iacc.ACCOUNT_UPDATED_AT <= TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))
   AND FAB.BALANCE_DATE = (
       SELECT max(BALANCE_DATE)
       FROM {{ source('source_dwh_STRP','F_ACCOUNT_BALANCE') }} max
       JOIN {{ source('source_dwh_STRP','D_IBIS_ACCOUNT_CURRENT') }}  a
         ON max.T_D_IBIS_ACCOUNT_DIM_KEY = a.T_DIM_KEY
-        WHERE TIMESTAMP(max.BALANCE_DATE) <= TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))
+        WHERE TIMESTAMP(max.BALANCE_DATE) <= TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))
   )
 group by 1,2

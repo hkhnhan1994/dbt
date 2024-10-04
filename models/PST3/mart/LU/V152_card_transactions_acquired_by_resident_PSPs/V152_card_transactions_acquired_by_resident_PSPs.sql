@@ -35,6 +35,6 @@ LEFT JOIN {{ source('source_dwh_STRP','D_PAYMENT_PRODUCTS') }} AS d_payment_prod
   ON f_payment_transactions.T_D_PRODUCT_DIM_KEY = d_payment_products.T_DIM_KEY
 WHERE (d_merchants.MERCHANT_COUNTRY )= '{{country_code}}'
   AND d_payment_products.PRODUCT_CODE IN ('SILVERFLOW_CARDS')
-  AND d_payment_transaction_info.PAYMENT_TRANSACTION_CUTOFF_AT >= TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}'))
-  AND d_payment_transaction_info.PAYMENT_TRANSACTION_CUTOFF_AT <= TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))
+  AND d_payment_transaction_info.PAYMENT_TRANSACTION_CUTOFF_AT >= TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))
+  AND d_payment_transaction_info.PAYMENT_TRANSACTION_CUTOFF_AT <= TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))
   GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12

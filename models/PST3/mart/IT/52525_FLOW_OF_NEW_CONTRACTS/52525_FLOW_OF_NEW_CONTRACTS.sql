@@ -12,7 +12,7 @@ from {{ source('source_dwh_STRP','D_IBIS_ACCOUNT_CURRENT') }} iacc
 WHERE
   iacc.ACCOUNT_TYPE = "PAYMENT"
   AND  iacc.ACCOUNT_COUNTRY_CODE = '{{country_code}}'
-  AND iacc.ACCOUNT_CREATED_AT >= TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}'))
-  AND iacc.ACCOUNT_CREATED_AT <= TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))
-  AND iacc.ACCOUNT_CREATED_AT >= TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}'))
-  AND iacc.ACCOUNT_CREATED_AT <= TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))
+  AND iacc.ACCOUNT_CREATED_AT >= TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))
+  AND iacc.ACCOUNT_CREATED_AT <= TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))
+  AND iacc.ACCOUNT_CREATED_AT >= TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))
+  AND iacc.ACCOUNT_CREATED_AT <= TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))

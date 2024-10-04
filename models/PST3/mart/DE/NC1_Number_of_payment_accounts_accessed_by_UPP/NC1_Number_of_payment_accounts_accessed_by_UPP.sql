@@ -25,12 +25,12 @@
   WHERE a.APPLICATION_NAME = 'PAY-PXG-BANQUPDE'
     AND fi.FINANCIAL_INSTITUTION_CODE <> 'IBIS'
     AND (
-      TIMESTAMP(ac.ACCESS_CONSENT_STATUS_AT) >= TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}'))
-      AND TIMESTAMP(ac.ACCESS_CONSENT_STATUS_AT) <= TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))
+      TIMESTAMP(ac.ACCESS_CONSENT_STATUS_AT) >= TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))
+      AND TIMESTAMP(ac.ACCESS_CONSENT_STATUS_AT) <= TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))
       OR
       (
-      TIMESTAMP(ac.ACCESS_CONSENT_CREATED_AT) >= TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}'))
-      AND TIMESTAMP(ac.ACCESS_CONSENT_CREATED_AT) <= TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))
+      TIMESTAMP(ac.ACCESS_CONSENT_CREATED_AT) >= TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))
+      AND TIMESTAMP(ac.ACCESS_CONSENT_CREATED_AT) <= TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))
       )
     )
   GROUP BY 1,2
@@ -39,6 +39,6 @@ SELECT
   country ,
   count(distinct USER_TOKEN) as unique_users_count_in_period,
   CURRENT_TIMESTAMP AS LOAD_TIMESTAMP,
-  '{{period}}' AS PERIOD,
+  '{{period_time['period']}}' AS PERIOD,
 FROM PRE
 GROUP BY 1

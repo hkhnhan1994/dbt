@@ -13,8 +13,8 @@
   SUM(IT.INBOUND_TRANSACTION_AMOUNT) AS SUCCESS_TRX_SUMMED_VALUE,
   CURRENT_TIMESTAMP AS LOAD_TIMESTAMP,
   "{{period}}"  AS Period,
-  TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}'))  AS Period_begin_date,
-  TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))  AS Period_end_date,
+  TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))  AS Period_begin_date,
+  TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))  AS Period_end_date,
 FROM {{ source('source_dwh_STRP','D_INBOUND_PAYMENT_INFO_CURRENT') }} AS IP
 LEFT JOIN {{ source('source_dwh_STRP','D_FINANCIAL_PLATFORMS_DECRYPTED') }} AS FP
     ON IP.T_D_FINANCIAL_PLATFORM_DIM_KEY=FP.T_DIM_KEY
@@ -45,8 +45,8 @@ WHERE FI.FINANCIAL_INSTITUTION_CODE  <> 'IBIS'
         OR APP.APPLICATION_NAME = 'PAY-PXG-BANQUPBG'
         OR APP.APPLICATION_NAME = 'PAY-PXG-BANQUPHR'
         OR APP.APPLICATION_NAME = 'PAY-PXG-BANQUPRO')
-    AND TIMESTAMP(DIT.INBOUND_TRANSACTION_CREATED_AT) >= TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}'))  --pt winter time
-    AND TIMESTAMP(DIT.INBOUND_TRANSACTION_CREATED_AT) <= TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))   --pt winter time
+    AND TIMESTAMP(DIT.INBOUND_TRANSACTION_CREATED_AT) >= TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))  --pt winter time
+    AND TIMESTAMP(DIT.INBOUND_TRANSACTION_CREATED_AT) <= TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))   --pt winter time
 
 
 GROUP BY 1, 2, 3
@@ -61,8 +61,8 @@ SELECT
       SUM(IT.INBOUND_TRANSACTION_AMOUNT) AS SUCCESS_TRX_SUMMED_VALUE,
       CURRENT_TIMESTAMP AS LOAD_TIMESTAMP,
       "{{period}}"  AS Period,
-      TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}'))  AS Period_begin_date,
-      TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))  AS Period_end_date,
+      TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))  AS Period_begin_date,
+      TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))  AS Period_end_date,
 FROM {{ source('source_dwh_STRP','D_INBOUND_PAYMENT_INFO_CURRENT') }} AS IP
 LEFT JOIN {{ source('source_dwh_STRP','D_FINANCIAL_PLATFORMS_DECRYPTED') }} AS FP
     ON IP.T_D_FINANCIAL_PLATFORM_DIM_KEY=FP.T_DIM_KEY
@@ -97,8 +97,8 @@ WHERE
   AND NOT (credacc.FINANCIAL_INSTITUTION_COUNTRY_CODE = 'PT' AND  SUBSTR( credacc.BANK_ACCOUNT_NUMBER,5,4) = '5845')
   AND NOT (credacc.FINANCIAL_INSTITUTION_COUNTRY_CODE = 'SK' AND  SUBSTR( credacc.BANK_ACCOUNT_NUMBER,5,4) = '9955')
   -- AND NOT (credacc.FINANCIAL_INSTITUTION_COUNTRY_CODE = 'RO' AND  SUBSTR( credacc.BANK_ACCOUNT_NUMBER,5,4) = 'PANX')
-  AND TIMESTAMP(DIT.INBOUND_TRANSACTION_CREATED_AT) >= TIMESTAMP(DATETIME( '{{begin_date}}', '{{time_zone}}'))  --pt winter time
-  AND TIMESTAMP(DIT.INBOUND_TRANSACTION_CREATED_AT) <= TIMESTAMP(DATETIME( '{{end_date}}', '{{time_zone}}'))   --pt winter time
+  AND TIMESTAMP(DIT.INBOUND_TRANSACTION_CREATED_AT) >= TIMESTAMP(DATETIME( '{{period_time['begin_date']}}', '{{time_zone}}'))  --pt winter time
+  AND TIMESTAMP(DIT.INBOUND_TRANSACTION_CREATED_AT) <= TIMESTAMP(DATETIME( '{{period_time['end_date']}}', '{{time_zone}}'))   --pt winter time
 
 GROUP BY 1, 2, 3
 ORDER BY 4 DESC
