@@ -1,0 +1,26 @@
+
+  
+    
+
+    create or replace table `pj-bu-dw-data-sbx`.`dev_dl_h3_hehe`.`dl_h3_hehe_current_public_Person`
+      
+    
+    
+
+    OPTIONS()
+    as (
+      WITH current_table AS (
+    SELECT *,
+    ROW_NUMBER() OVER(PARTITION BY _pk_id ORDER BY INSERT_HIST_TIMESTAMP DESC) AS rn
+    FROM (
+        SELECT
+        CONCAT( `personid`  ,"") AS _pk_id,
+        *
+        FROM  `pj-bu-dw-data-sbx`.`dev_dl_h3_hehe`.`dl_h3_hehe_hist_public_Person` 
+    ) 
+)
+SELECT * EXCEPT(rn)
+FROM current_table
+WHERE rn = 1
+    );
+  

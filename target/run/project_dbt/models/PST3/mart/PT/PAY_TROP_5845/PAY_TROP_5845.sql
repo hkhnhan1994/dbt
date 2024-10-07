@@ -1,0 +1,130 @@
+
+  
+    
+
+    create or replace table `pj-bu-dw-data-sbx`.`dev_dm_pst3_PT`.`PAY_TROP_5845`
+      
+    
+    
+
+    OPTIONS()
+    as (
+      SELECT
+  -- COALESCE(cmd_deb.identifier,cmd_cre.identifier) AS payment_account_number,
+  -- COALESCE(cmd_deb.enterprise_number,cmd_cre.enterprise_number) AS enterprise_number,
+  -- COALESCE(cmd_deb.legal_form,cmd_cre.legal_form) AS legal_form,
+  -- COALESCE(cmd_deb.country,cmd_cre.country) AS country,
+  -- COALESCE(cmd_deb.postal_code,cmd_cre.postal_code) AS postal_code,
+  bis.Ot,
+  bis.Ref,
+  bis.ORef,
+  bis.debtor_account_identifier,
+  bis.creditor_account_identifier,
+  bis.Ord,
+  bis.Ben,
+  bis.PayID,
+  bis.BICOrd,
+  bis.BICBen,
+  bis.BICSen,
+  bis.BICRec,
+  bis.PasOrd,
+  bis.PasBen,
+  bis.LEIOrd,
+  bis.LEIBen,
+  bis.Sch,
+  bis.Pro,
+  bis.DtLiq,
+  bis.DtPISP,
+  bis.TsOrd,
+  bis.TsBen,
+  bis.TipTR,
+  bis.Div,
+  bis.Mont,
+  bis.MontOrg,
+  bis.TipCan,
+  bis.FormEnv,
+  bis.OperElet,
+  bis.OperRem,
+  bis.OperECom,
+  bis.IniPISP,
+  bis.ModAc,
+  bis.SCA,
+  bis.MnonSCA,
+  bis.SI,
+  bis.PasmC,
+  bis.PasnC,
+  bis.CPosm,
+  bis.TipDoc,
+  bis.NumDoc,
+  bis.LEIC,
+  bis.ENI,
+  bis.InfUltBen,
+  bis.InfUltOrd,
+  bis.Period,
+  bis.load_timestamp,
+FROM `pj-bu-dw-data-sbx`.`dev_dm_pst3_PT`.`PAY_TROP_5845_IBIS` AS bis
+-- LEFT JOIN `pj-bu-dw-data-sbx`.`dev_dm_pst3_PT`.`PAY_TROP_5845_CMD` as cmd_deb
+--   ON bis.debtor_account_identifier = cmd_deb.identifier
+--   AND bis.Ot = 'O'
+-- LEFT JOIN `pj-bu-dw-data-sbx`.`dev_dm_pst3_PT`.`PAY_TROP_5845_CMD` as cmd_cre
+--   ON bis.creditor_account_identifier = cmd_cre.identifier
+--   AND bis.Ot = 'B'
+UNION ALL
+SELECT
+  -- cmd_cre.identifier as payment_account_number,
+  -- cmd_cre.enterprise_number,
+  -- cmd_cre.legal_form,
+  -- cmd_cre.country,
+  -- cmd_cre.postal_code,
+  pis.Ot,
+  pis.Ref,
+  pis.ORef,
+  pis.debtor_account_identifier,
+  pis.creditor_account_identifier,
+  pis.Ord,
+  pis.Ben,
+  pis.PayID,
+  pis.BICOrd,
+  pis.BICBen,
+  pis.BICSen,
+  pis.BICRec,
+  pis.PasOrd,
+  pis.PasBen,
+  pis.LEIOrd,
+  pis.LEIBen,
+  pis.Sch,
+  pis.Pro,
+  NULL AS DtLiq,
+  pis.DtPISP,
+  pis.TsOrd,
+  pis.TsBen,
+  pis.TipTR,
+  pis.Div,
+  pis.Mont,
+  pis.MontOrg,
+  pis.TipCan,
+  pis.FormEnv,
+  pis.OperElet,
+  pis.OperRem,
+  pis.OperECom,
+  pis.IniPISP,
+  pis.ModAc,
+  pis.SCA,
+  pis.MnonSCA,
+  pis.SI,
+  pis.PasmC,
+  pis.PasnC,
+  pis.CPosm,
+  pis.TipDoc,
+  pis.NumDoc,
+  pis.LEIC,
+  pis.ENI,
+  pis.InfUltBen,
+  pis.InfUltOrd,
+  pis.Period,
+  pis.load_timestamp,
+FROM `pj-bu-dw-data-sbx`.`dev_dm_pst3_PT`.`PAY_TROP_5845_PIS` AS pis
+-- LEFT JOIN `pj-bu-dw-data-sbx`.`dev_dm_pst3_PT`.`PAY_TROP_5845_CMD` as cmd_cre
+--  ON pis.creditor_account_identifier = cmd_cre.identifier
+    );
+  

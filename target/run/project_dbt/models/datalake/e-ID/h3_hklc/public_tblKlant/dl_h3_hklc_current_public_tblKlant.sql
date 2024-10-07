@@ -1,0 +1,26 @@
+
+  
+    
+
+    create or replace table `pj-bu-dw-data-sbx`.`dev_dl_h3_hklc`.`dl_h3_hklc_current_public_tblKlant`
+      
+    
+    
+
+    OPTIONS()
+    as (
+      WITH current_table AS (
+    SELECT *,
+    ROW_NUMBER() OVER(PARTITION BY _pk_id ORDER BY INSERT_HIST_TIMESTAMP DESC) AS rn
+    FROM (
+        SELECT
+        CONCAT( `KlantID`  ,"") AS _pk_id,
+        *
+        FROM  `pj-bu-dw-data-sbx`.`dev_dl_h3_hklc`.`dl_h3_hklc_hist_public_tblKlant` 
+    ) 
+)
+SELECT * EXCEPT(rn)
+FROM current_table
+WHERE rn = 1
+    );
+  
