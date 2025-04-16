@@ -39,16 +39,12 @@ clean-targets:         # directories to be removed by `dbt clean`
 # files using the `{{ config(...) }}` macro.
 models:
   project_dbt:
-    PST3:
-      mart:
-        +materialized: incremental
-        +dataset: dm_pst3
     STRH:
       datalake:
         +materialized: table
         +dataset: datalake
         +tags:
-        - nightly
+        - dl_strh
       staging:
         +materialized: table
         +dataset: staging_view_cmd

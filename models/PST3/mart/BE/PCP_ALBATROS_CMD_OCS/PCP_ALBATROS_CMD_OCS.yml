@@ -1,9 +1,0 @@
-models:
-- name: PCP_ALBATROS_CMD_OCS
-  description: description text
-  config:
-    dataset: dm_pst3_BE
-    alias: PCP_ALBATROS_CMD_OCS
-    tags:
-    - pst3
-    - semesterly

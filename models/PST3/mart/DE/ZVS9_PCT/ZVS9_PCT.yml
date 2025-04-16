@@ -1,9 +1,0 @@
-models:
-- name: ZVS9_PCT
-  description: description text
-  config:
-    dataset: dm_pst3_DE
-    alias: ZVS9_PCT
-    tags:
-    - pst3
-    - quarterly

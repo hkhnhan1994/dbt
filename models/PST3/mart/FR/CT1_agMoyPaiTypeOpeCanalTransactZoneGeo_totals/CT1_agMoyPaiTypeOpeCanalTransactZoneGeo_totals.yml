@@ -1,9 +1,0 @@
-models:
-- name: CT1_agMoyPaiTypeOpeCanalTransactZoneGeo_totals
-  description: description text
-  config:
-    dataset: dm_pst3_FR
-    alias: CT1_agMoyPaiTypeOpeCanalTransactZoneGeo_totals
-    tags:
-    - pst3
-    - daily

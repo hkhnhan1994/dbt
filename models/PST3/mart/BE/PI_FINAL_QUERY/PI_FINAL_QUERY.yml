@@ -1,9 +1,0 @@
-models:
-- name: PI_FINAL_QUERY
-  description: description text
-  config:
-    dataset: dm_pst3_BE
-    alias: PI_FINAL_QUERY
-    tags:
-    - pst3
-    - semesterly
