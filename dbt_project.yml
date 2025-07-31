@@ -39,21 +39,21 @@ clean-targets:         # directories to be removed by `dbt clean`
 # files using the `{{ config(...) }}` macro.
 models:
   project_dbt:
-    STRH:
+    domain1:
       datalake:
         +materialized: table
         +dataset: datalake
         +tags:
-        - dl_strh
+        - dl_domain1
       staging:
         +materialized: table
-        +dataset: staging_view_cmd
+        +dataset: stg_grocery
       warehouse:
         +materialized: incremental
-        +dataset: dwh_view_cmd
+        +dataset: dwh_grocery
         +unique_key: T_UNIQUE_KEY
       mart:
         +materialized: view
-        +dataset: dm_view_cmd
+        +dataset: dm_grocery
 
 query-comment: null

@@ -1,8 +1,0 @@
-sources:
-  - name: dwh_strh
-    schema: |
-      {{ target.schema }}_dwh_view_cmd
-    tables:
-      - name: D_AUTHORIZED_PERSON
-      - name: D_ENTERPRISE
-      - name: D_LEGAL_ENTITY
